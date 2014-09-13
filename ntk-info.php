@@ -2,11 +2,6 @@
 if(!defined('TSEntry') || !TSEntry) die('Not A Valid Entry Point');
 
 /*
-echo "cla_cid:".$cla_cid."<br>";
-echo "cla_nid:".$cla_nid."<br>";
-echo "pageUrl:".$pageUrl."<br>";
-*/
-/*
 print("<pre>");
 print_r($_GET);
 die();
