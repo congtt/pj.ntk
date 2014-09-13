@@ -130,10 +130,10 @@ $('#cssmenu > ul > li > a').click(function() {
 		
 		
 		
-		<div id="ja-col1">
+		<!--<div id="ja-col1">
 
 
-		<div id='cssmenu'>
+		<!--<div id='cssmenu'>
 <ul>
         <li><a title="TRANG CHỦ"  href="http://www.ngoaithankinh.com.vn/"><span class="nav-active">TRANG CHỦ</span></a>
         </li>
@@ -178,8 +178,8 @@ $('#cssmenu > ul > li > a').click(function() {
         <li><a title="Liên hệ" id="menu87" class="menu-item5 last-item" href="/vi/lien-he.html"><span class="menu-title">Liên hệ</span></a>
         </li>
     </ul>
-</div>
-		<div class="ja-innerpad">
+</div>-->
+		<!--<div class="ja-innerpad">
 			<div class="module">
 			<div>
 				<div>
@@ -231,12 +231,12 @@ $('#cssmenu > ul > li > a').click(function() {
 				<div>
 					<div>
 													<h3>Visit Counter </h3>
-											<div><div style="text-align: center;"><img src="http://www.ngoaithankinh.com.vn/modules/mod_vvisit_counter/images/mechanical/0.gif" alt="mod_vvisit_counter" /><img src="http://www.ngoaithankinh.com.vn/modules/mod_vvisit_counter/images/mechanical/2.gif" alt="mod_vvisit_counter" /><img src="http://www.ngoaithankinh.com.vn/modules/mod_vvisit_counter/images/mechanical/4.gif" alt="mod_vvisit_counter" /><img src="http://www.ngoaithankinh.com.vn/modules/mod_vvisit_counter/images/mechanical/0.gif" alt="mod_vvisit_counter" /><img src="http://www.ngoaithankinh.com.vn/modules/mod_vvisit_counter/images/mechanical/3.gif" alt="mod_vvisit_counter" /><img src="http://www.ngoaithankinh.com.vn/modules/mod_vvisit_counter/images/mechanical/3.gif" alt="mod_vvisit_counter" /><img src="http://www.ngoaithankinh.com.vn/modules/mod_vvisit_counter/images/mechanical/5.gif" alt="mod_vvisit_counter" /></div><div><table cellpadding="0" cellspacing="0" style="text-align: center; width: 90%;" class="vinaora_counter"><tbody align="center"></tbody></table></div></div>					</div>
+											<div><div style="text-align: center;"></div><div><table cellpadding="0" cellspacing="0" style="text-align: center; width: 90%;" class="vinaora_counter"><tbody align="center"></tbody></table></div></div>					</div>
 				</div>
 			</div>
 		</div>
 	
 
-		</div>
-		</div><br />
+		</div>-->
+		<!--</div><br />-->
 		<!-- END: LEFT COLUMN -->

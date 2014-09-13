@@ -5,7 +5,7 @@ if(!defined('TSEntry') || !TSEntry) die('Not A Valid Entry Point');
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>#</title>
+	<title><? echo get_lang('site_title');?></title>
 	<link href="<?=$fullsite?>/css/style.css" rel="stylesheet" media="all" />
 
 	<link type="text/css" href="<?=$fullsite?>/css/template.css" rel="stylesheet">
@@ -16,7 +16,9 @@ if(!defined('TSEntry') || !TSEntry) die('Not A Valid Entry Point');
   background-color: #88FF88;
 } 
 </style>
-	<script type="text/javascript" src="<?=$fullsite?>/css/jquery-1.4.2.min.js"></script>
+	
+	<script type="text/javascript" src="<?=$fullsite?>/css/jquery-1.4.2.min.js"></script>	
+	<script type="text/javascript" src="<?=$fullsite?>/css/site.js"></script>
 <script>
 $(document).ready(
   /* This is the function that will get executed after the DOM is fully loaded */
@@ -48,7 +50,21 @@ $(document).ready(
 <!-- BEGIN: CPANEL -->
 <div id="ja-cpanel">
 		<div id="ja-search">
-		<div id="jflanguageselection"><div class="rawimages"><span><a href="<?=$fullsite?>/cfg/language-vi.html"><img src="<?=$fullsite?>/images/vi.gif" alt="Viet Nam" title="Viet Nam" /></a></span><span id="active_language"><a href="<?=$fullsite?>/cfg/language-en.html"><img src="<?=$fullsite?>/images/en.gif" alt="English (United Kingdom)" title="English (United Kingdom)" /></a></span></div></div><!--Joom!fish V2.0.2 ()-->
+		<div id="jflanguageselection">
+			<div class="rawimages">
+				<span>
+					<a href="?language=vi"> 
+						<img src="<?=$fullsite?>/images/vi.gif" alt="Viet Nam" title="Viet Nam"/>
+					</a>
+				</span>
+				<span id="active_language">
+					<a href="?language=en">
+						<img src="<?=$fullsite?>/images/en.gif" alt="English (United Kingdom)" title="English (United Kingdom)" />
+					</a>
+				</span>
+			</div>
+		</div>
+		
 <!-- &copy; 2003-2009 Think Network, released under the GPL. -->
 <!-- More information: at http://www.joomfish.net -->
 
@@ -65,7 +81,7 @@ $(document).ready(
 <div id="ja-header" class="clearfix">
 
 		<h1 class="logo">
-		<a href="/index.php" title="Hội Phẫu Thuật Thần Kinh Việt Nam"><span>Hội Phẫu Thuật Thần Kinh Việt Nam</span></a>
+		<a href="<?=$fullsite?>" title="Hội Phẫu Thuật Thần Kinh Việt Nam"><span>Hội Phẫu Thuật Thần Kinh Việt Nam</span></a>
 	</h1>
 	
 		

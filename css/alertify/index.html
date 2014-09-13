@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>alertify.js - browser dialogs never looked so good</title>
+	<!--<link rel="stylesheet" href="assets/css/main.css" />-->
+	<link rel="stylesheet" href="themes/alertify.core.css" />
+	<link rel="stylesheet" href="themes/alertify.default.css" id="toggleCSS" />
+	<!--<link rel="stylesheet" href="assets/js/lib/sh/shCore.css" />
+	<link rel="stylesheet" href="assets/js/lib/sh/shCoreDefault.css" />
+	<link href="http://fonts.googleapis.com/css?family=Lato:400,900" rel="stylesheet" type="text/css">
+	<meta name="viewport" content="width=device-width">-->
+	
+</head>
+<body>
+	<h1><a href="#" id="alert" >ALERT</a></h1>
+	<h1><a href="#" id="confirm" >confirm</a></h1>
+	
+
+	<script src="lib/alertify.min.js"></script>
+	<!--<script src="assets/js/lib/sh/shCore.js"></script>-->
+	<!--<script src="assets/js/lib/sh/shBrushJScript.js"></script>-->
+	
+	<script>
+		"use strict";
+		var
+		$ = function (id) {
+			return document.getElementById(id);
+		},
+		reset = function () {
+			$("toggleCSS").href = "themes/alertify.default.css";
+			alertify.set({
+				labels : {
+					ok     : "OK",
+					cancel : "Cancel"
+				},
+				delay : 5000,
+				buttonReverse : false,
+				buttonFocus   : "ok"
+			});
+		};
+
+		// ==============================
+		// Standard Dialogs
+		$("alert").onclick = function () {
+			//reset();
+			alertify.alert("This is an alert dialog");
+			return false;
+		};
+		
+		$("confirm").onclick = function () {
+			reset();
+			alertify.confirm("This is a confirm dialog", function (e) {
+				if (e) {
+					alertify.success("You've clicked OK");
+				} else {
+					alertify.error("You've clicked Cancel");
+				}
+			});
+			return false;
+		};
+		
+	</script>
+
+</body>
+</html>

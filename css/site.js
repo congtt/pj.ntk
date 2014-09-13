@@ -1,7 +1,6 @@
 
 			var fbc = 1;
-			$(function() {
-				
+			$(function() {				
 				$('input').keypress(function(event){			
 					if (event.keyCode==13){				
 						//frm_action(1); 
@@ -13,7 +12,7 @@
 					var cur_stat = $(this).attr('checked');
 					$('#aj_result input[id*=chk_]').attr('checked', (cur_stat)? 'checked' : '');
 				}); 
-
+				/*
 				$( "#dialog:ui-dialog" ).dialog( "destroy" );	
 				$( "#dialog-form" ).dialog({
 					autoOpen: false,
@@ -37,8 +36,8 @@
 					close: function() {
 						
 					}
-				});	
-
+				});	*/
+			
 			});
 
 
@@ -205,3 +204,7 @@
 		});	
 	}
 
+	function notLogin(){
+		//alertify.error('Vui lòng đăng nhập để thực hiện chức năng này.');
+		alert('Vui lòng đăng nhập để thực hiện chức năng này.');
+	}

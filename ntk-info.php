@@ -1,6 +1,17 @@
+
 <?php
 if(!defined('TSEntry') || !TSEntry) die('Not A Valid Entry Point');
 
+
+if($pageUrl==''){
+	$pageUrl = 'trang-chu.html';
+}
+if(isset($_GET['language'])){
+	$pageUrl = str_replace('?language=en','',$pageUrl);
+	$pageUrl = str_replace('?language=vi','',$pageUrl);
+}
+
+//debug($_GET,1);
 /*if ($cla_cid == "news"){
 	echo 'news detail';
 }
@@ -29,6 +40,9 @@ else{
 			case 'thong-tin-thanh-vien.html':							
 				$result = member_info();
 				break;
+			case 'trang-chu.html':
+				$result = home();
+				break;
 			default:
 				echo 'Không tìm thấy trang này';
 				break;
@@ -40,8 +54,37 @@ else{
 	}
 }
 
-
-
+	function home(){
+		global $db,$fullsite,$cla_cid,$cla_nid,$cla_site,$ts_config;		
+		$sql="SELECT * FROM ntk_news WHERE show_index = 1 ";		
+		$sql.="ORDER BY news_order ASC,id ASC 	LIMIT 0,10 ";
+		$result = $db->query($sql, true, "Query failed");
+		while ($aR = $db->fetchByAssoc($result)) {	
+			echo '<div class="news_title">'.$aR['title'].'</div>';
+			echo '<div><div class="news_date">'.date2vndate($aR['create_date']).'</div><div class="news_download">';				
+			$sql = " select t1.*,t2.file_type_name,t2.file_type_icon 
+					from ntk_new_files t1
+					left join ntk_file_type t2 on t1.file_type_id = t2.file_type_id
+					where t1.new_id = ".(int)$aR['id']."
+			";		
+			$result_file = $db->query($sql, true, "Query failed");
+			$i=0;				
+			while ($aR_file = $db->fetchByAssoc($result_file)) {					
+				if($aR_file['require_login']==1 && !is_login()){
+					$href ='javascript:notLogin();';
+				}else{
+					$href =$ts_config['filenews_dir'].'/'.$aR_file['file_path'];
+				}
+				if($i>0){echo ' | ';}					
+				echo '<a href="'.$href.'"><img src="'.$fullsite.'/images/'.$aR_file['file_type_icon'].'"></a>';
+				$i++;
+			}		
+			echo '</div></div>'; 				
+			echo '<div class="news_short">'.$aR['short'].'</div>';
+			echo '<hr size=2 style="color:#EFEFEF">';
+		}
+		
+	}
 	/**/
 	function member_info($update_success=false){		
 		global $db,$fullsite,$cla_cid,$cla_nid,$cla_site;		
@@ -192,21 +235,38 @@ else{
 	/**/
 
 	function page_news(){
-		global $db,$fullsite,$cla_cid,$cla_nid,$cla_site;
+		
+		global $db,$fullsite,$cla_cid,$cla_nid,$cla_site,$ts_config;
 		if ((int)$cla_cid>0){
 			$sql="SELECT * FROM ntk_news WHERE cid=".$cla_cid." ";
 			if ((int)$cla_nid>0)
 				$sql.=" AND id<=".$cla_nid;
-			$sql.="ORDER BY news_order ASC,id DESC 	LIMIT 0,10 ";
-			//echo $sql;
+			$sql.="ORDER BY news_order ASC,id ASC 	LIMIT 0,10 ";
+			//echo $sql;die();
 			$result = $db->query($sql, true, "Query failed");
-			while ($aR = $db->fetchByAssoc($result)) {  
+			while ($aR = $db->fetchByAssoc($result)) {	
 				echo '<div class="news_title">'.$aR['title'].'</div>';
-				echo '<div><div class="news_date">20/07/2014</div><div class="news_download">
-				<img src="'.$fullsite.'/images/word.png"> | <img src="'.$fullsite.'/images/pdf.png"> | <img src="'.$fullsite.'/images/printer.png">
-				| <img src="'.$fullsite.'/images/letter.png"></div></div>'; 
+				echo '<div><div class="news_date">'.date2vndate($aR['create_date']).'</div><div class="news_download">';				
+				$sql = " select t1.*,t2.file_type_name,t2.file_type_icon 
+						from ntk_new_files t1
+						left join ntk_file_type t2 on t1.file_type_id = t2.file_type_id
+						where t1.new_id = ".(int)$aR['id']."
+				";		
+				$result_file = $db->query($sql, true, "Query failed");
+				$i=0;				
+				while ($aR_file = $db->fetchByAssoc($result_file)) {					
+					if($aR_file['require_login']==1 && !is_login()){
+						$href ='javascript:notLogin();';
+					}else{
+						$href =$ts_config['filenews_dir'].'/'.$aR_file['file_path'];
+					}
+					if($i>0){echo ' | ';}					
+					echo '<a href="'.$href.'"><img src="'.$fullsite.'/images/'.$aR_file['file_type_icon'].'"></a>';
+					$i++;
+				}		
+				echo '</div></div>'; 				
 				echo '<div class="news_short">'.$aR['short'].'</div>';
-				echo '<hr size=1 style="color:#EFEFEF">';
+				echo '<hr size=2 style="color:#EFEFEF">';
 			}
 		
 		}

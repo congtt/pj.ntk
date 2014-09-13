@@ -55,13 +55,36 @@
 		return $org;
 	}		
 
-
+	function get_lang($key){
+		global $__lang;
+		return $__lang[$key];
+	}
+	function get_language(){
+		$arr_lang = array('en','vi');
+		if(isset($_SESSION[_PLATFORM_]['lang'])){
+			$lang = $_SESSION[_PLATFORM_]['lang'];
+		}else{
+			$lang = $_COOKIE[_PLATFORM_.'lang'];
+		}
+		if(!in_array($lang,$arr_lang)){
+			$lang = 'vi';
+		}
+		$_SESSION[_PLATFORM_]['lang'] = $lang;
+		//setcookie(_PLATFORM_.'lang',$lang);
+		return $lang;
+		
+	}
 	function is_login(){
-		global $ts_info;	
+		if($_SESSION[_PLATFORM_]['is_login'] && is_array($_SESSION[_PLATFORM_]['USER_INFO'])){
+			return true;
+		}
+		return false;
+		/*global $ts_info;
+		
 		if (count($ts_info)>0 && trim($ts_info['User_Name'])!='' && $_GET['module']!='Error'){
 			return true;
 		}else
-		{return false;}
+		{return false;}*/
 		
 		
 	}

@@ -14,7 +14,8 @@ $ts_config = array (
 		  )
   ,'site_url' => 'http://127.0.0.1/pj.ntk'	 
   ,'photo_url' => 'http://127.0.0.1/pj.ntk/photo'
-  ,'upload_dir' => 'D://Webserver//xampp//htdocs//pj.ntk//photo'//
+  ,'upload_dir' => 'E://xampp//htdocs//pj.ntk//images//newfiles'//
+  ,'filenews_dir' => 'http://127.0.0.1/pj.ntk/images/newfiles'//
   ,'upload_maxsize' => 52*1024*1024 // 52.428.800 bytes 
   ,'permission'=>array(
    		'1'=>'Access',

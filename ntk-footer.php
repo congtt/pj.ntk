@@ -19,7 +19,12 @@ Copyright © 2009 Neurosurgical Society Of Viet Nam<br />
 </div>
 <!-- END: FOOTER -->
 
-
+<!--alertify-->
+<link rel="stylesheet" href="css/alertify/themes/alertify.core.css" />
+<link rel="stylesheet" href="css/alertify/themes/alertify.default.css" id="toggleCSS" />
+<script src="css/alertify/lib/alertify.min.js"></script>
+<!--alertify-->
+	
 </div>
 
 </body>

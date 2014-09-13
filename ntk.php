@@ -1,10 +1,19 @@
 <?
 if(!defined('TSEntry'))define('TSEntry', true);
 include('include/init.inc.php');
+
+if(isset($_GET['language']) && $_GET['language'] !=''){
+	$_SESSION[_PLATFORM_]['lang'] = $_GET['language'];
+	$_COOKIE[_PLATFORM_]['lang'] = $_SESSION[_PLATFORM_]['lang'];
+	setcookie(_PLATFORM_.'lang',$_SESSION[_PLATFORM_]['lang']);
+}
+$lang = get_language();
+include('language/'.$lang.'.php');
 ?>	 
 <?include('ntk-header.php');?>	
 <div id="ja-containerwrap">
-<div id="ja-container"><div id="ja-container-inner" class="clearfix">
+<div id="ja-container">
+<div id="ja-container-inner" class="clearfix">
 
 	<!--BEGIN: CONTENT-->
 	<div id="ja-mainbodywrap">	

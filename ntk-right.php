@@ -9,9 +9,9 @@ if(!defined('TSEntry') || !TSEntry) die('Not A Valid Entry Point');
 					<?if($_SESSION[_PLATFORM_]['is_login'] && is_array($_SESSION[_PLATFORM_]['USER_INFO'])){?>
 					<div>
 						<div>
-							Xin chào <b><a title="Thông tin thành viên" href="<?=$fullsite?>/0/0/thong-tin-thanh-vien.html"><?php echo $_SESSION[_PLATFORM_]['USER_INFO']['full_name']?></a></b>
+							<? echo get_lang('hello'); ?> <b><a title="Thông tin thành viên" href="<?=$fullsite?>/0/0/thong-tin-thanh-vien.html"><?php echo $_SESSION[_PLATFORM_]['USER_INFO']['full_name']?></a></b>
 							<br>
-							<a title="Đăng xuất" href="<?=$fullsite?>/0/0/dang-xuat.html">Đăng xuất</a>
+							<a title="<? echo get_lang('logout_link'); ?>" href="<?=$fullsite?>/0/0/dang-xuat.html"><? echo get_lang('logout_link'); ?></a>
 						</div>	
 					</div>					
 					<?
@@ -19,32 +19,32 @@ if(!defined('TSEntry') || !TSEntry) die('Not A Valid Entry Point');
 					<!--begin-login-->
 					<div>
 						<div>
-							<div class="lft-title" style="background-color:#71baf1;">ĐĂNG NHẬP
+							<div class="lft-title" style="background-color:#71baf1;">&nbsp;<? echo get_lang('login_title'); ?>
 							</div>
 							<br />
 							<form name="frm_login" id="frm_login" action="<?=$fullsite?>/0/0/dang-nhap.html" method="POST" >
 								<div align="center">
 									<table>
 										<tr>
-											<td>Email</td>
+											<td><? echo get_lang('login_text_email'); ?></td>
 										</tr>
 										<tr>
 											<td><input type="text" style="width:130px;" id="email" name="email" value=""></td>
 										</tr>
 										<tr>
-											<td>Mật khẩu</td>
+											<td><? echo get_lang('login_text_password'); ?></td>
 										</tr>
 										<tr>
 											<td><input type="password" style="width:130px;"  id="password" name="password" value=""></td>
 										</tr>
 										<tr>
 											<td>
-												<input style="text-align:center" type="submit" name="btnlogin" value="Đăng nhập"/>
+												<input style="text-align:center" type="submit" name="btnlogin" value="<? echo get_lang('login_text_btn_login'); ?>"/>
 											</td>
 										</tr>
 										<tr>
 											<td>
-												<span style="">Hoặc đăng ký tại <a href="<?=$fullsite?>/0/0/dang-ky-thanh-vien.html">đây.</a></span>
+												<span style=""><? echo get_lang('login_text_register_here'); ?> <a href="<?=$fullsite?>/0/0/dang-ky-thanh-vien.html"><? echo get_lang('login_text_register_here_here'); ?></a></span>
 											</td>
 										</tr>
 										
