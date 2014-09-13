@@ -1,0 +1,59 @@
+
+
+
+
+      .clearer{clear:both; }
+
+
+      /**
+       * The Menu CSS
+       */
+      .fb_dropdown{
+        width:40px;  text-decoration:none; float:left; display:block; background:url('privacyOff.png');
+		border-bottom:1px solid #C5DBEC;
+      }
+
+      .fb_dropdown:hover{
+        text-decoration:none;
+		height:20px
+      }
+
+      .fb_dropdown.jdropdown-active{
+        background-position:0 0;
+		background:url('privacyOff.png');
+      }
+
+      .fb_menu{
+        background:#EAF4FD none repeat scroll 0 0; border:1px solid #C5DBEC; padding:0px 0;
+      }
+
+      .fb_menu ul{
+        list-style:none;
+      }
+
+      .fb_menu li{
+        padding:4px 0px 0px 0px;
+		height:15px;
+      }
+
+
+      .fb_menu li:hover{
+        padding:4px 0px 0px 0px;
+		background:#86B5D9; color:white; text-decoration:none;
+      }
+
+      .fb_menu li:visited{
+        text-decoration:none;
+      }
+
+
+      .fb_menu a{
+        display:block; font-weight:normal; width:137px; text-align:left; overflow:hidden; padding:0px 0px 0px 10px; color:#111111;
+		text-decoration:none;
+      }
+
+      .fb_menu a:hover{color:white; text-decoration:none;}
+
+      .fb_menu a:visited{
+        text-decoration:none;
+      }

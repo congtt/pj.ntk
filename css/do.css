@@ -1,0 +1,142 @@
+
+	/* Tables */
+
+.hastable table {
+	margin:0 0 0px 0;
+	background:#fff;
+	width:100%;
+	border:1px solid #dedede;
+	border-bottom:none;
+}
+
+.hastable thead td, .hastable thead th {
+	background-color:#e6e6e6;
+}
+
+.hastable tr td, .hastable thead th {
+	border-left:1px solid #ccc;
+	text-align:left;
+	padding:8px;
+	color:#616161;
+	vertical-align:middle;
+}
+
+.hastable thead td, .hastable thead th {
+	font-weight:bold;
+	padding:10px 6px;
+	text-align:center;
+}
+
+.hastable th, .hastable td {
+	border-bottom:1px solid #dedede;
+}
+.hastable tbody th {
+	padding:8px 8px;
+	text-align:left;
+}
+
+.hastable tbody tr.alt td, .hastable tbody tr.odd td {
+	color:#464646;
+}
+
+.hastable tbody tr.alt td, .hastable tbody tr.alt th, .hastable tbody tr.odd {
+	background-color:#f5f5f5;
+}
+.hastable tbody tr:hover td, .hastable tbody tr:hover th {
+	background-color:#FFFFCF;
+}
+
+.headerSortDown, .headerSortUp {
+	background-repeat:no-repeat;
+	background-color:#dcdcdc!important;
+	color:#404040!important;
+}
+
+.header span {
+	float:right;
+}
+
+.hastable tr .center {
+	padding:15px;
+	width:5px;
+}
+
+.hastable table a.btn span.ui-icon {
+	left:0.1em;
+}
+
+	/* Tables Pagination */
+
+
+
+
+
+#paging td .page{
+	background-color:#FFF;
+	padding: 5px 5px 5px 5px;
+	cursor:pointer;
+	border-width:1px; border-style:solid; border-color:#ccc;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-right:5px;
+	text-transform:uppercase;
+	text-align:center;;
+	text-decoration:none
+ 
+}
+#paging td .page:hover{
+	background-color:#D1D1D1;
+	border-width:1px; border-style:solid; border-color:#006699;	
+	padding: 5px 5px 5px 5px;
+	cursor:pointer;
+	
+}
+
+
+#paging td  input.pgCurrent{
+	background-color:#eee;
+	text-align:center;
+	border-width:1px; border-style:solid; border-color:red;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-right:5px;
+	text-transform:uppercase;
+	font-weight: bold;
+	width:30px;
+	height:21px;
+	font-size:14px
+}
+
+
+
+
+.txt_success{
+	color:blue;
+}
+
+.txt_error{
+	color:red;
+}
+.required{
+	color:red;
+}
+
+.require{
+	color:red;
+}
+
+
+.wscompleted{ color:blue; }
+
+a.wslink { text-decoration:underline; color:blue; }
+a.wslink:hover { text-decoration:underline; color:red; }
+a.wslink:active { text-decoration:underline; color:red; }
+
+.t_cap { text-transform:capitalize; }
+.wsboldred{font-weight:bold;color:red}
+.mtitle { text-transform:uppercase;font-size:15px;font-weight:bold }
+.m10px {margin-top:10px}
+
+a.btnEdit{ text-decoration:none; color:#3B5998;}
+a.btnEdit:hover{ text-decoration:underline; color:#3B5998;}
+a.btnEdit:active{ text-decoration:none; color:#3B5998;}

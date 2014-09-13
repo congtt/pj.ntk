@@ -1,0 +1,16 @@
+Dang ky : 
+- Email
+- Password 
+-> Chuyen nganh : 
+* BS Ngoai
+* BS Chinh Hinh - PTCS
+* CN Ngoai khac
+*- Dia phuong
+-> Benh vien theo dia phuong
+
+
+
+-----------------------
+
+dien dan:
+- thanh vien tao chu de

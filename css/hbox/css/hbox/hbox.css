@@ -1,0 +1,21 @@
+.hb_overlay {
+	background-image:url(b.png);
+	height:100%;
+	width:500%;
+}
+
+.hb_overlay {
+	background-image:url(b.png);
+	filter:alpha(opacity=15);
+	-moz-opacity: 0.15;
+	opacity: 0.15; position: absolute;    
+	height: expression(document.body.scrollHeight > document.body.offsetHeight ? document.body.scrollHeight -5 : document.body.offsetHeight -5 + 'px');
+	left:0px;top:0px;	
+	width:100%;
+		Z-INDEX: 99;
+}
+#hb_loading{text-align:center}
+#hb_header {height:30;width:100%; background-color:#FFF;text-align:right}
+#hb_table{width:400px;}
+#hb_line{height:1px; background-color:#EFEFEF;}
+.hbox_hide{Z-INDEX: 100;POSITION: absolute;display:none;}
