@@ -1,11 +1,6 @@
 <?php
 if(!defined('TSEntry') || !TSEntry) die('Not A Valid Entry Point');
 
-/*
-print("<pre>");
-print_r($_GET);
-die();
-*/
 /*if ($cla_cid == "news"){
 	echo 'news detail';
 }
