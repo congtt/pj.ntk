@@ -73,7 +73,7 @@ else{
 				if($aR_file['require_login']==1 && !is_login()){
 					$href ='javascript:notLogin();';
 				}else{
-					$href =$ts_config['filenews_dir'].'/'.$aR_file['file_path'];
+					$href =$ts_config['site_url_download_file'].$aR_file['file_path'];
 				}
 				if($i>0){echo ' | ';}					
 				echo '<a href="'.$href.'"><img src="'.$fullsite.'/images/'.$aR_file['file_type_icon'].'"></a>';
@@ -258,9 +258,12 @@ else{
 					if($aR_file['require_login']==1 && !is_login()){
 						$href ='javascript:notLogin();';
 					}else{
-						$href =$ts_config['filenews_dir'].'/'.$aR_file['file_path'];
+						$href =$ts_config['site_url_download_file'].$aR_file['file_path'];
 					}
-					if($i>0){echo ' | ';}					
+					if($i>0){echo ' | ';}		
+					//$urlre = $sugar_config['site_url_download_file']."/download_file_case.php?fn=".$filePath;		
+					//header('location:'.$urlre.'');
+					//die();					
 					echo '<a href="'.$href.'"><img src="'.$fullsite.'/images/'.$aR_file['file_type_icon'].'"></a>';
 					$i++;
 				}		

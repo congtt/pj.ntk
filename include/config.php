@@ -13,9 +13,12 @@ $ts_config = array (
 		    'db_type' => 'mysqli',
 		  )
   ,'site_url' => 'http://127.0.0.1/pj.ntk'	 
+  ,'filenews_dir' => 'http://127.0.0.1/pj.ntk/images/newfiles'//
+  ,'site_url_download_file'=>'http://127.0.0.1/pj.ntk/download_file.php?fn='
   ,'photo_url' => 'http://127.0.0.1/pj.ntk/photo'
   ,'upload_dir' => 'E://xampp//htdocs//pj.ntk//images//newfiles'//
-  ,'filenews_dir' => 'http://127.0.0.1/pj.ntk/images/newfiles'//
+  
+  
   ,'upload_maxsize' => 52*1024*1024 // 52.428.800 bytes 
   ,'permission'=>array(
    		'1'=>'Access',
