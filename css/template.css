@@ -1125,3 +1125,14 @@ color: #FFFF25;
 .news_short{
 text-align:justify;
 }
+
+.news_title_detail{
+	color:#0000FF;
+	font-size:15px;
+	font-weight:bold;
+}
+.related_title{
+	color:#0000FF;
+	font-size:15px;
+	font-weight:bold;
+}

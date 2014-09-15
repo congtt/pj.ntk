@@ -1,6 +1,10 @@
 <?
 	$__lang= array(
 		'site_title' =>'NEUROSURGICAL SOCIETY OF VIET NAM'
+		
+		,'text_detail'	=>'view detail'
+		,'text_related'	=>'News Related'
+		
 		,'hello'	=>'Welcome'
 		,'login_title'=>'LOGIN'
 		,'logout_link'=>'Logout'

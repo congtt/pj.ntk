@@ -1,6 +1,9 @@
 <?
 	$__lang = array(
 		'site_title' =>'HỘI PHẪU THUẬT THẦN KINH VIỆT NAM'
+		
+		,'text_detail'	=>'Xem chi tiết'
+		,'text_related'	=>'Tin tức liên quan'
 		,'hello'	=>'Xin chào'
 		,'login_title'=>'ĐĂNG NHẬP'
 		,'logout_link'=>'Đăng xuất'
