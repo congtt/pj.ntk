@@ -10,7 +10,6 @@ if(isset($_GET['language'])){
 	$pageUrl = str_replace('?language=en','',$pageUrl);
 	$pageUrl = str_replace('?language=vi','',$pageUrl);
 }
-
 //debug($_GET,1);
 /*if ($cla_cid == "news"){
 	echo 'news detail';
