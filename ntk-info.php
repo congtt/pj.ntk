@@ -236,54 +236,59 @@ if($cla_nid>0){
 	
 	function page_detail(){		
 		global $db,$fullsite,$cla_cid,$cla_nid,$cla_site,$ts_config;
-		
+		$lang = '_'.get_language();
 		if ((int)$cla_cid>0 && (int)$cla_nid>0){
 			$sql="SELECT * FROM ntk_news WHERE id =".(int)$cla_nid." and status = 1 ";
 			$sql .=" union all ";
 			$sql.="SELECT * FROM ntk_news WHERE id<> ".(int)$cla_nid." and cid=".(int)$cla_cid." and status = 1  ";			
-			$sql.="ORDER BY news_order ASC,id ASC LIMIT 0,10 ";			
+			$sql.="ORDER BY news_order ASC,id ASC LIMIT 0,10 ";	
 			$result = $db->query($sql, true, "Query failed");
 			while ($aR = $db->fetchByAssoc($result)) {
-				$new_id = $aR['id'];
-				if($new_id==$cla_nid){ // detail
-					echo '<div class="news_title_detail">'.$aR['title'].'</div>';					
-				}else{ // related
-					echo '<div class="news_title">'.$aR['title'].'</div>';
-				}
-				echo '<div><div class="news_date">'.date2vndate($aR['create_date']).'</div><div class="news_download">';				
-				
-				$sql = " select t1.*,t2.file_type_name,t2.file_type_icon 
-						from ntk_new_files t1
-						left join ntk_file_type t2 on t1.file_type_id = t2.file_type_id
-						where t1.new_id = ".(int)$aR['id']."
-				";		
-				$result_file = $db->query($sql, true, "Query failed");
-				$i=0;				
-				while ($aR_file = $db->fetchByAssoc($result_file)) {					
-					if($aR_file['require_login']==1 && !is_login()){
-						$href ='javascript:notLogin();';
-					}else{
-						$href =$ts_config['site_url_download_file'].$aR_file['file_path'];
+				if($aR['title'.$lang]!='' && $aR['short'.$lang]!=''){				
+					$new_id = $aR['id'];
+					$title_url = '';
+					$title_url = fnStrConvert($aR['title'.$lang]);
+					$title_url = str_replace(" ",'-',$title_url);
+					if($new_id==$cla_nid){ // detail
+						echo '<div class="news_title_detail">'.$aR['title'.$lang].'</div>';					
+					}else{ // related
+						echo '<div class="news_title"><a href="'.$fullsite.'/'.(int)$aR['cid'].'/'.(int)$aR['id'].'/'.$title_url.'.html">'.$aR['title'.$lang].'</a></div>';
 					}
-					if($i>0){echo ' | ';}	
-					echo '<a href="'.$href.'"><img src="'.$fullsite.'/images/'.$aR_file['file_type_icon'].'"></a>';
-					$i++;
+					echo '<div><div class="news_date">'.date2vndate($aR['create_date']).'</div><div class="news_download">';				
+					
+					$sql = " select t1.*,t2.file_type_name,t2.file_type_icon 
+							from ntk_new_files t1
+							left join ntk_file_type t2 on t1.file_type_id = t2.file_type_id
+							where t1.new_id = ".(int)$aR['id']."
+					";		
+					$result_file = $db->query($sql, true, "Query failed");
+					$i=0;				
+					while ($aR_file = $db->fetchByAssoc($result_file)) {					
+						if($aR_file['require_login']==1 && !is_login()){
+							$href ='javascript:notLogin();';
+						}else{
+							$href =$ts_config['site_url_download_file'].$aR_file['file_path'];
+						}
+						if($i>0){echo ' | ';}	
+						echo '<a href="'.$href.'"><img src="'.$fullsite.'/images/'.$aR_file['file_type_icon'].'"></a>';
+						$i++;
+					}
+					echo '</div></div><br>';					
+					echo '<div class="news_short">'.$aR['short'.$lang].'&nbsp;<a href="'.$fullsite.'/'.(int)$aR['cid'].'/'.(int)$aR['id'].'/'.$title_url.'.html">'.get_lang('text_detail').'</a></div>';
+					echo '<hr size=2 style="color:#cccccc">';
+					
+					if($new_id==$cla_nid){ // detail
+						echo '<div class="related_title">'.get_lang('text_related').'</div>';
+					}
 				}
-				echo '</div></div>'; 				
-				echo '<div class="news_short">'.$aR['short'].'</div>';
-				echo '<hr size=2 style="color:#EFEFEF">';
-				
-				if($new_id==$cla_nid){ // detail
-					echo '<div class="related_title">'.get_lang('text_related').'</div>';
-				}
-				
 			}
 		}		
 	}
 	function page_news($home=false){	
 		global $db,$fullsite,$cla_cid,$cla_nid,$cla_site,$ts_config;
+		$lang = '_'.get_language();
 		if ((int)$cla_cid>0 || $home){
-			$sql="SELECT * FROM ntk_news WHERE 1=1";
+			$sql="SELECT * FROM ntk_news WHERE  status = 1";
 			if ((int)$cla_cid>0){
 				$sql .=" and cid=".$cla_cid." ";
 			}
@@ -295,35 +300,37 @@ if($cla_nid>0){
 			$sql.="ORDER BY news_order ASC,id ASC 	LIMIT 0,10 ";
 			//echo $sql;die();
 			$result = $db->query($sql, true, "Query failed");
-			while ($aR = $db->fetchByAssoc($result)) {
-				$title_url = '';
-				$title_url = fnStrConvert($aR['title']);
-				$title_url = str_replace(" ",'-',$title_url);
-				echo '<div class="news_title">'.$aR['title'].'</div>';
-				echo '<div><div class="news_date">'.date2vndate($aR['create_date']).'</div><div class="news_download">';				
-				$sql = " select t1.*,t2.file_type_name,t2.file_type_icon 
-						from ntk_new_files t1
-						left join ntk_file_type t2 on t1.file_type_id = t2.file_type_id
-						where t1.new_id = ".(int)$aR['id']."
-				";		
-				$result_file = $db->query($sql, true, "Query failed");
-				$i=0;				
-				while ($aR_file = $db->fetchByAssoc($result_file)) {					
-					if($aR_file['require_login']==1 && !is_login()){
-						$href ='javascript:notLogin();';
-					}else{
-						$href =$ts_config['site_url_download_file'].$aR_file['file_path'];
-					}
-					if($i>0){echo ' | ';}		
-					//$urlre = $sugar_config['site_url_download_file']."/download_file_case.php?fn=".$filePath;
-					//header('location:'.$urlre.'');
-					//die();					
-					echo '<a href="'.$href.'"><img src="'.$fullsite.'/images/'.$aR_file['file_type_icon'].'"></a>';
-					$i++;
-				}		
-				echo '</div></div>'; 				
-				echo '<div class="news_short">'.$aR['short'].'&nbsp;<a href="'.$fullsite.'/'.(int)$aR['cid'].'/'.(int)$aR['id'].'/'.$title_url.'.html">'.get_lang('text_detail').'</a></div>';
-				echo '<hr size=2 style="color:#EFEFEF">';
+			while ($aR = $db->fetchByAssoc($result)) {			
+				if($aR['title'.$lang]!='' && $aR['short'.$lang]!=''){
+					$title_url = '';
+					$title_url = fnStrConvert($aR['title'.$lang]);
+					$title_url = str_replace(" ",'-',$title_url);
+					echo '<div class="news_title"><a href="'.$fullsite.'/'.(int)$aR['cid'].'/'.(int)$aR['id'].'/'.$title_url.'.html">'.$aR['title'.$lang].'</a></div>';
+					echo '<div><div class="news_date">'.date2vndate($aR['create_date']).'</div><div class="news_download">';				
+					$sql = " select t1.*,t2.file_type_name,t2.file_type_icon 
+							from ntk_new_files t1
+							left join ntk_file_type t2 on t1.file_type_id = t2.file_type_id
+							where t1.new_id = ".(int)$aR['id']."
+					";		
+					$result_file = $db->query($sql, true, "Query failed");
+					$i=0;				
+					while ($aR_file = $db->fetchByAssoc($result_file)) {					
+						if($aR_file['require_login']==1 && !is_login()){
+							$href ='javascript:notLogin();';
+						}else{
+							$href =$ts_config['site_url_download_file'].$aR_file['file_path'];
+						}
+						if($i>0){echo ' | ';}		
+						//$urlre = $sugar_config['site_url_download_file']."/download_file_case.php?fn=".$filePath;
+						//header('location:'.$urlre.'');
+						//die();					
+						echo '<a href="'.$href.'"><img src="'.$fullsite.'/images/'.$aR_file['file_type_icon'].'"></a>';
+						$i++;
+					}		
+					echo '</div></div><br>'; 				
+					echo '<div class="news_short">'.$aR['short'.$lang].'&nbsp;<a href="'.$fullsite.'/'.(int)$aR['cid'].'/'.(int)$aR['id'].'/'.$title_url.'.html">'.get_lang('text_detail').'</a></div>';
+					echo '<hr size=2 style="color:#cccccc">';
+				}
 			}
 		
 		}

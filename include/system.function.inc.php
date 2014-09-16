@@ -13,7 +13,7 @@
 
 	function page_menu($parent_id=-1,$step=0,$name,$parent_name=''){		
 		global $db,$fullsite;
-
+		$lang = "_".get_language();		
 		if ($parent_id==-1)
 			$sql="select * from ntk_menus where parent_id = -1";
 		else 
@@ -40,14 +40,14 @@
 			}
 			else{
 				if ($parent_name!='')
-					$href=' href="'.$fullsite.'/'.$aR['menu_id'].'/0/'.tag_link($aR['menu_name']).'.html" ';
+					$href=' href="'.$fullsite.'/'.$aR['menu_id'].'/0/'.tag_link($aR['menu_name'.$lang]).'.html" ';
 				
 			}
 
 
 			$org.=str_repeat(' ',$step*10).'<li><a  data-actor="'.$aR['id'].'"  title="'.$aR['note'].'" id="'.$aR['id'].'" token="'.$md5sum.'" name="'.$aR['name'].'" note="'.$aR['note'].'" status="'.$aR['status_id'].'" uid="'.$aR['detail_id'].'" uidtoken="'.$uidtoken.'" 
-			 order="'.$aR['order'].'" '.$special.' style="cursor:pointer" '.$href.'><span>'.$aR['menu_name'].'</span></a>'.chr(13);
-			$parent_name_vl = tag_link($aR['menu_name']);
+			 order="'.$aR['order'].'" '.$special.' style="cursor:pointer" '.$href.'><span>'.$aR['menu_name'.$lang].'</span></a>'.chr(13);
+			$parent_name_vl = tag_link($aR['menu_name'.$lang]);
 			$org.=page_menu($aR['menu_id'],$step,'',$parent_name_vl);
 			$org.=str_repeat(' ',$step*10).'</li>'.chr(13);
 		}
