@@ -1106,6 +1106,9 @@ color: #FFFF25;
 .news_title{
 	font-weight:bold;	
 }
+.news_title :hover{
+	color:#0073ea;
+}
 .news_date{
 	font-style:italic;
 	font-size:10px;
@@ -1138,3 +1141,4 @@ text-align:justify;
 	font-size:15px;
 	font-weight:bold;
 }
+

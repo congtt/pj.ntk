@@ -238,47 +238,58 @@ if($cla_nid>0){
 		global $db,$fullsite,$cla_cid,$cla_nid,$cla_site,$ts_config;
 		$lang = '_'.get_language();
 		if ((int)$cla_cid>0 && (int)$cla_nid>0){
-			$sql="SELECT * FROM ntk_news WHERE id =".(int)$cla_nid." and status = 1 ";
+			$sql="SELECT *,1 as stt FROM ntk_news WHERE id =".(int)$cla_nid." and status = 1 ";
 			$sql .=" union all ";
-			$sql.="SELECT * FROM ntk_news WHERE id<> ".(int)$cla_nid." and cid=".(int)$cla_cid." and status = 1  ";			
-			$sql.="ORDER BY news_order ASC,id ASC LIMIT 0,10 ";	
+			$sql.="SELECT *,2 as stt FROM ntk_news WHERE id<> ".(int)$cla_nid." and cid=".(int)$cla_cid." and status = 1  ";			
+			$sql.="ORDER BY stt,news_order ASC,id ASC LIMIT 0,10 ";	
 			$result = $db->query($sql, true, "Query failed");
+			$hasrelated = false;
 			while ($aR = $db->fetchByAssoc($result)) {
-				if($aR['title'.$lang]!='' && $aR['short'.$lang]!=''){				
-					$new_id = $aR['id'];
-					$title_url = '';
-					$title_url = fnStrConvert($aR['title'.$lang]);
-					$title_url = str_replace(" ",'-',$title_url);
+				$new_id = $aR['id'];				
+				$content = $aR['content'.$lang]!=''?$aR['content'.$lang]:$aR['short'.$lang];
+				if($aR['title'.$lang]!='' && $content!=''){
 					if($new_id==$cla_nid){ // detail
-						echo '<div class="news_title_detail">'.$aR['title'.$lang].'</div>';					
-					}else{ // related
-						echo '<div class="news_title"><a href="'.$fullsite.'/'.(int)$aR['cid'].'/'.(int)$aR['id'].'/'.$title_url.'.html">'.$aR['title'.$lang].'</a></div>';
-					}
-					echo '<div><div class="news_date">'.date2vndate($aR['create_date']).'</div><div class="news_download">';				
-					
-					$sql = " select t1.*,t2.file_type_name,t2.file_type_icon 
-							from ntk_new_files t1
-							left join ntk_file_type t2 on t1.file_type_id = t2.file_type_id
-							where t1.new_id = ".(int)$aR['id']."
-					";		
-					$result_file = $db->query($sql, true, "Query failed");
-					$i=0;				
-					while ($aR_file = $db->fetchByAssoc($result_file)) {					
-						if($aR_file['require_login']==1 && !is_login()){
-							$href ='javascript:notLogin();';
-						}else{
-							$href =$ts_config['site_url_download_file'].$aR_file['file_path'];
+						
+						$title_url = '';
+						$title_url = fnStrConvert($aR['title'.$lang]);
+						$title_url = str_replace(" ",'-',$title_url);
+						
+						echo '<div class="news_title_detail">'.$aR['title'.$lang].'</div>';				
+						
+						echo '<div><div class="news_date">'.date2vndate($aR['create_date']).'</div><div class="news_download">';				
+						
+						$sql = " select t1.*,t2.file_type_name,t2.file_type_icon 
+								from ntk_new_files t1
+								left join ntk_file_type t2 on t1.file_type_id = t2.file_type_id
+								where t1.new_id = ".(int)$aR['id']."
+						";		
+						$result_file = $db->query($sql, true, "Query failed");
+						$i=0;
+						while ($aR_file = $db->fetchByAssoc($result_file)) {					
+							if($aR_file['require_login']==1 && !is_login()){
+								$href ='javascript:notLogin();';
+							}else{
+								$href =$ts_config['site_url_download_file'].$aR_file['file_path'];
+							}
+							if($i>0){echo ' | ';}
+							echo '<a href="'.$href.'"><img src="'.$fullsite.'/images/'.$aR_file['file_type_icon'].'"></a>';
+							$i++;
 						}
-						if($i>0){echo ' | ';}	
-						echo '<a href="'.$href.'"><img src="'.$fullsite.'/images/'.$aR_file['file_type_icon'].'"></a>';
-						$i++;
-					}
-					echo '</div></div><br>';					
-					echo '<div class="news_short">'.$aR['short'.$lang].'&nbsp;<a href="'.$fullsite.'/'.(int)$aR['cid'].'/'.(int)$aR['id'].'/'.$title_url.'.html">'.get_lang('text_detail').'</a></div>';
-					echo '<hr size=2 style="color:#cccccc">';
-					
-					if($new_id==$cla_nid){ // detail
-						echo '<div class="related_title">'.get_lang('text_related').'</div>';
+						echo '</div></div><br>';					
+						echo '<div class="news_short"><div style="width:25px; float:left;">&nbsp;</div>'.$content.'</div>';
+						//echo '<hr size=2 style="color:#cccccc">';
+						
+						if($new_id==$cla_nid){ // detail
+							//echo '<div class="related_title">'.get_lang('text_related').'</div>';
+						}
+					}else{// related
+						if(!$hasrelated){				
+							echo '<hr size=2 style="color:#cccccc">';
+							echo '<div class="related_title">'.get_lang('text_related').'</div>';
+						}
+						echo '<div class="news_title"><img src="'.$fullsite.'/images/next.png"/><a href="'.$fullsite.'/'.(int)$aR['cid'].'/'.(int)$aR['id'].'/'.$title_url.'.html">'.$aR['title'.$lang].'</a> &nbsp;<span class="news_date1">('.date2vndate($aR['create_date']).')</span></div>';
+						//echo '<hr size=2 style="color:#cccccc">';
+						$hasrelated = true;
 					}
 				}
 			}
@@ -328,7 +339,7 @@ if($cla_nid>0){
 						$i++;
 					}		
 					echo '</div></div><br>'; 				
-					echo '<div class="news_short">'.$aR['short'.$lang].'&nbsp;<a href="'.$fullsite.'/'.(int)$aR['cid'].'/'.(int)$aR['id'].'/'.$title_url.'.html">'.get_lang('text_detail').'</a></div>';
+					echo '<div class="news_short"><div style="width:25px; float:left;">&nbsp;</div>'.$aR['short'.$lang].'&nbsp;<a href="'.$fullsite.'/'.(int)$aR['cid'].'/'.(int)$aR['id'].'/'.$title_url.'.html">'.get_lang('text_detail').'</a></div>';
 					echo '<hr size=2 style="color:#cccccc">';
 				}
 			}
