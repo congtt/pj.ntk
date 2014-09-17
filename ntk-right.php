@@ -1,5 +1,18 @@
 <?php
 if(!defined('TSEntry') || !TSEntry) die('Not A Valid Entry Point');
+
+
+// get adv
+$sql="SELECT * FROM ntk_adv WHERE status = 1 ";		
+$sql.=" ORDER BY `order` ASC	LIMIT 0,6 ";
+$result = $db->query($sql, true, "Query failed");
+$adv_list = array();
+while ($aR = $db->fetchByAssoc($result)) {
+	$adv_list[] = $aR;
+}
+// end get adv
+
+
 ?>
 <!-- BEGIN: RIGHT COLUMN -->
 	<div id="ja-col2">
@@ -62,12 +75,21 @@ if(!defined('TSEntry') || !TSEntry) die('Not A Valid Entry Point');
 							<div class="lft-title" style="background-color:#71baf1;">&nbsp;Quảng cáo
 							</div>
 							<br>
-							<div align="center"><img src="<?=$fullsite?>/images/adv/1.jpg" alt="" /><br />
-								<br /><img src="<?=$fullsite?>/images/adv/2.jpg" alt="" /><br />
+							<div align="center">							
+								<? 
+								foreach($adv_list as $k=>$adv){
+								?>
+									<div style="margin:5px 0px 5px 0px; border-bottom:#ccc solid 1px;">
+										<img width="187px" height="187px" src="<?=$fullsite?>/images/adv/<? echo $adv['adv_image'];?>" alt="<? echo $adv['adv_name'];?>" />
+									</div>
+								<?
+								}
+								?>
+								<!--<br /><img src="<?=$fullsite?>/images/adv/2.jpg" alt="" /><br />
 								<br /><img src="<?=$fullsite?>/images/adv/3.jpg" alt="" /><br />
 								<br /><img src="<?=$fullsite?>/images/adv/4.jpg" alt="" /><br />
 								<br /><img src="<?=$fullsite?>/images/adv/5.jpg" alt="" /><br />
-								<br />
+								<br />-->
 							</div>					
 						</div>
 					</div>

@@ -246,8 +246,9 @@ if($cla_nid>0){
 			$hasrelated = false;
 			while ($aR = $db->fetchByAssoc($result)) {
 				$new_id = $aR['id'];				
-				$content = $aR['content'.$lang]!=''?$aR['content'.$lang]:$aR['short'.$lang];
-				if($aR['title'.$lang]!='' && $content!=''){
+				$content = $aR['content'.$lang];
+				$short = $aR['short'.$lang];
+				if($aR['title'.$lang]!='' && $short!=''){
 					if($new_id==$cla_nid){ // detail
 						
 						$title_url = '';
@@ -276,18 +277,18 @@ if($cla_nid>0){
 							$i++;
 						}
 						echo '</div></div><br>';					
+						echo '<div class="news_short"><div style="width:25px; float:left;">&nbsp;</div><b>'.$short.'</b></div><br>';
 						echo '<div class="news_short"><div style="width:25px; float:left;">&nbsp;</div>'.$content.'</div>';
-						//echo '<hr size=2 style="color:#cccccc">';
-						
+						//echo '<hr size=2 style="color:#cccccc">';						
 						if($new_id==$cla_nid){ // detail
 							//echo '<div class="related_title">'.get_lang('text_related').'</div>';
 						}
 					}else{// related
-						if(!$hasrelated){				
+						if(!$hasrelated){			
 							echo '<hr size=2 style="color:#cccccc">';
-							echo '<div class="related_title">'.get_lang('text_related').'</div>';
+							echo '<div style="clear:both;" class="related_title">'.get_lang('text_related').'</div>';
 						}
-						echo '<div class="news_title"><img src="'.$fullsite.'/images/next.png"/><a href="'.$fullsite.'/'.(int)$aR['cid'].'/'.(int)$aR['id'].'/'.$title_url.'.html">'.$aR['title'.$lang].'</a> &nbsp;<span class="news_date1">('.date2vndate($aR['create_date']).')</span></div>';
+						echo '<div class="" style="margin-left:15px;font-size:11px;"><img src="'.$fullsite.'/images/next.png"/><a href="'.$fullsite.'/'.(int)$aR['cid'].'/'.(int)$aR['id'].'/'.$title_url.'.html">'.$aR['title'.$lang].'</a> &nbsp;<span class="news_date1">('.date2vndate($aR['create_date']).')</span></div>';
 						//echo '<hr size=2 style="color:#cccccc">';
 						$hasrelated = true;
 					}
