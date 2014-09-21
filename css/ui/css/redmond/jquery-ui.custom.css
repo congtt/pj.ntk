@@ -131,6 +131,11 @@ input, select, textarea, button, .button,.file {
 	line-height:25px
 }
 
+.title_1{
+	color:#537AA1;
+	font-size:15px;
+	font-weight:bold;
+}
 /*begin_table*/	
 	.table_info tr th{
 		background:#E1EFFB;
@@ -171,3 +176,17 @@ h1{
 	font-size:20px;
 	text-transform:uppercase;
 }
+
+
+.icon_status_fail{
+	width:16px;
+	height:16px;	
+	background: url('images/failed_16x16.png') no-repeat scroll right center transparent !important;
+	
+}
+.icon_status_success{
+	width:16px;
+	height:16px;
+	background: url('images/success_16x16.png') no-repeat scroll right center transparent !important;
+}
+

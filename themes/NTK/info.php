@@ -1,28 +1,24 @@
 <script>
 	function getHospital(){
 		var province_id = $( "#province_id option:selected" ).val();
+		var hospital = $('#hospital_id');
+		$("#hospital_id option[value!='']").remove();
 		if(province_id>0){
 			$.ajax({
 					  type: "POST",
-					  url: "index.php?module=SSToolReport&action=Ajax&sugar_body_only=true",
-					  data: "tp=get_total_record_export&from_date="+from_date+"&to_date="+to_date+"&type_id="+type_id+"&group_id="+group_id+"&token="+token,
-					  success: function(msg){
-							 //alert(msg);
-							 var js_obj = eval('(' + msg + ')');                      
-							 if(js_obj.length>0)              
-							 {    
-								  var total = js_obj[0].total;
-								  var input = js_obj[0].input;
-								  //alert(total);
-								  //alert(input);
-								  $('#form1 #total_record').val(total);                             
-								  $('#export_area #html_page_export').html(input);
-								  //var val = js_obj[i].record_id;
-								  //var text = js_obj[i].item;
-								  //var tmp=' ';
-								  //loccity.append($('<option  '+tmp+'></option>').val(val).html(text))
-							 }         
-								 
+					  url: "<? echo $fullsite?>/-100/0/thong-tin-a.html",
+					  data: "tp=get_hospital&province_id="+province_id+"&token=",
+					  success: function(msg){							 
+						 var js_obj = eval('(' + msg + ')');                      
+						 if(js_obj.length>0)              
+						 {  
+							for (i=0;i<js_obj.length;i++){
+								var val = js_obj[i].id;
+								var text = js_obj[i].name;
+								var tmp=' ';
+								hospital.append($('<option  '+tmp+'></option>').val(val).html(text))
+							}
+						 }  
 					  }
 			});
 		}
@@ -31,7 +27,7 @@
 <h1><?php echo get_lang('info_title');?></h1>
 
 <?php if($update_success==true){ ?>
-	<div style="text-align:center;color:#0000FF;margin-button:10px;"><?php echo get_lang('update_success');?></div>
+	<div style="text-align:center;color:#0000FF;margin-button:10px;font-size:15px;"><?php echo get_lang('update_success');?></div>
 <?}?>
 
 <form id="frm_register" name="frm_register" method="POST" action="<?php echo $fullsite?>/0/0/thong-tin-thanh-vien.html">
@@ -94,7 +90,7 @@
 						foreach($department_list as $k=>$va){							
 							if($user_info['department_id']==$va['id']){
 							?>
-								<option selected="selected" value="<? echo $va['id'];?>"><? echo $va['name'] ;?></option>
+								<option selected="selected" value="<? echo $va['id'];?>"><? echo $va['name'.] ;?></option>
 							<?
 							}else{ ?>
 								<option value="<? echo $va['id'];?>"><? echo $va['name']; ?></option>

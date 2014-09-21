@@ -2,6 +2,18 @@
 	$__lang= array(
 		'site_title' =>'NEUROSURGICAL SOCIETY OF VIET NAM'
 		
+		,'address'=>'Address'
+		,'tel'=>'Tel'
+		,'email'=>'Email'
+		
+		
+		,'contact_title'=>'CONTACT'
+		,'contact_address'=>'201C Nguyen Chi Thanh - Ward 13 - District 5 - HCM City'
+		
+		,'footer_keyword_name'=>'Keywork'
+		,'footer_keyword_value'=>'Ngoai than kinh,  Phau thuat than kinh, Ngoại thần kinh, Phẫu thuật thần kinh'
+		
+		
 		,'text_detail'	=>'view detail'
 		,'text_related'	=>'News Related'
 		

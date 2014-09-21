@@ -1,8 +1,35 @@
 
+<script>
+	function getHospital(){
+		var province_id = $( "#province_id option:selected" ).val();
+		var hospital = $('#hospital_id');
+		$("#hospital_id option[value!='']").remove();
+		if(province_id>0){
+			$.ajax({
+					  type: "POST",
+					  url: "<? echo $fullsite?>/-100/0/thong-tin-a.html",
+					  data: "tp=get_hospital&province_id="+province_id+"&token=",
+					  success: function(msg){							 
+						 var js_obj = eval('(' + msg + ')');                      
+						 if(js_obj.length>0)              
+						 {  
+							for (i=0;i<js_obj.length;i++){
+								var val = js_obj[i].id;
+								var text = js_obj[i].name;
+								var tmp=' ';
+								hospital.append($('<option  '+tmp+'></option>').val(val).html(text))
+							}
+						 }  
+					  }
+			});
+		}
+	}
+</script>
+
 <h1><?php echo get_lang('register_title');?></h1>
 
 <?php  if($register_success==true){ ?>
-	<div style="text-align:center;color:#0000FF;"><?php echo get_lang('register_success');?></div>
+	<div style="text-align:center;color:#0000FF;font-size:15px;"><?php echo get_lang('register_success');?></div>
 <?	
 }else{
 ?>
@@ -28,7 +55,7 @@
 		<tr>
 			<th><?php echo get_lang('register_province');?></td>
 			<td>
-				<select name="province_id" id="province_id">
+				<select onchange="getHospital();"  name="province_id" id="province_id">
 					<option value="">-- <?php echo get_lang('register_province_select');?> --</option>
 					<?php
 						foreach($province_list as $k=>$va){

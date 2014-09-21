@@ -25,7 +25,7 @@ require_once('include/function.inc.php');
 
 $cla_nid = __post2("nid");
 $cla_site = __post2("site");
-$cla_cid = (int)__post2("cid");
+$cla_cid = __post2("cid");
 
 require_once('XTemplate/xtpl.php');
 $arParam = explode('/',$_SERVER["REQUEST_URI"]);

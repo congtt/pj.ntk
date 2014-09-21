@@ -1,0 +1,76 @@
+<!-- BEGIN:main -->
+		<link rel="stylesheet" href="css/do.css" type="text/css">
+		<link rel="stylesheet" href="css/ui.achtung-min.css" type="text/css">
+		<script type="text/javascript" language="javascript" src="css/ui.achtung-min.js"></script>
+		
+		<script type="text/javascript" src="css/fbc/fbc.js"></script>
+		<link rel="stylesheet" href="css/fbc/fbc.css" type="text/css">
+		<script type="text/javascript" src="css/site.js"></script>
+		<div id="page-wrapper">		
+				<div id="main-wrapper">
+					{slide_bar}
+					<div id="main-content">
+					<!--Main-->
+					<div id="tabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
+							{tabs}		
+								
+								<form name="form1" id="form1" method="post">
+
+								<div id="main_tabs" class="ui-tabs-panel ui-widget-content ui-corner-bottom ">
+										<input type="hidden" name="delId" id="delId"         value="0" />
+										<input type="hidden" name="delToken" id="delToken"         value="0" />
+										<input type="hidden" name="captcha" id="captcha"  value="" />	
+										<input type="hidden" name="no_body" id="no_body"  value="false" />	
+										<input type="hidden" name="page"  id="page"    value="1" />
+										<input type="hidden" name="mode_inpvl" id="mode_inpvl"         value="SEARCH" />
+										<input type="hidden" name="module"         value="Home" />
+										<input type="hidden" name="action" id="action"         value="List" />
+
+										   <table width="100%" border="0" style="line-height:20px;display:1none" id="main_panel" name="main_panel">
+											  																						
+											  							
+											  <tr>
+												<td colspan="3" style="text-align:center;color:#296D9C;font-weight:bold; height:40px;vertical-align:middle" class="mtitle"><b>{title}</b> </td>
+												</tr>
+											  <tr>
+												<td colspan="3">{_error_}</td>
+											  </tr>
+											  </table>
+											  <div style="width:99%;overflow:auto">
+											  <table width="100%" border="0" style="line-height:20px">
+											  <tr>
+												<td >{gridview}	</td>
+												</tr>
+											  
+											  <tr>
+												<td height="80">&nbsp;</td>
+												</tr>
+										</table>
+											</div>
+
+
+
+
+
+									
+								</form>
+
+								</div>			
+							</div>
+
+
+
+							<div id="dialog-form" title="{dialog_title}">
+								<p class="validateTips"></p>
+								<div id="preview_info2" name="preview_info2" >		
+								
+								</div>	
+							</div>
+						
+
+					<!--End Main-->
+					</div>
+					<div class="clearfix"></div>
+				</div>	
+			</div>
+<!-- END:main -->

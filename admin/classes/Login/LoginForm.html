@@ -1,0 +1,106 @@
+<!-- BEGIN:main -->
+<link rel="stylesheet" href="css/do.css" type="text/css">
+
+<script type="text/javascript" src="css/jquery.md5.js"></script>	
+<script type="text/javascript" language="javascript" src="css/ui.achtung-min.js"></script>
+<LINK rel=stylesheet type=text/css href="css/keyboard/keyboard.css">
+<SCRIPT type=text/javascript charset=UTF-8 src="css/keyboard/keyboard.js"></SCRIPT>
+<script>
+	$(function() {
+		$('#password').val('');
+
+		var browser_support = false;
+		if ($.browser.safari ||$.browser.mozilla || $.browser.msie)
+		{
+					
+						browser_support = false;
+						if($.browser.safari || $.browser.mozilla || parseInt($.browser.version)>=8 )
+						{
+							browser_support = true
+						}
+		}
+		if(!browser_support){
+					$('.browser_support').html('This site looks good on Firefox, Chrome, IE version 8');
+					$('.hide_class').hide();
+		}			
+    });
+	
+
+	function login_submit(num){		
+		var frm = document.frmlogin;
+		var _uid = $('#username').val();
+		var _pwd = $('#password').val();
+		var _kcode = $('#scode').val();	
+		if (num==1)
+		{
+			if(_pwd.length>0 && _pwd.length<32){
+				$('#password').val($.md5(_pwd))
+			}
+		
+			btn_submit('#frmlogin')
+		}	
+		
+	}
+	
+	
+
+	
+</script>
+<div class="browser_support"></div>
+<div style="z-index: 1002; outline: 0px none; height: auto; width: 400px; " class="ui-dialog ui-widget ui-widget-content ui-corner-all  ui-draggable  hide_class" tabindex="-1" role="dialog" aria-labelledby="ui-dialog-title-login" id="FLogin">
+			<div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix" unselectable="on" style="-moz-user-select: none;">
+			<span class="ui-dialog-title" id="ui-dialog-title-login" unselectable="on" style="-moz-user-select: none;">Login</span>
+			
+			</div>
+			
+			<div id="login" class="ui-dialog-content ui-widget-content" height=250 style="height: 250px; min-height: 48px; width: auto;">
+								<form id="frmlogin" name="frmlogin" class="forms" method="post" 
+								action="do?module=Login&action=signin">
+								<div align=center style="display:none"><img src="images/logo.png"></div>
+								<ul>
+									<li>
+										<label class="desc" for="email">
+											Username  <span class="required">*</span>
+										</label>
+										<div>
+											<input type="text" autocomplete="off" id="username" name="username" class="field text full keyboardInput" value="" maxlength="255" tabindex="1" rel="{Require:'R',Alert:'Please enter Username'}" style="width:80%">
+										</div>
+									</li>
+									<li>
+										<label class="desc" for="password">
+											Password <span class="required">*</span>
+										</label>
+										<div>
+											<input type="password" autocomplete="off" id="password" name="password" class="field text full keyboardInput" value="" maxlength="255" tabindex="1" rel="{Require:'R',Alert:'Please enter Password'}" style="width:80%">
+										</div>
+									</li>	
+									<li style="display:{display}none"><div>
+																	<label class="desc" for="password">
+																		Code:
+																	</label>
+																	
+																		<input type="text" autocomplete="off" id="scode" name="scode" class="" value="" maxlength="5" tabindex="1" style="height:49px;font-size:38px;width:168px;float:left;text-align:center;letter-spacing:8px">
+																		<img src="captcha/captcha.php?code={keycode}" style="border-color:#CCCCCC;border-style:solid ;border-width:1px;;vertical-align: middle">
+																	</div>
+									</li>																
+								</ul>
+								<div style="color:red">{error}</div>
+								<input type=hidden value="true" id="no_body" name="no_body">
+								<input type=hidden value="{tourl}" id="tourl" name="tourl">
+
+								
+								
+							</form>
+						
+			</div>
+			<div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix  hide_class">
+				
+				<button type="button" class="ui-state-default ui-corner-all  hide_class" onclick="login_submit(1);" id="login_button">Login</button>
+				
+			</div>
+</div>
+
+
+
+
+<!-- END:main -->

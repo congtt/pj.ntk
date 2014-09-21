@@ -2,9 +2,21 @@
 	$__lang = array(
 		'site_title' =>'HỘI PHẪU THUẬT THẦN KINH VIỆT NAM'
 		
+		,'address'=>'Địa chỉ'		
+		,'tel'=>'Điên thoại'
+		,'email'=>'Email'
+		
+		,'contact_title'=>'LIÊN HỆ'
+		,'contact_address'=>'201C Nguyễn Chí Thanh - Phường 13 - Quận 5 - TP HCM'		
+		
+		
+		,'footer_keyword_name'=>'Từ khóa đề nghị'
+		,'footer_keyword_value'=>'Ngoai than kinh,  Phau thuat than kinh, Ngoại thần kinh, Phẫu thuật thần kinh'
+		
 		,'text_detail'	=>'Xem chi tiết'
 		,'text_related'	=>'Tin tức liên quan'
 		,'hello'	=>'Xin chào'
+		
 		,'login_title'=>'ĐĂNG NHẬP'
 		,'logout_link'=>'Đăng xuất'
 		,'login_text_email'=>'Email'
@@ -31,5 +43,8 @@
 		,'update_success'=>'Cập nhật thông tin thành công'
 		,'info_btnupdate'=>'CẬP NHẬT THÔNG TIN'
 		,'info_title'=>'THÔNG TIN THÀNH VIÊN'
+		
+		
+		
 	);
 ?>
