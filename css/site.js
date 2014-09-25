@@ -12,7 +12,7 @@
 					var cur_stat = $(this).attr('checked');
 					$('#aj_result input[id*=chk_]').attr('checked', (cur_stat)? 'checked' : '');
 				}); 
-				/*
+				
 				$( "#dialog:ui-dialog" ).dialog( "destroy" );	
 				$( "#dialog-form" ).dialog({
 					autoOpen: false,
@@ -36,7 +36,7 @@
 					close: function() {
 						
 					}
-				});	*/
+				});	
 			
 			});
 
@@ -51,7 +51,7 @@
 
 			function dg_add(module,action,Id,chkSum,title,width,height){
 				//alert("?module="+module+"&action="+action+"&formaction=ajax&no_body=true");
-				var preload = message('Processing files. This may take several minutes.',100000);	
+				//var preload = message('Processing files. This may take several minutes.',100000);	
 					$.ajax({
 					   type: "POST",
 					   url: "?module="+module+"&action="+action+"&formaction=ajax&no_body=true",
@@ -66,7 +66,7 @@
 							}
 
 							$( "#dialog-form" ).dialog( "open" );					
-							preload.achtung('close');
+							//preload.achtung('close');
 							if ($('#formmode').val()=='VIEW')
 							{
 								$(":button:contains('Lưu thông tin')").hide(); 

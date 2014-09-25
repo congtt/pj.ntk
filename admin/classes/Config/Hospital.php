@@ -6,13 +6,13 @@ class Config_Ext  extends Config
 {
 	public $arrHeader=array();
 	public $arrSortHeader=array();	
-
+	
 	function execute(){
 		$_Title = 'Quản lý Bệnh viện';
 		$_msg = null;
 		$captcha = new SimpleCaptcha();
 		$formmode=$_POST["formmode"];
-		$mode_inpvl = __post('mode_inpvl');
+		$mode_inpvl = __post('mode_inpvl');		
 		$captchatxt = __post('captcha');
 		$captchaForm = __post('captchaForm');
 		$idchk=$_POST["chk"];
@@ -20,25 +20,14 @@ class Config_Ext  extends Config
 		$flagCaptchaForm =  $captcha->CaptchaValidate($captchaForm);
 		$id = __post('Id');
 		/*===================================*/
-
-		if ($formmode!=''){			
-			/*Post data*/
-			$absent_list_code=__post("absent_list_code");
-			$company_id=__post("company_id");
-			$absent_list_name=__post("absent_list_name");
-			$status=__post("status");
-			$max_day=__post("max_day");
-			$note=__post("note");
-
-			/*Post data*/
-			/****** Add (2) ***********************************/
-			if ($formmode=='AbsentListAdd'  && $this->acl_per(2)  && $flagCaptchaForm==true){				
-				$_msg  = $this->form_add(0,$absent_list_code,$company_id,$absent_list_name,$status,$max_day,$note);
-			}
-			/****** Edit (4) ***********************************/
-			else if ($formmode=='AbsentListEdit'  && $this->acl_per(4) && $flagCaptchaForm==true){
-				$_msg  = $this->form_add($id,$absent_list_code,$company_id,$absent_list_name,$status,$max_day,$note);
-			} 
+		if ($formmode!=''){
+			$name=__post("name");
+			$province_id=__post("province_id");
+			$status=(int)__post("status");
+			$order=(int)__post("order");
+			
+			$_msg  = $this->form_add($id,$province_id,$name,$status,$order);
+			
 			if (!isset($_msg ))
 			{
 				$_msg['result'] = -20;
@@ -51,25 +40,22 @@ class Config_Ext  extends Config
 		$list_form->assign('tabs'	,  	$this->set_tabs());
 		$list_form->assign('dialog_title','thành viên');
 		$CaptchaText = $captcha->CreateText();
-		/****** Delete (8) - Export (16) ***********************************/
-		if ($this->acl_per(8)){
-			$arr_attr_btnmdelete = array('style'=>'','onclick'=>'sbm_form(8,\''.$CaptchaText.'\')');
-			$inp_btnmdelete = addInput2('button','btndelete',$btnmdelete,$arr_attr_btnmdelete,$list_form,'Xóa');	
-			if ($mode_inpvl=='DELETE' && $flagCaptcha==true){
-				$idList = '0';
-				foreach($idchk as $ind=>$delvl){
-					$idArr = explode('|',$delvl);
-					if ($idArr[1]==$this->md5sum($this->prefix['delete'].$idArr[0])){
-						$idList.=','.$idArr[0];
-					}
-				
+		/****** Delete (8) - Export (16) ***********************************/		
+		$arr_attr_btnmdelete = array('style'=>'','onclick'=>'sbm_form(8,\''.$CaptchaText.'\')');
+		$inp_btnmdelete = addInput2('button','btndelete',$btnmdelete,$arr_attr_btnmdelete,$list_form,'Xóa');	
+		if ($mode_inpvl=='DELETE'){
+			$idList = '0';
+			foreach($idchk as $ind=>$delvl){
+				$idArr = explode('|',$delvl);
+				if ($idArr[1]==$this->md5sum($this->prefix['delete'].$idArr[0])){
+					$idList.=','.$idArr[0];
 				}
-				if ($idList!='0')
-				{
-					$_msg = $this->form_delete($idList);					
-				}
+			
 			}
-
+			if ($idList!='0')
+			{
+				$_msg = $this->form_delete($idList);					
+			}
 		}
 		/****** Delete (8) - Export (16) ***********************************/
 
@@ -77,28 +63,33 @@ class Config_Ext  extends Config
 			$arr_attr_btnexport = array('style'=>'','onclick'=>'sbm_form(16,\''.$CaptchaText.'\')');
 			$inp_btnexport = addInput2('button','btnexport',$btnexport,$arr_attr_btnexport,$list_form,'Xuất Excel');
 		}
-
 		/*************************************
 		*****************/
 		$keyword=__post("keyword");
 		$selectkeyword=__post("selectkeyword");
 
-
 		$Attr_keyword = array('rel1'=>'{Require:\'R\',Alert:\'Vui lòng nhập Keyword  \'}','style'=>'');
 		$txt_keyword = addInput('text','keyword',$keyword,$Attr_keyword,$list_form);
 		
-		//$infosk[0]=array('absent_list_name'=>'Loại phép');
-		//$vlkey = array_keys($infosk[$selectkeyword]);
+		$infosk[0]=array('t1.name'=>'Tên bệnh viện');
+		$vlkey = array_keys($infosk[$selectkeyword]);
 		
 		//list($vlkey, $vlval) = each();
-		$Attr_selectkeyword = array('rel1'=>'{Require:\'R\',Alert:\'Vui lòng nhập Status  \'}','style'=>'');
-		$txt_selectkeyword = addSelectList5('selectkeyword',$infosk,'-- Chọn -- ',$Attr_selectkeyword,$list_form,$selectkeyword);
+		$Attr_selectkeyword = array('style'=>'');
+		$txt_selectkeyword = addSelectList5('selectkeyword',$infosk,NULL,$Attr_selectkeyword,$list_form,$selectkeyword);
 		
 		if ($keyword!='' && $vlkey[0]!='')
-		$filter = ' and t1.'.$vlkey[0]." like ''%$keyword%''";
+			$filter = ' and '.$vlkey[0]." like N'%$keyword%'";		
+		$s_province_id = (int)__post('s_province_id');
+		$s_status = __post('s_status');
 		
-		//$ref = new RefModule($this->db);
-		//$conpany_list = $ref->ref_company();		
+		if($s_province_id>0){
+			$filter = ' and t1.province_id = '.$s_province_id;		
+		}
+	
+		if($s_status!=""){
+			$filter = ' and t1.status = '.(int)$s_status;
+		}	
 		//-----------------------------------------//
 		$gridview='';
 		$gridview.= $this->PageHeader();
@@ -110,9 +101,14 @@ class Config_Ext  extends Config
 		$gridview.=$this->setFooter();
 		$gridview.=$this->setPaging();	
 		
-
-
-
+		$arr_info_province_id = $this->getListProvince();
+		$Attr_province_id = array('style'=>'');
+		$txt_province_id = addSelectList2('s_province_id',$arr_info_province_id,"-- Tất cả --",$Attr_province_id,$list_form,$s_province_id);
+		
+		$arr_info_status = array(1=>'Active',0=>'InActive');
+		$Attr_status = array('style'=>'');
+		$txt_status = addSelectList2('s_status',$arr_info_status,"-- Tất cả --",$Attr_status,$list_form,$s_status);
+			
 		if($mode_inpvl ==='EXPORT'  && $this->acl_per(16))
 			{			
 				$this->ExportToExcel(fnStrConvert($_Title),strip_tags($exportGrid,'<table><tr><td><th>'));		
@@ -132,10 +128,7 @@ class Config_Ext  extends Config
 
 	function template(){
 		echo $this->html;
-	}		
-	/*
-		function setFooter(){$_Footer='<tr><td colspan=100><img src="images/arrow_ltr.png"> <input	type=checkbox name="check_all" id="check_all"></td></tr></table></div></div>';return $_Footer;}	
-	*/
+	}			
 	function define(){
 		$this->dont_check_user = false;	
 	}
@@ -143,7 +136,7 @@ class Config_Ext  extends Config
 	function rmenu(){
 		//1: view - 2:add - 4:edit - 8:delete - 16:export				
 		$rmenu = '<li><a href="?module=Config&action=AbsentList">Danh sách </a></li>' ;
-		$rmenu_add= '<li><a href="javascript:dg_add(\'Config\',\'AbsentListAdd\',0,\'\',\'Thêm mới\',600,400)">Tạo mới</a></li>' ;
+		$rmenu_add= '<li><a href="javascript:dg_add(\'Config\',\'HospitalAdd\',0,\'\',\'Thêm mới\',400,300)">Tạo mới</a></li>' ;
 		if ($this->acl_per(2))
 			$rmenu.=$rmenu_add;	
 		$rmenu.= $this->set_leftmenu();
@@ -158,10 +151,9 @@ class Config_Ext  extends Config
 
 	function setHeader(){		
 		if ($this->pagemode=='EXPORT' || !$this->acl_per(16)){
-			$this->arrHeader = array('STT'=>'STT','id'=>'ID','name'=>'Tên','status'=>'Trạng thái','order'=>'Thứ tự');
-		}
-		else{
-			$this->arrHeader = array('STT'=>'<input type=checkbox id=check_all name=check_all>','id'=>'ID','name'=>'Tên','status'=>'Trạng thái','order'=>'Thứ tự');
+			$this->arrHeader = array('STT'=>'STT','id'=>'ID','province_name'=>'Tỉnh thành','name'=>'Tên bệnh viện','status'=>'Trạng thái','order'=>'Thứ tự');
+		}else{
+			$this->arrHeader = array('STT'=>'<input type=checkbox id=check_all name=check_all>','id'=>'ID','province_name'=>'Tỉnh thành','name'=>'Tên bệnh viện','status'=>'Trạng thái','order'=>'Thứ tự');
 		}
 		$this->arrSortHeader = array('0');
 		$SortImage[$_POST['_SortOrderBy']]='&nbsp;<img src="images/order_'.$_POST['_OrderDirection'].'.gif" alt="'.$_POST['_OrderDirection'].'" align="absmiddle" height=7 width=7>';
@@ -208,11 +200,10 @@ class Config_Ext  extends Config
 			else
 			{
 				$_OrderBy = $this->arrSortHeader[$_SortOrderBy];			
-			}
-			//echo $_OrderBy ." - ".$_OrderDirection."<hr>";
+			}		
 			// ===== order =============/				
 			
-			$_Where=" and 1=1  and status in (0,1) ".$filter;
+			$_Where=" and 1=1  and status <> -13 ".$filter;
 			
 			try
 			{	
@@ -220,17 +211,27 @@ class Config_Ext  extends Config
 				$i=0;
 				$start = ($this->PageIndex-1)*$PageSize;
 				if ($mode_inpvl=='EXPORT')	
-					$sSQL = "select * from ntk_hospital where 1=1 ".$_Where." order by ".$_OrderBy." ".$_OrderDirection;					
-				else
-					$sSQL = "select * from ntk_hospital where 1=1 ".$_Where." order by ".$_OrderBy." ".$_OrderDirection. " limit ".$start.",".$PageSize;					
+					$sSQL = "select t1.*,t2.name as province_name from ntk_hospital  t1 
+					left join ntk_province t2  on t1.province_id = t2.id
+					where 1=1 ".$_Where." order by ".$_OrderBy." ".$_OrderDirection;					
+				else{
+					$sSQLTotal = "select count(t1.id) as TotalRecord from ntk_hospital t1
+					left join ntk_province t2 on t1.province_id = t2.id
+					where 1=1 ".$_Where;
+					$sSQL = "select t1.*,t2.name as province_name 
+					from ntk_hospital t1 
+					left join ntk_province t2  on t1.province_id = t2.id
+					where 1=1 ".$_Where." order by ".$_OrderBy." ".$_OrderDirection. " limit ".$start.",".$PageSize;					
+				}
 				//echo($sSQL);
-				//$this->ws_debug($sSQL,false);
-				$result = $this->db->query($sSQL, true, "Query failed");					
+				$result = $this->db->query($sSQL, true, "Query failed");	
+				$resultTotal = $this->db->query($sSQLTotal, true, "Query failed");	
+				$aRTotal = $this->db->fetchByAssoc($resultTotal);			
 				$tooltip = '';
 				while ($aR = $this->db->fetchByAssoc($result))
 				{ 
 					if ($i==0){
-						$this->TotalRecord = 100;//$aR['TotalRecord'];
+						$this->TotalRecord = $aRTotal['TotalRecord'];
 						$this->TotalPage = intval($this->TotalRecord/$PageSize + ($this->TotalRecord%$PageSize > 0?1:0));						
 					}
 					$_RowNum = $aR['RowNum'];
@@ -246,7 +247,7 @@ class Config_Ext  extends Config
 						$inp_del.= '	<input  type=checkbox value="'.$id.'|'.$tokenDelete.'" name="chk[]" id="chk_'.$STT.'">';
 						
 						$tokenEdit = $this->md5sum($this->prefix['edit'].$id);
-						$inp_del.= '	<img src="../images/edit2.png" width=16 height=16 style="cursor:pointer;margin-right:5px" onclick="dg_add(\'Config\',\'AbsentListAdd\','.$id.',\''.$tokenEdit.'\',\'Cập nhật thông tin\',600,400)">';
+						$inp_del.= '	<img src="../images/edit2.png" width=16 height=16 style="cursor:pointer;margin-right:5px" onclick="dg_add(\'Config\',\'HospitalAdd\','.$id.',\''.$tokenEdit.'\',\'Cập nhật thông tin\',400,300)">';
 					
 						$inp_del.= '<img src="../images/delete.png" width=16 height=16  style="cursor:pointer;" onclick="dg_del('.$id.',\''.$tokenDelete.'\','.$STT.',\''.$CaptchaText.'\')">';
 						
@@ -281,18 +282,19 @@ class Config_Ext  extends Config
 			return $list;							
 		}
 	function form_delete($id){
-		$sSQL="exec sys_table_inactive 'ws_rf_absent_list','absent_list_id',' in(".anti_post($id).") ','status','-13' ";
-		//$sSQL="exec web_..._del '".anti_post($id)."'";
+		$sSQL="update ntk_hospital set status = -13 where id in(".anti_post($id).") ";	
 		$result = $this->db->query($sSQL, true, "Query failed");	
 		$aR = $this->db->fetchByAssoc($result);
-		return $aR;
+		return 1;
 	}
-	function form_add($id,$absent_list_code,$company_id,$absent_list_name,$status,$max_day,$note){
-		$sSQL="exec web_rf_absent_list_add $id , '$absent_list_code', $company_id, N'$absent_list_name', $status, $max_day, N'$note','".get_username()."' ";
-		//echo $sSQL;
+	function form_add($id,$province_id,$name,$status,$order){
+		if($id>0){
+			$sSQL=" update ntk_hospital set name='".$name."', `status` = ".$status.", `order` = ".$order.", province_id = ".$province_id." where id = ".$id;
+		}else{
+			$sSQL = "insert into ntk_hospital (province_id,name,`status`,`order`) values(".$province_id.",'".$name."',".$status.",".$order.") ";
+		}		
 		$result = $this->db->query($sSQL, true, "Query failed");	
-		$aR = $this->db->fetchByAssoc($result);
-		return $aR;
+		return 1;
 	}
 }	
 
