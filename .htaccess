@@ -17,7 +17,8 @@ ErrorDocument 403 http://127.0.0.1/pj.hh/do?module=Error&err=403
 	RewriteRule ^cfg/([a-zA-Z0-9=._-]+).html$ cfg.php?pr=$0&action=$1&site=$2  [L,QSA]
 	#RewriteRule ^admin admin/index.php  [L,QSA]	
 	RewriteRule ^admin admin.php  [L,QSA]
-	RewriteRule ^([a-zA-Z0-9=._-]+)/([a-zA-Z0-9=._-]+)/([a-zA-Z0-9=._-]+).html$ ntk.php?pr=$0&cid=$1&nid=$2&site=$3  [L,QSA]	
+	RewriteRule ^diendan forum.php  [L,QSA]
+	RewriteRule ^([a-zA-Z0-9=._\)\(-]+)/([a-zA-Z0-9=._\)\(-]+)/([a-zA-Z0-9=._\)\(-]+).html$ ntk.php?pr=$0&cid=$1&nid=$2&site=$3  [L,QSA]	
 	RewriteRule ^(.+)\.css$  rewrite.php?file=$1.css [L,NC,QSA]
 	RewriteRule ^(.+)\.js$  rewrite.php?file=$1.js [L,NC,QSA]
 	

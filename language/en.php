@@ -18,6 +18,7 @@
 		,'text_related'	=>'News Related'
 		
 		,'hello'	=>'Welcome'
+		,'login_text_close'=>'Close'
 		,'login_title'=>'LOGIN'
 		,'logout_link'=>'Logout'
 		,'login_text_email'=>'Email'

@@ -17,6 +17,7 @@
 		,'text_related'	=>'Tin tức liên quan'
 		,'hello'	=>'Xin chào'
 		
+		,'login_text_close'=>'Đóng'
 		,'login_title'=>'ĐĂNG NHẬP'
 		,'logout_link'=>'Đăng xuất'
 		,'login_text_email'=>'Email'

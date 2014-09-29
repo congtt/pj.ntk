@@ -30,7 +30,7 @@ while ($aR = $db->fetchByAssoc($result)) {
 					<?
 					}else{?>					
 					<!--begin-login-->
-					<div>
+					<!--<div>
 						<div>
 							<div class="lft-title" style="background-color:#71baf1;">&nbsp;<? echo get_lang('login_title'); ?>
 							</div>
@@ -59,14 +59,12 @@ while ($aR = $db->fetchByAssoc($result)) {
 											<td>
 												<span style=""><? echo get_lang('login_text_register_here'); ?> <a href="<?=$fullsite?>/0/0/dang-ky-thanh-vien.html"><? echo get_lang('login_text_register_here_here'); ?></a></span>
 											</td>
-										</tr>
-										
+										</tr>										
 									</table>
 								</div>
 							</form>
 						</div>
-					</div>
-					<!--end-login-->
+					</div>-->
 					<?
 					}					
 					?>
