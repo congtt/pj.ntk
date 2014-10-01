@@ -45,6 +45,13 @@
 		,'update_success'=>'Update Success'
 		,'info_btnupdate'=>'UPDATE'
 		,'info_title'=>'MEMBER INFORMATION'
+		
+		// begin forum
+		,'forum_posted_by'=>'Posted by'
+		,'forum_text_related'=>'Posts Realted'
+		,'text_home_forum'=>'Home forum'
+		
+		
 	);
 	
 ?>

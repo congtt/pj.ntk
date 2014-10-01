@@ -46,6 +46,11 @@
 		,'info_title'=>'THÔNG TIN THÀNH VIÊN'
 		
 		
+		// begin forum
+		,'forum_posted_by'=>'đăng bởi'
+		,'forum_text_related'=>'Bài đăng liên quan'
+		,'text_home_forum'=>'Trang chủ diễn đàn'
+		
 		
 	);
 ?>

@@ -1,7 +1,8 @@
 <?
 if(!defined('TSEntry'))define('TSEntry', true);
 include('include/init.inc.php');
-die("<h1>Welcome to forum</h1>");
+define('forum_path',$fullsite.'/diendan');
+
 if(isset($_GET['language']) && $_GET['language'] !=''){
 	$_SESSION[_PLATFORM_]['lang'] = $_GET['language'];
 	$_COOKIE[_PLATFORM_]['lang'] = $_SESSION[_PLATFORM_]['lang'];
@@ -19,7 +20,7 @@ if($cla_cid==-100){
 }
 include('language/'.$lang.'.php');
 ?>	 
-<?include('ntk-header.php');?>	
+<?include('forum-header.php');?>	
 <div id="ja-containerwrap">
 <div id="ja-container">
 <div id="ja-container-inner" class="clearfix">
@@ -34,10 +35,9 @@ include('language/'.$lang.'.php');
 
 			<!--CONTENT-->
 			<?
-				include('ntk-info.php');
+				include('forum-info.php');
 			?>
 			<!--CONTENT-->
-
 
 			</div>
 
@@ -46,11 +46,11 @@ include('language/'.$lang.'.php');
 		
     </div>
 
-	<?include('ntk-left.php');?>  	   		
+	<?include('forum-left.php');?>  	   		
 	</div></div>
 	<!--END: CONTENT-->
 		
-	<?include('ntk-right.php');?>	
+	<?include('forum-right.php');?>	
 </div></div>
 </div>
-<?include('ntk-footer.php');?>
+<?include('forum-footer.php');?>

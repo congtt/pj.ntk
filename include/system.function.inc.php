@@ -54,7 +54,49 @@
 		$org.=str_repeat(' ',$step*10).'</ul>'.chr(13);
 		return $org;
 	}		
+	function forum_menu($parent_id=-1,$step=0,$name,$parent_name=''){		
+		global $db,$fullsite;
+		$lang = "_".get_language();
+		if ($parent_id==-1)
+			$sql="select * from ntk_forum_categories where parent_id = -1";
+		else 
+			$sql="select * from ntk_forum_categories where parent_id = ".$parent_id;		
+		if ($name!='')
+			$id='  class="'.$name.'" ';
+		$step++;
 
+		$result = $db->query($sql, true, "Query failed");
+		$org=str_repeat(' ',$step*10).'<ul '.$id.'>'.chr(13);
+		while ($aR = $db->fetchByAssoc($result)) {  
+			$special = '';
+			if ($aR['status_id']==0)
+				$special = ' ';
+
+			$href="";
+			if ($aR['link']!=''){
+				if (substr($aR['link'],0,7)=='http://')
+					$href=' href="'.$aR['link'].'" ';
+				else
+					$href=' href="'.forum_path.'/'.$aR['group'].'/0/'.$aR['link'].'" ';
+				
+			}
+			else{
+				if ($parent_name!='')
+					$href=' href="'.forum_path.'/'.$aR['category_id'].'/0/'.tag_link($aR['category_name'.$lang]).'.html" ';
+				
+			}
+
+
+			$org.=str_repeat(' ',$step*10).'<li><a  data-actor="'.$aR['id'].'"  title="'.$aR['note'].'" id="'.$aR['id'].'" token="'.$md5sum.'" name="'.$aR['category_name'].'" note="'.$aR['note'].'" status="'.$aR['status_id'].'" uid="'.$aR['detail_id'].'" uidtoken="'.$uidtoken.'" 
+			 order="'.$aR['order'].'" '.$special.' style="cursor:pointer" '.$href.'><span>'.$aR['category_name'.$lang].'</span></a>'.chr(13);
+			$parent_name_vl = tag_link($aR['category_name'.$lang]);
+			$org.=forum_menu($aR['category_id'],$step,'',$parent_name_vl);
+			$org.=str_repeat(' ',$step*10).'</li>'.chr(13);
+		}
+		$org.=str_repeat(' ',$step*10).'</ul>'.chr(13);
+		return $org;
+	}
+	
 	function get_lang($key){
 		global $__lang;
 		return $__lang[$key];

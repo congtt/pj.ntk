@@ -1113,7 +1113,7 @@ color: #FFFF25;
 	font-style:italic;
 	font-size:10px;
 	color:#11A2FC;
-	width:100px;
+	width:auto;
 	float:left;
 	text-align:left
 
@@ -1141,3 +1141,9 @@ text-align:justify;
 	font-size:15px;
 	font-weight:bold;
 }
+
+/*begin forum*/
+.posted_by {
+	color:#333131;
+}
+/*end forum*/
