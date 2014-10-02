@@ -1146,4 +1146,50 @@ text-align:justify;
 .posted_by {
 	color:#333131;
 }
+
+.forum_comment{
+	background-color:#E1F3F9;
+	border-radius: 3px;
+	padding: 10px 0 5px 20px;
+	border:#ccc solid 1px;
+}
+.old{
+	background-color:#F1F1F1 !important;
+	margin-right:10px;
+	margin-left:20px;
+	margin-bottom:10px;
+}
+.event{
+	background-color:#E1F3F9 !important;
+	margin-left:10px;
+	margin-left:30px;
+	margin-bottom:10px;
+}
+.forum_comment_full_name{	
+	font-weight:bold;
+}
+.comment_user{
+	
+}
+.forum_comment_title {
+    background: url("images/ui-bg_glass_85_dfeffc_1x400.png") repeat-x scroll 50% 50% #dfeffc;
+    border-bottom: medium none;
+    border-radius: 3px;
+    color: #0000ff;
+    font-size: 14px;
+    height: 22px;
+    line-height: 20px;
+    margin-bottom: 5px;
+    padding: 0px 0 5px 20px;	
+}
+
+.forum_comment_area{
+	border:#ccc solid 1px;
+	margin-top:20px;
+}
+
+.forum_comment_date{
+	color:#11a2fc;
+}
 /*end forum*/
+

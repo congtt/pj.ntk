@@ -32,31 +32,10 @@ if($cla_nid>0){
 	page_news();
 }else{
 	if ($cla_nid==0){
-		switch($pageUrl){
-			case 'lien-he.html':
-				include('themes/NTK/contact.php');
-				break;
-			case 'dang-nhap.html':
-				$result = login();
-				break;
-			case 'dang-xuat.html':
-				$result = logout();
-				break;
-			case 'dang-ky-thanh-vien.html':
-				$result = register_form();
-				break;
-			case 'dang-ky.html':
-				$result = register();
-				break;
-			case 'thong-tin-thanh-vien.html':							
-				$result = member_info();
-				break;
+		switch($pageUrl){			
 			case 'trang-chu.html':
 				$result = page_news(true);
-				break;
-			case 'thong-tin-a.html':
-				$result = Ajax();
-				break;
+				break;			
 			default:
 				echo 'Không tìm thấy trang này';
 				break;
@@ -100,159 +79,42 @@ if($cla_nid>0){
 		
 	}
 	/**/
-	function member_info($update_success=false){		
-		global $db,$fullsite,$cla_cid,$cla_nid,$cla_site;		
-		if(isset($_POST['full_name'])){
-			$update_success = false;		
-			$email = $_SESSION[_PLATFORM_]['USER_INFO']['email'];
-			$full_name = __post('full_name');
-			$province_id = __post('province_id');
-			$hospital_id = __post('hospital_id');
-			$department_id = __post('department_id');
-			if($full_name!=''){
-				$sql = "
-					update ntk_users
-					set full_name = N'".$full_name."'
-					,province_id = ".(int)$province_id."
-					,department_id = ".(int)$department_id."
-					,hospital_id = ".(int)$hospital_id."
-					where email = '".$email."'
-				";
-				$result = $db->query($sql, true, "Query failed");	
-				$update_success = true;				
-				get_user_info($email,1);
-			}else{
-				$msg = "Cập nhật thông tin không thành công. Vui lòng kiểm tra lại thông tin.";			
-			}
-		}
-		$user_info = $_SESSION[_PLATFORM_]['USER_INFO'];
-		$province_list = get_list_province();
-		$province_id = (int)$user_info['province_id'];
-		$hospital_list = get_list_hospital($province_id);
-		$department_list = get_list_department();
-		include('themes/NTK/info.php');	
-	}
 	
-	function register(){
-		global $db,$fullsite,$cla_cid,$cla_nid,$cla_site;		
-		$register_success = false;
-		$email = __post('email');
-		$password = __post('password');
-		$re_password = __post('re_password');
-		$full_name = __post('full_name');
-		$province_id = __post('province_id');
-		$hospital_id = __post('hospital_id');
-		$department_id = __post('department_id');
-		if($password==$re_password && $email!='' && $full_name!=''){
-			$user_info = get_user_info($email);			
-			if(is_array($user_info)){
-				$msg = "Email đã tồn tại. Vui lòng kiểm tra lại thông tin.";
-			}else{
-				$password = md5($password);
-				$sql = " insert into ntk_users(email,password,full_name,province_id,department_id,hospital_id)
-					values('".$email."','".$password."',N'".$full_name."',".(int)$province_id.",".(int)$department_id.",".(int)$hospital_id.")
-				";
-				$result = $db->query($sql, true, "Query failed");			
-				$user_info = get_user_info($email);
-				if(is_array($user_info)){
-					$msg = "Đăng ký thành công.";
-					$_SESSION[_PLATFORM_]['is_login'] = true;
-					$_SESSION[_PLATFORM_]['USER_INFO'] = $user_info;
-					$register_success = true;
-				}
-			}			
-		}else{
-			$msg = "Đăng ký không thành công. Vui lòng kiểm tra lại thông tin.";			
-		}
-		register_form($msg,$register_success);
-	}	
-	
-	function register_form($msg='',$register_success=false){	
-		global $db,$fullsite,$cla_cid,$cla_nid,$cla_site;		
-		$province_list = get_list_province();
-		$hospital_list = get_list_hospital();
-		$department_list = get_list_department();
-		include('themes/NTK/register.php');
-	}
+	function getListComment($post_id){
+		global $db,$fullsite,$cla_cid,$cla_nid,$cla_site,$ts_config;
+		$sSQL = " select t1.*,t2.full_name,t2.email
+			from ntk_forum_comments t1
+			left join ntk_users t2 on t1.user_id = t2.id
+			where post_id = ".(int)$post_id ."
+			order by create_date desc
+		";
+		$result = $db->query($sSQL, true, "Query failed");
+		$html = '<div class="forum_comment_area">';
 		
-	function get_list_province(){
-		global $db;
-		$sql = "select * from ntk_province order by 'order' asc ";
-		$result = $db->query($sql, true, "Query failed");
-		$list = array();
-		while($aR = $db->fetchByAssoc($result)) {
-			$list[] = $aR;
-		}
-		return $list;
-	}
-	function get_list_hospital($province_id=0){
-		global $db;
-		if($province_id>0){
-			$sql = "select * from ntk_hospital where status = 1 and province_id =".(int)$province_id." order by 'order' asc";
-		}else{
-			$sql = "select * from ntk_hospital where status = 1 order by 'order' asc";
-		}
-		$result = $db->query($sql, true, "Query failed");
-		$list = array();
-		while($aR = $db->fetchByAssoc($result)) {
-			$list[] = $aR;
-		}
-		return $list;
-	}
-	function get_list_department(){
-		global $db;	
-		$lang = '_'.get_language();	
-		$sql = "select * from ntk_department order by 'order' asc";
-		$result = $db->query($sql, true, "Query failed");
-		$list = array();
-		while($aR = $db->fetchByAssoc($result)) {
-			$aR['name'] = $aR['name'.$lang];
-			$list[] = $aR;
-		}
-		return $list;
-	}
-	
-	function get_user_info($email,$reset=0){
-		global $db;
-		if($reset==0 && is_array($_SESSION[_PLATFORM_]['USER_INFO'])){
-			return $_SESSION[_PLATFORM_]['USER_INFO'];
-		}
-		$sql = "select * from ntk_users where email='".$email."' limit 0,1 ";
-		$result = $db->query($sql, true, "Query failed");		
-		if($aR = $db->fetchByAssoc($result)) { 
-			$_SESSION[_PLATFORM_]['USER_INFO'] = $aR;
-			return $aR;
-		}		
-	}
-	function login(){		
-		global $db,$fullsite,$cla_cid,$cla_nid,$cla_site;
-		$email = __post('email');
-		$password = md5(__post('password'));
-		$sql = "select * from ntk_users where email='".$email."' and password='".$password."'";
-		$result = $db->query($sql, true, "Query failed");
-		$user_info = array();
-		$is_login = false;
-		if($aR = $db->fetchByAssoc($result)) { 
-			if($aR['email'] ==$email && $password==$aR['password']){
-				$is_login = true;
-				$user_info = $aR;
+		$html .= '<div class="forum_comment_title">Danh sách bình luận</div>';
+		$i = 0;
+		while ($aR = $db->fetchByAssoc($result)) {
+			$class = "event";
+			if($i%2==0){
+				$class = "old";
 			}
+			$html_comment = '<div class="forum_comment '.$class.'">';
+			
+				$html_comment .= '<div class="forum_comment_header">';			
+					$html_comment .= '<span class="forum_comment_full_name">'.$aR['full_name'].'</span>&nbsp;&nbsp;&nbsp;&nbsp;';
+					$html_comment .= '<span class="forum_comment_date">'.date2vndate($aR['create_date'],true).'</span><br>';
+				$html_comment .= '</div>';
+				$html_comment .= '<div class="forum_comment_content">';
+					$html_comment .= '&nbsp;&nbsp;&nbsp;&nbsp;'.$aR['content'];
+				$html_comment .= '</div>';			
+				
+			$html_comment .= '</div>';
+			$html.=$html_comment;
+			$i++;
 		}
-		if($is_login){			
-			$_SESSION[_PLATFORM_]['is_login'] = true;
-			$_SESSION[_PLATFORM_]['USER_INFO'] = $user_info;
-			$url_redirec = $_SESSION[_PLATFORM_]['pre_url'];			
-			echo "<script>window.location.href='".$url_redirec."'</script>";
-		}
+		$html .='</div>';
+		return $html;		
 	}
-	function logout(){
-		global $ts_config;
-		unset($_SESSION[_PLATFORM_]);
-		$url_redirec = $ts_config['site_url'];
-		echo "<script>window.location.href='".$url_redirec."'</script>";
-	}	
-	/**/
-	
 	function page_detail(){		
 		global $db,$fullsite,$cla_cid,$cla_nid,$cla_site,$ts_config;
 		$lang = '_'.get_language();
@@ -303,6 +165,10 @@ if($cla_nid>0){
 						if($new_id==$cla_nid){ // detail
 							//echo '<div class="related_title">'.get_lang('text_related').'</div>';
 						}
+						
+						$html_comment = getListComment($cla_nid);
+						echo $html_comment;
+						
 					}else{// related
 						if(!$hasrelated){
 							echo '<hr size=2 style="color:#cccccc">';
