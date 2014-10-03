@@ -8,9 +8,48 @@ if(!defined('TSEntry') || !TSEntry) die('Not A Valid Entry Point');
 			$arr_data = get_hospital();
 			die(json_encode($arr_data));			
 			break;
+		case 'add_comment':
+			add_comment();			
+			break;
 		default:
 			break;
-	}		
+	}	
+		function add_comment(){
+			global $db,$fullsite,$cla_cid,$cla_nid,$cla_site,$ts_config;
+			$result=array('result'=>-1,'data'=>'');
+			if(!is_login()){
+				die(json_encode($result));
+			}
+			$user_info = get_user_info();
+			$user_id = get_userid();
+			$comment = __post('comment');
+			$post_id = (int)__post('post_id');
+			$token = __post('token');
+			$tokenCheck = md5(md5($post_id));
+			if($token!=$tokenCheck){
+				$result['result'] = -2;
+				die(json_encode($result));
+			}
+			$sSQL = " insert into ntk_forum_comments(user_id,post_id,content,`status`,create_date)
+				values($user_id,$post_id,'$comment',0,NOW() )
+			";
+			$resultSQL = $db->query($sSQL, true, "Query failed");
+			$result['result'] = 1;	
+			$html_comment = '<div class="forum_comment '.$class.'">';
+			
+				$html_comment .= '<div class="forum_comment_header">';			
+					$html_comment .= '<span class="forum_comment_full_name">'.$user_info['full_name'].'</span>&nbsp;&nbsp;&nbsp;&nbsp;';
+					$html_comment .= '<span class="forum_comment_date">'.date("d/m/Y H:i:s").'</span><br>';
+				$html_comment .= '</div>';
+				$html_comment .= '<div class="forum_comment_content">';
+					$html_comment .= '&nbsp;&nbsp;&nbsp;&nbsp;'.$comment;
+				$html_comment .= '</div>';			
+				
+			$html_comment .= '</div>';			
+			$result['data'] = $html_comment;
+			die(json_encode($result));
+		}
+		
 	function get_hospital(){	
 		global $db,$fullsite,$cla_cid,$cla_nid,$cla_site,$ts_config;		
 		$lang = '_'.get_language();

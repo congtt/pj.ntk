@@ -116,6 +116,8 @@
 		return $lang;
 		
 	}
+	
+	
 	function is_login(){
 		if($_SESSION[_PLATFORM_]['is_login'] && is_array($_SESSION[_PLATFORM_]['USER_INFO'])){
 			return true;
@@ -903,10 +905,20 @@ function to_html($string, $encode=true){
 	function get_username(){
 		return $_SESSION[_PLATFORM_]["CLA"]["User_Name"];
 	}
+	function get_userid(){		
+		return (int)$_SESSION[_PLATFORM_]['USER_INFO']['id'];
+	}
+	function get_email(){		
+		return $_SESSION[_PLATFORM_]['USER_INFO']['email'];
+	}
 	
+	function get_user_info(){		
+		return $_SESSION[_PLATFORM_]['USER_INFO'];
+	}
+	/*
 	function get_userid(){
 		return $_SESSION[_PLATFORM_]["CLA"]["User_ID"];
-	}
+	}*/
 
 	function get_deptId(){
 		return $_SESSION[_PLATFORM_]["CLA"]["Dept_ID"];

@@ -51,7 +51,10 @@
 		,'forum_text_related'=>'Posts Realted'
 		,'text_home_forum'=>'Home forum'
 		
-		
+		,'forum_comment_text' =>'Add Comment'
+		,'forum_btncomment_text' =>'Comemnt'
+		,'forum_text_error_login'=>'Please login to comment'
+		,'forum_text_error_comment'=>'Comment is not success. Please try again later.'
 	);
 	
 ?>

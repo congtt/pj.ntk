@@ -1,4 +1,37 @@
-
+<script>
+	function AddComent(post_id,token){		
+		var is_login = <? if(!is_login){ echo '0';}else{echo '1';}?>;
+		if(is_login!=1){
+			alert('<? echo get_lang('forum_text_error_login')?>');
+		}
+		var comment = $( "#comment" ).val();
+		
+		if(comment!='' && post_id>0){
+			$.ajax({
+					  type: "POST",
+					  url: "<? echo forum_path ;?>/-100/0/thong-tin.html",
+					  data: "tp=add_comment&post_id="+post_id+"&comment="+comment+"&token="+token,
+					  success: function(msg){
+						var js_obj = eval('(' + msg + ')'); 						
+						
+						var result = js_obj.result; 
+						var data = js_obj.data; 
+						if(result==1){
+							$('#area_add_comment').append(data);
+							$('#comment').val('');
+						}else{
+							if(result==-1){
+								alert('<? echo get_lang('forum_text_error_login')?>');
+							}else{
+								alert('<? echo get_lang('forum_text_error_comment')?>');
+							}
+						}
+						
+					  }
+			});
+		}	
+	}
+</script>
 <?php
 if(!defined('TSEntry') || !TSEntry) die('Not A Valid Entry Point');
 
@@ -92,6 +125,7 @@ if($cla_nid>0){
 		$html = '<div class="forum_comment_area">';
 		
 		$html .= '<div class="forum_comment_title">Danh sách bình luận</div>';
+		$html .= '<div id="area_add_comment">';
 		$i = 0;
 		while ($aR = $db->fetchByAssoc($result)) {
 			$class = "event";
@@ -112,7 +146,18 @@ if($cla_nid>0){
 			$html.=$html_comment;
 			$i++;
 		}
-		$html .='</div>';
+		$html .= '</div>';
+		// area comment
+		
+		$html .='
+			<div id="comment_area">
+				<div class="comment_title">'.get_lang('forum_comment_text').'</div>
+				<textarea class="comment_inp" col="30" rows="5" id="comment" name="comment" ></textarea>
+				<input onclick="javascript:AddComent('.$cla_nid.',\''.md5(md5($cla_nid)).'\');" type ="button" name="btncomment" id="btncomment" value="'.get_lang('forum_btncomment_text').'"/>
+			</div>';
+		
+		//
+		$html .='</div><br><br>';
 		return $html;		
 	}
 	function page_detail(){		
@@ -205,7 +250,7 @@ if($cla_nid>0){
 					$title_url = fnStrConvert($aR['title'.$lang]);
 					$title_url = str_replace(" ",'-',$title_url);
 										
-					echo '<div class="news_title"><a href="'.$fullsite.'/'.(int)$aR['cid'].'/'.(int)$aR['id'].'/'.$title_url.'.html">'.$aR['title'.$lang].'</a>';
+					echo '<div class="news_title"><a href="'.forum_path.'/'.(int)$aR['cid'].'/'.(int)$aR['id'].'/'.$title_url.'.html">'.$aR['title'.$lang].'</a>';
 					if($i<=5 && $home){
 						echo '&nbsp;&nbsp;&nbsp;<img src="images/icon/new.gif">';
 					}

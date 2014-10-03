@@ -51,6 +51,10 @@
 		,'forum_text_related'=>'Bài đăng liên quan'
 		,'text_home_forum'=>'Trang chủ diễn đàn'
 		
+		,'forum_comment_text' =>'Thêm bình luận'
+		,'forum_btncomment_text' =>'Bình luận'
+		,'forum_text_error_login'=>'vui lòng đăng nhập để thêm bình luận'
+		,'forum_text_error_comment'=>'Bình luận không thành công. Vui lòng thực hiện lại.'
 		
 	);
 ?>

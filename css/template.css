@@ -1191,5 +1191,18 @@ text-align:justify;
 .forum_comment_date{
 	color:#11a2fc;
 }
+
+.comment_area{
+	margin-top:10px 10px 20px 20px;	
+}
+.comment_title{
+	font-weight:bold;	
+}
+.comment_inp{
+	width:90%;
+	margin-left: 10px;
+	
+}
 /*end forum*/
+
 
