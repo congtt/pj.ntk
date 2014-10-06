@@ -20,13 +20,13 @@ while ($aR = $db->fetchByAssoc($result)) {
 			<div class="module">
 				<div>
 					<?if($_SESSION[_PLATFORM_]['is_login'] && is_array($_SESSION[_PLATFORM_]['USER_INFO'])){?>
-					<div>
+					<!--<div>
 						<div>
 							<? echo get_lang('hello'); ?> <b><a title="Thông tin thành viên" href="<?=$fullsite?>/0/0/thong-tin-thanh-vien.html"><?php echo $_SESSION[_PLATFORM_]['USER_INFO']['full_name']?></a></b>
 							<br>
 							<a title="<? echo get_lang('logout_link'); ?>" href="<?=$fullsite?>/0/0/dang-xuat.html"><? echo get_lang('logout_link'); ?></a>
 						</div>	
-					</div>					
+					</div>-->				
 					<?
 					}else{?>					
 					<!--begin-login-->

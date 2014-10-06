@@ -20,7 +20,7 @@ if(!defined('TSEntry') || !TSEntry) die('Not A Valid Entry Point');
 			if(!is_login()){
 				die(json_encode($result));
 			}
-			$user_info = get_user_info();
+			$user_info = get_user_info_login();
 			$user_id = get_userid();
 			$comment = __post('comment');
 			$post_id = (int)__post('post_id');

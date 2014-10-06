@@ -59,7 +59,9 @@ debug($_GET,1);
 }
 else */
 
-if($cla_nid>0){
+if($pageUrl=='dang-bai.html'){
+	page_post();
+}else if($cla_nid>0){
 	page_detail();
 }else if($cla_cid>0){
 	page_news();
@@ -79,7 +81,74 @@ if($cla_nid>0){
 		echo 'test';
 	}
 }
-	
+
+	function page_post(){
+		global $db,$fullsite,$cla_cid,$cla_nid,$cla_site,$ts_config;
+		$_msg = null;
+		if(isset($_POST['title']) && __post('title')!=''){
+			$result=array('result'=>-1,'data'=>'');
+			if(!is_login()){
+				$_msg['msg'] = get_lang('forum_post_error_1');
+				$_msg['result'] =-1;
+			}
+			$user_info = get_user_info_login();
+			$user_email = $user_info['email'];
+			$title = __post('title');
+			$category_id = __post('category_id');
+			$content = __post('content');
+			$status = 1;
+			if($title!='' && $category_id >0 && $content!=''){
+				$sSQL = " insert into ntk_forum_posts (cid,title_vi,content_vi,status,create_date,create_by)
+						values(".(int)$category_id.",N'".$title."',N'".$content."',".$status.",NOW(),'".$user_email."')
+						";
+				$result = $db->query($sSQL, true, "Query failed");
+				if($result!=NULL){	
+					$sSQL ="	select * from ntk_forum_posts where `status` = 1 order by id desc limit 0,1 ";
+					$result = $db->query($sSQL, true, "Query failed");
+					if($aR = $db->fetchByAssoc($result)){
+						$_msg['result'] = 1;
+						$_msg['msg'] = get_lang('forum_post_success');
+						$_msg['post_id'] = $aR['id'];
+						$post_id = $aR['id'];
+						$title_link = fnStrConvert($title);
+						$title_link = str_replace(" ",'-',$title_link);
+						$link_detail = forum_path."/".$category_id."/".$post_id."/".$title_link.".html";
+					}
+				}else{
+					$_msg['result'] = -3;
+					$_msg['msg'] = get_lang('forum_post_error_3');
+				}
+				
+			}else{
+				$_msg['result'] = -2;
+				$_msg['msg'] = get_lang('forum_post_error_2');
+			}
+		}	
+		if($_msg!=null){
+			if($_msg['result']==1){
+				$post_success = true;
+				$_msg['msg']== '<span style="color:#0000FF; font-size:14px;">'.$_msg['msg'].'</span>';
+			}else{
+				$_msg['msg']== '<span style="color:#FF0000; font-size:14px;">'.$_msg['msg'].'</span>';
+			}
+		}
+		$category_list = get_list_categories();
+		include('themes/NTK/forum_post.php');
+		
+	}
+	function get_list_categories(){
+		global $db;
+		$sql = "select * from ntk_forum_categories where `status` = 1 and parent_id > 0 order by 'order' asc ";
+		$result = $db->query($sql, true, "Query failed");
+		$list = array();
+		$lang = '_'.get_language();		
+		while($aR = $db->fetchByAssoc($result)) {
+			$aR['id'] = $aR['category_id'];
+			$aR['name'] = $aR['category_name'.$lang] != ''?$aR['category_name'.$lang]:$aR['category_name_vi'];
+			$list[] = $aR;
+		}
+		return $list;
+	}
 	function home(){
 		global $db,$fullsite,$cla_cid,$cla_nid,$cla_site,$ts_config;		
 		$sql="SELECT * FROM ntk_news WHERE show_index = 1 ";		
@@ -203,7 +272,7 @@ if($cla_nid>0){
 							$i++;
 						}*/
 						echo '</div></div><br>';					
-						echo '<div class="news_short"><div style="width:25px; float:left;">&nbsp;</div><b>'.$short.'</b></div><br>';
+						//echo '<div class="news_short"><div style="width:25px; float:left;">&nbsp;</div><b>'.$short.'</b></div><br>';
 						echo '<div class="news_short"><div style="width:25px; float:left;">&nbsp;</div>'.$content.'</div>';
 						
 						//echo '<hr size=2 style="color:#cccccc">';						
@@ -278,7 +347,8 @@ if($cla_nid>0){
 						$i++;
 					}*/		
 					echo '</div></div><br>'; 				
-					echo '<div class="news_short"><div style="width:25px; float:left;">&nbsp;</div>'.$aR['short'.$lang].'&nbsp;<a href="'.forum_path.'/'.(int)$aR['cid'].'/'.(int)$aR['id'].'/'.$title_url.'.html">'.get_lang('text_detail').'</a></div>';
+					$short_description = substr($aR['content'.$lang],0,50);
+					echo '<div class="news_short"><div style="width:25px; float:left;">&nbsp;</div>'.$short_description.'&nbsp;<a href="'.forum_path.'/'.(int)$aR['cid'].'/'.(int)$aR['id'].'/'.$title_url.'.html">'.get_lang('text_detail').'</a></div>';
 					echo '<hr size=2 style="color:#cccccc">';
 					$i++;
 				}

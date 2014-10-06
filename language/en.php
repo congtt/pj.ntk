@@ -50,11 +50,30 @@
 		,'forum_posted_by'=>'Posted by'
 		,'forum_text_related'=>'Posts Realted'
 		,'text_home_forum'=>'Home forum'
+		,'text_post_forum'=>'Post new'
 		
 		,'forum_comment_text' =>'Add Comment'
 		,'forum_btncomment_text' =>'Comemnt'
 		,'forum_text_error_login'=>'Please login to comment'
 		,'forum_text_error_comment'=>'Comment is not success. Please try again later.'
+		
+		,'forum_post_text_title'=>'Title'
+		,'forum_post_text_short'=>'Short description'
+		,'forum_post_text_category'=>'Topic'
+		,'forum_post_text_content'=>'Content'
+		,'forum_post_btnpost'=>'Post to forum'
+		,'forum_post_title'=>'Post news'
+		
+		,'forum_post_error_1'=>'Please login to post news'
+		,'forum_post_error_2'=>'Please check info again'
+		,'forum_post_error_3'=>'Post is not success. Please try again later.'		
+		,'forum_post_success'=>'Thanks for your post to forum.'
+		,'forum_post_success_detail'=>'View detail your post.'
+		
+		,'forum_post_req_title'=>'Please enter title.'
+		,'forum_post_req_topic'=>'Please select your topic.'
+		,'forum_post_req_content'=>'Please enter your content.'
+		
 	);
 	
 ?>

@@ -50,11 +50,31 @@
 		,'forum_posted_by'=>'đăng bởi'
 		,'forum_text_related'=>'Bài đăng liên quan'
 		,'text_home_forum'=>'Trang chủ diễn đàn'
-		
+		,'text_post_forum'=>'Đăng bài mới'
 		,'forum_comment_text' =>'Thêm bình luận'
 		,'forum_btncomment_text' =>'Bình luận'
 		,'forum_text_error_login'=>'vui lòng đăng nhập để thêm bình luận'
 		,'forum_text_error_comment'=>'Bình luận không thành công. Vui lòng thực hiện lại.'
+
+		,'forum_post_text_title'=>'Tiêu đề'
+		,'forum_post_text_short'=>'Mô tả ngắn'
+		,'forum_post_text_category'=>'Chủ đề'
+		,'forum_post_text_content'=>'Nội dung'
+		,'forum_post_btnpost'=>'Đăng bài'
+		,'forum_post_title'=>'Đăng bài mới'
+		
+		,'forum_post_error_1'=>'Vui lòng đăng nhập để đăng bài mới'
+		,'forum_post_error_2'=>'Thông tin không hợp lệ'
+		,'forum_post_error_3'=>'Đăng bài không thành công. Vui lòng thực hiện lại.'
+		
+		,'forum_post_success'=>'Cảm ơn bạn đã đăng bài vào diễn đàn.'
+		,'forum_post_success_detail'=>'Xem bài đăng.'
+		
+		,'forum_post_req_title'=>'Vui lòng nhập tiêu đề.'
+		,'forum_post_req_topic'=>'Vui lòng chọn chủ đề.'
+		,'forum_post_req_content'=>'Vui lòng nhập nội dung.'
+		
+		
 		
 	);
 ?>

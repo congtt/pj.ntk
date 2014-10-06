@@ -912,7 +912,7 @@ function to_html($string, $encode=true){
 		return $_SESSION[_PLATFORM_]['USER_INFO']['email'];
 	}
 	
-	function get_user_info(){		
+	function get_user_info_login(){		
 		return $_SESSION[_PLATFORM_]['USER_INFO'];
 	}
 	/*

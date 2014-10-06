@@ -173,6 +173,11 @@ $(function(){
           <li><a style="cursor:pointer" href="<? echo forum_path ;?>" id="" title="" data-actor=""><span><? echo get_lang('text_home_forum') ;?></span></a>
             </li>         
           </ul>
+		  <ul class="nav">
+          <li><a style="cursor:pointer" href="<? echo forum_path ;?>/-1/0/dang-bai.html" id="" title="" data-actor=""><span><? echo get_lang('text_post_forum') ;?></span></a>
+            </li>         
+          </ul>
+		  
 </div>
 
 <?
