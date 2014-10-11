@@ -443,14 +443,72 @@ function to_html($string, $encode=true){
 		return 	$_PageHeader;	
 	}	
 	
+	function Paging2($totalPages=0,$currentPage=0,$formName='')
+	{	
+		global $vportal,$ts_config;
+		$form = ($formName!=""&&$formName!=null) ? $formName : "forms[0]";
+		$strPaging = '<div id="paging" align=center><table border=0 cellpadding=0 cellspacing=0><tr>';
+
+		
+		$pSegment = 5;
+		if (is_numeric($totalPages))
+		{
+			$totalSegment = ceil($totalPages/$pSegment);
+			$currentSegment = ceil($currentPage/$pSegment);
+			$startPage = (($currentSegment-1)*$pSegment) + 1;
+			$endPage = $currentSegment * $pSegment;
+			$maxPage = ($endPage>$totalPages) ? $totalPages : $endPage;
+			if ($currentPage>1)
+				$strPaging .= "<td><div class='page'><a href=\"#Trang đầu\" onclick=\"document.$form.page.value='1';document.$form.submit();\"><img src=\"".$ts_config['site_url']."/images/first.png\" border=0 title='First'></a></div></td>";
+			//else
+			//	$strPaging .= "<img src=\"".$vportal->vars["site_url"]."images/first_gr.png\"> ";
+			if ($currentSegment>1)
+				$strPaging .= "<td><div class='page'><a href=\"#Trang trước\" onclick=\"document.$form.page.value='".($currentSegment-1)*$pSegment."';document.$form.submit();\"><img src=\"".$ts_config['site_url']."/images/prevjump.png\" border=0  title='Prev'></a></div></td>";
+			//else
+			//	$strPaging .= "<img src=\"".$vportal->vars["site_url"]."images/prevjump_gr.png\"> ";
+			if ($currentPage>1)
+				$strPaging .= "<td><div class='page'><a href=\"#Trang trước\" onclick=\"document.$form.page.value='".($currentPage-1)."';document.$form.submit();\"><img src=\"".$ts_config['site_url']."/images/prev.png\" border=0  title='Prev'></a></div></td>";
+			//else
+			//	$strPaging .= "<img src=\"".$vportal->vars["site_url"]."images/prev_gr.png\"> ";
+			
+			for ($i=$startPage;$i<=$maxPage;$i++)
+			{
+				if ($currentPage==$i)
+					$strPaging .= '<td><div class="page" style="margin-right:5px; border:#ccc solid 1px; width:25px;text-align:center;color:blue;font-weight:bold;">'.$i.'</div></td>';
+				else
+					$strPaging .= '<td><div class="page" style="margin-right:5px; border:#ccc solid 1px; width:25px;text-align:center;">
+					<a href="#Trang '.$i.'"  onclick="document.'.$form.'.page.value=\''.$i.'\';document.'.$form.'.submit();" 	>'.$i.'</a>
+					</div></td>';
+			}
+			
+			if ($currentPage<$totalPages)
+				$strPaging .= "<td><div class='page'><a href=\"#Trang trước\" style=\"text-decoration:none\" onclick=\"document.$form.page.value='".($currentPage+1)."';document.$form.submit();\"><img src=\"".$ts_config['site_url']."/images/next.png\" border=0 title='Next'></a></div></td>";
+			//else
+			//	$strPaging .= "<img src=\"".$vportal->vars["site_url"]."images/next_gr.png\"> ";
+			if ($currentSegment<$totalSegment)
+				$strPaging .= "<td><div class='page'><a href=\"#Trang sau\"  style=\"text-decoration:none\"  onclick=\"document.$form.page.value='".($currentSegment*$pSegment+1)."';document.$form.submit();\"><img src=\"".$ts_config['site_url']."/images/nextjump.png\" border=0  title='Next'></a></div></td>";
+			//else
+			//	$strPaging .= "<li class='pgNext pgEmpty'>kế</li> ";
+			if ($currentPage<$totalPages)
+				$strPaging .= "<td><div class='page'><a href=\"#Trang cuối\" style=\"text-decoration:none\" onclick=\"document.$form.page.value='".$totalPages."';document.$form.submit();\"><img src=\"".$ts_config['site_url']."/images/last.png\" border=0  title='Last'></a></div></td>";
+			//else
+			//	$strPaging .= "<img src=\"".$vportal->vars["site_url"]."images/last_gr.png\"> ";
+		}
+		
+		
+		
+		$strPaging .= "<td><div class='page'><a href=\"#Trang cuối\" style=\"text-decoration:none\" onclick=\" if (document.$form.iCurrentPage.value==''){document.$form.iCurrentPage.value=1;};document.$form.page.value=document.$form.iCurrentPage.value;  document.$form.submit();\"><b></b></a></div></td></tr></table></div>";		
+		
+		
+		return $strPaging;
+	}/*
+
 	function Paging($totalPages=0,$currentPage=0,$formName='')
 	{
 		global $vportal;
 		$form = ($formName!=""&&$formName!=null) ? $formName : "forms[0]";
 		$strPaging = '<div id="paging" align=center><table border=0 cellpadding=0 cellspacing=0><tr>';
-/*			
-			/<td><div class="page">ddd</div></td>
-			<td><div class="page">ddd</div></td>*/
+
 			
 			
 			
@@ -507,9 +565,7 @@ function to_html($string, $encode=true){
 		
 		return $strPaging;
 	}
-
-
-
+*/
 
 
 

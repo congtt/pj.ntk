@@ -42,7 +42,7 @@ if(!defined('TSEntry') || !TSEntry) die('Not A Valid Entry Point');
 					$html_comment .= '<span class="forum_comment_date">'.date("d/m/Y H:i:s").'</span><br>';
 				$html_comment .= '</div>';
 				$html_comment .= '<div class="forum_comment_content">';
-					$html_comment .= '&nbsp;&nbsp;&nbsp;&nbsp;'.$comment;
+					$html_comment .= '&nbsp;&nbsp;&nbsp;&nbsp;<pre>'.$comment.'<pre>';
 				$html_comment .= '</div>';			
 				
 			$html_comment .= '</div>';			

@@ -149,7 +149,7 @@ if($pageUrl=='dang-bai.html'){
 		}
 		return $list;
 	}
-	function home(){
+	function home(){	
 		global $db,$fullsite,$cla_cid,$cla_nid,$cla_site,$ts_config;		
 		$sql="SELECT * FROM ntk_news WHERE show_index = 1 ";		
 		$sql.="ORDER BY news_order ASC,id ASC 	LIMIT 0,10 ";
@@ -208,7 +208,7 @@ if($pageUrl=='dang-bai.html'){
 					$html_comment .= '<span class="forum_comment_date">'.date2vndate($aR['create_date'],true).'</span><br>';
 				$html_comment .= '</div>';
 				$html_comment .= '<div class="forum_comment_content">';
-					$html_comment .= '&nbsp;&nbsp;&nbsp;&nbsp;'.$aR['content'];
+					$html_comment .= '&nbsp;&nbsp;&nbsp;&nbsp;<pre>'.$aR['content'].'</pre>';
 				$html_comment .= '</div>';			
 				
 			$html_comment .= '</div>';
@@ -296,61 +296,91 @@ if($pageUrl=='dang-bai.html'){
 			}
 		}		
 	}
-	function page_news($home=false){	
+	function page_news($home=false){
 		global $db,$fullsite,$cla_cid,$cla_nid,$cla_site,$ts_config;
+		$curPage = $_POST['page'];
+		if((int)$curPage<=0){
+			$curPage = 1;
+		}
 		$lang = '_'.get_language();
 		if ((int)$cla_cid>0 || $home){
-			$sql="SELECT * FROM ntk_forum_posts WHERE  status = 1 ";
+			$PageSize = (int)$ts_config['max_news_page'];
+			$from = ($curPage-1)*$PageSize;
+			$limit  = $PageSize;			
+			$sqlTotal="SELECT count(*) as TotalRecord FROM ntk_forum_posts WHERE  status = 1 ";
 			if ((int)$cla_cid>0){
-				$sql .=" and cid=".$cla_cid." ";
+				$sqlTotal .=" and cid=".$cla_cid." ";
 			}
 			if ((int)$cla_nid>0)
-				$sql.=" AND id = ".$cla_nid;
-			if($home){
-				//$sql.=" AND show_index = 1 ";
+				$sqlTotal.=" AND id = ".$cla_nid;
+			$result = $db->query($sqlTotal, true, "Query failed");
+			$TotalRecord = 0;
+			if($aR = $db->fetchByAssoc($result)) {
+				$TotalRecord = (int)$aR['TotalRecord'];
 			}
-			$sql.=" ORDER BY create_date DESC,modify_date DESC 	LIMIT 0,10 ";
-			//echo $sql;die();
-			$result = $db->query($sql, true, "Query failed");
-			$i = 0;
-			while ($aR = $db->fetchByAssoc($result)) {		
-				if($aR['title'.$lang]!='' && $aR['content'.$lang]!=''){
-					$title_url = '';
-					$title_url = fnStrConvert($aR['title'.$lang]);
-					$title_url = str_replace(" ",'-',$title_url);
-										
-					echo '<div class="news_title"><a href="'.forum_path.'/'.(int)$aR['cid'].'/'.(int)$aR['id'].'/'.$title_url.'.html">'.$aR['title'.$lang].'</a>';
-					if($i<=5 && $home){
-						echo '&nbsp;&nbsp;&nbsp;<img src="images/icon/new.gif">';
-					}
-					echo '</div>';
-					echo '<div><div class="news_date">'.date2vndate($aR['create_date']).' <span class="posted_by">'.get_lang('forum_posted_by').' '.$aR['create_by'].'</span> </div><div class="news_download">';				
-					/*
-					$sql = " select t1.*,t2.file_type_name,t2.file_type_icon 
-							from ntk_new_files t1
-							left join ntk_file_type t2 on t1.file_type_id = t2.file_type_id
-							where t1.new_id = ".(int)$aR['id']."
-					";		
-					$result_file = $db->query($sql, true, "Query failed");
-					$i=0;				
-					while ($aR_file = $db->fetchByAssoc($result_file)) {					
-						if($aR_file['require_login']==1 && !is_login()){
-							$href ='javascript:notLogin();';
-						}else{
-							$href =$ts_config['site_url_download_file'].$aR_file['file_path'];
+			if($TotalRecord>0){
+				$TotalPage = intval($TotalRecord/$PageSize + ($TotalRecord%$PageSize > 0?1:0));						
+				$paging =  Paging2($TotalPage,$curPage,'form1');
+				$sql="SELECT * FROM ntk_forum_posts WHERE  status = 1 ";
+				if ((int)$cla_cid>0){
+					$sql .=" and cid=".$cla_cid." ";
+				}
+				if ((int)$cla_nid>0)
+					$sql.=" AND id = ".$cla_nid;
+				if($home){
+					//$sql.=" AND show_index = 1 ";
+				}
+				$sql.=" ORDER BY create_date DESC,modify_date DESC 	LIMIT ".$from.",".$limit." ";
+				//echo $sql;die();
+				$result = $db->query($sql, true, "Query failed");
+				$i = 0;
+				echo '<form action="" name="form1" id="form1" method="POST">
+				<input type="hidden" value="1" name="page" id="page"/>
+				';
+				$has_data = false;
+				while ($aR = $db->fetchByAssoc($result)) {		
+					if($aR['title'.$lang]!='' && $aR['content'.$lang]!=''){
+						$has_data = true;
+						$title_url = '';
+						$title_url = fnStrConvert($aR['title'.$lang]);
+						$title_url = str_replace(" ",'-',$title_url);
+											
+						echo '<div class="news_title"><a href="'.forum_path.'/'.(int)$aR['cid'].'/'.(int)$aR['id'].'/'.$title_url.'.html">'.$aR['title'.$lang].'</a>';
+						if($i<=5 && $home){
+							echo '&nbsp;&nbsp;&nbsp;<img src="images/icon/new.gif">';
 						}
-						if($i>0){echo ' | ';}		
-						//$urlre = $sugar_config['site_url_download_file']."/download_file_case.php?fn=".$filePath;
-						//header('location:'.$urlre.'');
-						//die();					
-						echo '<a href="'.$href.'"><img src="'.$fullsite.'/images/'.$aR_file['file_type_icon'].'"></a>';
+						echo '</div>';
+						echo '<div><div class="news_date">'.date2vndate($aR['create_date']).' <span class="posted_by">'.get_lang('forum_posted_by').' '.$aR['create_by'].'</span> </div><div class="news_download">';				
+						/*
+						$sql = " select t1.*,t2.file_type_name,t2.file_type_icon 
+								from ntk_new_files t1
+								left join ntk_file_type t2 on t1.file_type_id = t2.file_type_id
+								where t1.new_id = ".(int)$aR['id']."
+						";		
+						$result_file = $db->query($sql, true, "Query failed");
+						$i=0;				
+						while ($aR_file = $db->fetchByAssoc($result_file)) {					
+							if($aR_file['require_login']==1 && !is_login()){
+								$href ='javascript:notLogin();';
+							}else{
+								$href =$ts_config['site_url_download_file'].$aR_file['file_path'];
+							}
+							if($i>0){echo ' | ';}		
+							//$urlre = $sugar_config['site_url_download_file']."/download_file_case.php?fn=".$filePath;
+							//header('location:'.$urlre.'');
+							//die();					
+							echo '<a href="'.$href.'"><img src="'.$fullsite.'/images/'.$aR_file['file_type_icon'].'"></a>';
+							$i++;
+						}*/		
+						echo '</div></div><br>'; 				
+						$short_description = substr($aR['content'.$lang],0,50);
+						echo '<div class="news_short"><div style="width:25px; float:left;">&nbsp;</div>'.$short_description.'&nbsp;<a href="'.forum_path.'/'.(int)$aR['cid'].'/'.(int)$aR['id'].'/'.$title_url.'.html">'.get_lang('text_detail').'</a></div>';
+						echo '<hr size=2 style="color:#cccccc">';
 						$i++;
-					}*/		
-					echo '</div></div><br>'; 				
-					$short_description = substr($aR['content'.$lang],0,50);
-					echo '<div class="news_short"><div style="width:25px; float:left;">&nbsp;</div>'.$short_description.'&nbsp;<a href="'.forum_path.'/'.(int)$aR['cid'].'/'.(int)$aR['id'].'/'.$title_url.'.html">'.get_lang('text_detail').'</a></div>';
-					echo '<hr size=2 style="color:#cccccc">';
-					$i++;
+					}
+				}
+				if($has_data==true){
+					echo '<div style="margin-top:10px;margin-bottom:10px;">'.$paging.'</div>';
 				}
 			}
 		

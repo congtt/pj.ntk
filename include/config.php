@@ -20,6 +20,7 @@ if(ENV=='PRODUCTION'){
 	  ,'photo_url' => 'http://thankinh.ssdesk.com/photo'
 	  ,'upload_dir' => 'E://xampp//htdocs//pj.ntk//images//newfiles'//
 	  
+	  ,'max_news_page' => 10
 	  
 	  ,'upload_maxsize' => 52*1024*1024 // 52.428.800 bytes 
 	  ,'permission'=>array(
@@ -52,7 +53,8 @@ if(ENV=='PRODUCTION'){
 	  ,'photo_url' => 'http://127.0.0.1/pj.ntk/photo'
 	  ,'upload_dir' => 'E://xampp//htdocs//pj.ntk//images//newfiles'//
 	  
-	  
+	  ,'max_news_page' => 10
+		
 	  ,'upload_maxsize' => 52*1024*1024 // 52.428.800 bytes 
 	  ,'permission'=>array(
 			'1'=>'Access',
