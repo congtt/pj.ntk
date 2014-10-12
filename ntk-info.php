@@ -44,6 +44,9 @@ if($cla_nid>0){
 			case 'trang-chu.html':
 				$result = page_news(true);
 				break;
+			case 'tim-kiem.html':
+				$result = page_news(true,true);
+				break;
 			case 'thong-tin-a.html':
 				$result = Ajax();
 				break;
@@ -253,6 +256,7 @@ if($cla_nid>0){
 			$sql.="ORDER BY stt,news_order ASC,id ASC LIMIT 0,10 ";	
 			$result = $db->query($sql, true, "Query failed");
 			$hasrelated = false;
+			$i=0;
 			while ($aR = $db->fetchByAssoc($result)) {
 				$new_id = $aR['id'];				
 				$content = $aR['content'.$lang];
@@ -260,11 +264,19 @@ if($cla_nid>0){
 				if($aR['title'.$lang]!='' && $short!=''){
 					if($new_id==$cla_nid){ // detail
 						
+						if($i==0){
+							$title_page = $aR['title'.$lang];
+							echo '<div class="group_area">
+							<div style="background-color:#71baf1;" class="lft-title">&nbsp;'.$title_page.'
+										</div>
+							<div class="group_content">';
+						}
+						
 						$title_url = '';
 						$title_url = fnStrConvert($aR['title'.$lang]);
 						$title_url = str_replace(" ",'-',$title_url);
 						
-						echo '<div class="news_title_detail">'.$aR['title'.$lang].'</div>';				
+						//echo '<div class="news_title_detail">'.$aR['title'.$lang].'</div>';				
 						
 						echo '<div><div class="news_date">'.date2vndate($aR['create_date']).'</div><div class="news_download">';				
 						
@@ -301,17 +313,35 @@ if($cla_nid>0){
 						//echo '<hr size=2 style="color:#cccccc">';
 						$hasrelated = true;
 					}
+					$i++;
 				}
 			}
-		}		
+		}
+		echo "</div></div>";
 	}
-	function page_news($home=false){	
+	function page_news($home=false,$search=false){	
 		global $db,$fullsite,$cla_cid,$cla_nid,$cla_site,$ts_config;		
 		$curPage = $_POST['page'];
 		if((int)$curPage<=0){
 			$curPage = 1;
 		}
 		$lang = '_'.get_language();
+		
+		if($home){
+			$title_page = get_lang('home');
+		}
+		if($search==true && __post('txt_search')!=''){
+			$filter_search = " and (keyword_vi like '%".__post('txt_search')."%' or keyword_en like '%".__post('txt_search')."%'  )";
+			if($search==true && $has_data==false){				
+				$title_page = get_lang('search_result');
+			}
+		}
+		if($home==true || $search==true){
+			echo '<div class="group_area">
+			<div style="background-color:#71baf1;" class="lft-title">&nbsp;'.$title_page.'
+							</div>
+			<div class="group_content">';
+		}
 		if ((int)$cla_cid>0 || $home){
 			$PageSize = (int)$ts_config['max_news_page'];
 			$from = ($curPage-1)*$PageSize;
@@ -322,34 +352,47 @@ if($cla_nid>0){
 			}
 			if ((int)$cla_nid>0)
 				$sqlTotal.=" AND id<=".$cla_nid;
+			$sqlTotal .= $filter_search;
 			if($home){
 				$sqlTotal.=" AND show_index = 1 ";
-			}			
+			}	
+			//echo $sqlTotal;
 			$result = $db->query($sqlTotal, true, "Query failed");
 			$TotalRecord = 0;
 			if($aR = $db->fetchByAssoc($result)) {
 					$TotalRecord = (int)$aR['TotalRecord'];
 			}
+			
+			$has_data = false;			
 			if($TotalRecord>0){
 				$TotalPage = intval($TotalRecord/$PageSize + ($TotalRecord%$PageSize > 0?1:0));						
 				$paging =  Paging2($TotalPage,$curPage,'form1');			
-				$sql="SELECT * FROM ntk_news WHERE  status = 1";
+				$sql="SELECT t1.*,t2.menu_name".$lang." FROM ntk_news t1
+					left join ntk_menus t2 on t1.cid = t2.menu_id
+				WHERE  t1.status = 1";
 				if ((int)$cla_cid>0){
-					$sql .=" and cid=".$cla_cid." ";
+					$sql .=" and t1.cid=".$cla_cid." ";
 				}
 				if ((int)$cla_nid>0)
-					$sql.=" AND id<=".$cla_nid;
+					$sql.=" AND t1.id = ".$cla_nid;
 				if($home){
-					$sql.=" AND show_index = 1 ";
+					$sql.=" AND t1.show_index = 1 ";
 				}
+				$sql .= $filter_search;
 				$sql.="ORDER BY news_order ASC,id ASC 	LIMIT ".$from.",".$limit." ";				
+				//echo $sql;
 				$result = $db->query($sql, true, "Query failed");
 				echo '<form action="" name="form1" id="form1" method="POST">
 				<input type="hidden" value="1" name="page" id="page"/>
 				';
-				$has_data = false;
-				while ($aR = $db->fetchByAssoc($result)) {			
+				$stt=0;
+				while ($aR = $db->fetchByAssoc($result)) {				
 					if($aR['title'.$lang]!='' && $aR['short'.$lang]!=''){
+						if($stt==0){
+							if($home==false && $search==false){
+								echo '<div class="group_area"><div style="background-color:#71baf1;" class="lft-title">'.$aR['menu_name'.$lang].'</div><div class="group_content">';
+							}					
+						}
 						$has_data = true;
 						$title_url = '';
 						$title_url = fnStrConvert($aR['title'.$lang]);
@@ -379,13 +422,18 @@ if($cla_nid>0){
 						echo '</div></div><br>'; 				
 						echo '<div class="news_short"><div style="width:25px; float:left;">&nbsp;</div>'.$aR['short'.$lang].'&nbsp;<a href="'.$fullsite.'/'.(int)$aR['cid'].'/'.(int)$aR['id'].'/'.$title_url.'.html">'.get_lang('text_detail').'</a></div>';
 						echo '<hr size=2 style="color:#cccccc">';
-					}
+						$stt++;
+					}					
 				}
 				if($has_data==true){
 					echo '<div style="margin-top:10px;margin-bottom:10px;">'.$paging.'</div>';
 				}
 			}
+			if($search==true && $has_data==false){
+				echo '<div style="">'.get_lang('search_no_result').'</div>';
+			}
 			echo "</form1>";
+			echo "</div></div>";
 		
 		}
 	}

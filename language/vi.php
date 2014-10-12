@@ -1,11 +1,15 @@
 <?
 	$__lang = array(
 		'site_title' =>'HỘI PHẪU THUẬT THẦN KINH VIỆT NAM'
-		
+		,'home' =>'Trang chủ'
+		,'home_forum'=>'Trang chủ diễn đàn'
 		,'address'=>'Địa chỉ'		
 		,'tel'=>'Điên thoại'
 		,'email'=>'Email'
 		
+		,'search_result' =>'Kết quả tìm kiếm'
+		,'search_no_result' =>'Không tìm thấy thông tin.'
+				
 		,'contact_title'=>'LIÊN HỆ'
 		,'contact_address'=>'201C Nguyễn Chí Thanh - Phường 13 - Quận 5 - TP HCM'		
 		

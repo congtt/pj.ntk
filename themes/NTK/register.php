@@ -55,7 +55,7 @@
 		<tr>
 			<th><?php echo get_lang('register_province');?></td>
 			<td>
-				<select onchange="getHospital();"  name="province_id" id="province_id">
+				<select onchange="getHospital();" style="width:250px;" name="province_id" id="province_id">
 					<option value="">-- <?php echo get_lang('register_province_select');?> --</option>
 					<?php
 						foreach($province_list as $k=>$va){
@@ -70,7 +70,7 @@
 		<tr>
 			<th><?php echo get_lang('register_hospital');?></td>
 			<td>
-				<select name="hospital_id" id="hospital_id">
+				<select name="hospital_id" style="width:250px;" id="hospital_id">
 					<option value="">-- <?php echo get_lang('register_hospital_select');?> --</option>
 					<?php
 						foreach($hospital_list as $k=>$va){
@@ -85,7 +85,7 @@
 		<tr>
 			<th><?php echo get_lang('register_department');?></td>
 			<td>
-				<select name="department_id" id="department_id">
+				<select name="department_id" style="width:250px;" id="department_id">
 					<option value="">-- <?php echo get_lang('register_department_select');?> --</option>
 					<?php
 						foreach($department_list as $k=>$va){

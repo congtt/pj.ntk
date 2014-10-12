@@ -1,11 +1,14 @@
 <?
 	$__lang= array(
 		'site_title' =>'NEUROSURGICAL SOCIETY OF VIET NAM'
-		
+		,'home' =>'Home'
+		,'home_forum'=>'Home Forum'
 		,'address'=>'Address'
 		,'tel'=>'Tel'
 		,'email'=>'Email'
 		
+		,'search_result' =>'Search result'
+		,'search_no_result' =>'No result.'
 		
 		,'contact_title'=>'CONTACT'
 		,'contact_address'=>'201C Nguyen Chi Thanh - Ward 13 - District 5 - HCM City'

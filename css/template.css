@@ -134,8 +134,8 @@ div.buttonheading {
 	/* background: url(../images/content-bot.gif) no-repeat center bottom; */
 }
 
-#ja-current-content {
-	padding: 20px;
+.#ja-current-content {
+	padding: 0px 5px 5px 5px;
 	/* background: url(../images/content-top.gif) no-repeat center top;	 */
 }
 
@@ -1206,3 +1206,27 @@ text-align:justify;
 /*end forum*/
 
 
+
+
+
+
+.group_title {
+    background: url("images/ui-bg_glass_85_dfeffc_1x400.png") repeat-x scroll 50% 50% #dfeffc;
+    border-bottom: medium none;
+    border-radius: 3px;
+    color: #0000ff;
+    font-size: 14px;
+    height: 22px;
+    line-height: 20px;
+    margin-bottom: 5px;
+    padding: 0px 0 5px 20px;	
+}
+
+.group_area{
+	border:#ccc solid 1px;
+	margin-top:5px;
+}
+.group_content{	
+	margin:5px 5px 5px 10px;
+	
+}

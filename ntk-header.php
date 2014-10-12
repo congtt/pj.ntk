@@ -170,7 +170,24 @@ $(function(){
 <?
 $page_menu = page_menu(-1,0,'nav');
 echo $page_menu;
+
 ?>
+<div id="ja-mainnav" class="navigation" style="float:right;">
+  <ul class="nav">
+	<li>
+		<!--<a href="http://127.0.0.1/pj.ntk/ngoai-than-kinh/0/trang-chu.html" style="cursor:pointer" order="" uidtoken="" uid="" status="" note="" name="" token="" id="" title="" data-actor=""><span>TRANG CHỦ</span></a>-->
+		<form name="frm_search" id="frm_search" action="<?=$fullsite?>/0/0/tim-kiem.html" method="POST">
+			<div style="margin-top:5px;">
+				<input style="width:130px" type="text" name="txt_search"  id="txt_search" />
+				<div style="margin-top:0px; float:right;">
+					<img src="images/search.png" width="25px" height="25px" alt="&nbsp;"/>
+				</div>
+			</div>
+		</form>
+	</li>
+  </ul>
+</div>
+		  
 </div>
 
 </div>

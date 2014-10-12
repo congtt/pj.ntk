@@ -239,18 +239,25 @@ if($pageUrl=='dang-bai.html'){
 			$sql.="ORDER BY stt,create_date DESC LIMIT 0,10 ";
 			$result = $db->query($sql, true, "Query failed");
 			$hasrelated = false;
-			while ($aR = $db->fetchByAssoc($result)) {
+			$i = 0;
+			while ($aR = $db->fetchByAssoc($result)) {				
 				$new_id = $aR['id'];				
 				$content = $aR['content'.$lang];
 				$short = $aR['short'.$lang];
 				if($aR['title'.$lang]!='' && $content!=''){
 					if($new_id==$cla_nid){ // detail
-						
+						if($i==0){
+							$title_page = $aR['title'.$lang];
+							echo '<div class="group_area">
+							<div style="background-color:#71baf1;" class="lft-title">&nbsp;'.$title_page.'
+										</div>
+							<div class="group_content">';
+						}
 						$title_url = '';
 						$title_url = fnStrConvert($aR['title'.$lang]);
 						$title_url = str_replace(" ",'-',$title_url);
 						
-						echo '<div class="news_title_detail">'.$aR['title'.$lang].'</div>';				
+						//echo '<div class="news_title_detail">'.$aR['title'.$lang].'</div>';				
 						
 						echo '<div><div class="news_date">'.date2vndate($aR['create_date']).'</div><div class="news_download">';				
 						/*
@@ -292,8 +299,11 @@ if($pageUrl=='dang-bai.html'){
 						//echo '<hr size=2 style="color:#cccccc">';
 						$hasrelated = true;
 					}
+					$i++;
 				}
+				
 			}
+			echo "</div></div>";
 		}		
 	}
 	function page_news($home=false){
@@ -302,6 +312,14 @@ if($pageUrl=='dang-bai.html'){
 		if((int)$curPage<=0){
 			$curPage = 1;
 		}
+		if($home){
+			$title_page = get_lang('home_forum');
+			echo '<div class="group_area">
+			<div style="background-color:#71baf1;" class="lft-title">&nbsp;'.$title_page.'
+							</div>
+			<div class="group_content">';
+		}
+		
 		$lang = '_'.get_language();
 		if ((int)$cla_cid>0 || $home){
 			$PageSize = (int)$ts_config['max_news_page'];
@@ -321,12 +339,15 @@ if($pageUrl=='dang-bai.html'){
 			if($TotalRecord>0){
 				$TotalPage = intval($TotalRecord/$PageSize + ($TotalRecord%$PageSize > 0?1:0));						
 				$paging =  Paging2($TotalPage,$curPage,'form1');
-				$sql="SELECT * FROM ntk_forum_posts WHERE  status = 1 ";
+				$sql="SELECT t1.*,t2.category_name".$lang." 
+				FROM ntk_forum_posts t1 
+				left join ntk_forum_categories t2 on t1.cid = t2.category_id
+				WHERE  t1.status = 1 ";
 				if ((int)$cla_cid>0){
-					$sql .=" and cid=".$cla_cid." ";
+					$sql .=" and  t1.cid=".$cla_cid." ";
 				}
 				if ((int)$cla_nid>0)
-					$sql.=" AND id = ".$cla_nid;
+					$sql.=" AND  t1.id = ".$cla_nid;
 				if($home){
 					//$sql.=" AND show_index = 1 ";
 				}
@@ -340,6 +361,11 @@ if($pageUrl=='dang-bai.html'){
 				$has_data = false;
 				while ($aR = $db->fetchByAssoc($result)) {		
 					if($aR['title'.$lang]!='' && $aR['content'.$lang]!=''){
+						if($i==0){
+							if($home==false){
+								echo '<div class="group_area"><div style="background-color:#71baf1;" class="lft-title">'.$aR['category_name'.$lang].'</div><div class="group_content">';
+							}				
+						}						
 						$has_data = true;
 						$title_url = '';
 						$title_url = fnStrConvert($aR['title'.$lang]);
