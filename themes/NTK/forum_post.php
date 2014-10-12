@@ -47,8 +47,11 @@
 <style>
 	.table_info_1 th{font-weight:bold;}
 </style>
-<h1><?php echo get_lang('forum_post_title');?></h1>
 
+<div class="group_area">
+	<div style="background-color:#71baf1;" class="lft-title"><?php echo get_lang('forum_post_title');?>
+				</div>
+	<div class="group_content">
 <?php  if($post_success==true){ ?>
 	<div style="text-align:center;color:#0000FF;font-size:15px;"><?php echo get_lang('forum_post_success');?>
 		<a href="<? echo $link_detail; ?>"><? echo get_lang('forum_post_success_detail');?></a>
@@ -101,6 +104,7 @@
 										
 	</table>
 </form>
+</div></div>
 <?
 }
 

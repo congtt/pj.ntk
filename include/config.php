@@ -1,4 +1,6 @@
 <?
+error_reporting(E_ALL & ~E_NOTICE);
+error_reporting(0);
 if(!defined('TSEntry') || !TSEntry) die('Not A Valid Entry Point');
 define('ENV','DEV');
 if(ENV=='PRODUCTION'){

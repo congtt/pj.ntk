@@ -280,7 +280,7 @@ if($pageUrl=='dang-bai.html'){
 						}*/
 						echo '</div></div><br>';					
 						//echo '<div class="news_short"><div style="width:25px; float:left;">&nbsp;</div><b>'.$short.'</b></div><br>';
-						echo '<div class="news_short"><div style="width:25px; float:left;">&nbsp;</div>'.$content.'</div>';
+						echo '<div class="news_short"><div style="width:25px; float:left;">&nbsp;</div><pre>'.$content.'</pre></div>';
 						
 						//echo '<hr size=2 style="color:#cccccc">';						
 						if($new_id==$cla_nid){ // detail
@@ -409,6 +409,7 @@ if($pageUrl=='dang-bai.html'){
 					echo '<div style="margin-top:10px;margin-bottom:10px;">'.$paging.'</div>';
 				}
 			}
+			echo "</div></div>";
 		
 		}
 	}
