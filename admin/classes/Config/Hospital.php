@@ -222,18 +222,17 @@ class Config_Ext  extends Config
 					from ntk_hospital t1 
 					left join ntk_province t2  on t1.province_id = t2.id
 					where 1=1 ".$_Where." order by ".$_OrderBy." ".$_OrderDirection. " limit ".$start.",".$PageSize;					
+				
+					$resultTotal = $this->db->query($sSQLTotal, true, "Query failed");	
+					$aRTotal = $this->db->fetchByAssoc($resultTotal);
+					$this->TotalRecord = $aRTotal['TotalRecord'];
+					$this->TotalPage = intval($this->TotalRecord/$PageSize + ($this->TotalRecord%$PageSize > 0?1:0));						
+					
 				}
-				//echo($sSQL);
-				$result = $this->db->query($sSQL, true, "Query failed");	
-				$resultTotal = $this->db->query($sSQLTotal, true, "Query failed");	
-				$aRTotal = $this->db->fetchByAssoc($resultTotal);			
+				$result = $this->db->query($sSQL, true, "Query failed");										
 				$tooltip = '';
 				while ($aR = $this->db->fetchByAssoc($result))
-				{ 
-					if ($i==0){
-						$this->TotalRecord = $aRTotal['TotalRecord'];
-						$this->TotalPage = intval($this->TotalRecord/$PageSize + ($this->TotalRecord%$PageSize > 0?1:0));						
-					}
+				{
 					$_RowNum = $aR['RowNum'];
 					$_TotalRecord = $aR['TotalRecord'];
 					$STT = ($i+($this->PageIndex-1)*$PageSize)+1;	
@@ -252,9 +251,13 @@ class Config_Ext  extends Config
 						$inp_del.= '<img src="../images/delete.png" width=16 height=16  style="cursor:pointer;" onclick="dg_del('.$id.',\''.$tokenDelete.'\','.$STT.',\''.$CaptchaText.'\')">';
 						
 						$inp_del.= '</div>';
-				   }
-					$_dblist.='<td  style="text-align:left;width:60px">'.$inp_del.'</td>';	
-					$arr_status = array(1=>'<div class="icon_status_success"></div>',0=>'<div class="icon_status_fail"></div>');
+						$_dblist.='<td  style="text-align:left;width:60px">'.$inp_del.'</td>';	
+				   }					
+					if($mode_inpvl!='EXPORT'){
+						$arr_status = array(1=>'<div class="icon_status_success"></div>',0=>'<div class="icon_status_fail"></div>');
+					}else{
+						$arr_status = array(1=>'Active',0=>'InActive');
+					}					
 					foreach ($this->arrHeader as $field=>$name){					
 						if($field=='status'){
 							$aR[$field] = $arr_status[(int)$aR[$field]];
@@ -265,19 +268,16 @@ class Config_Ext  extends Config
 					}
 				  $_dblist.='</tr>';
 				  $i++;				
-				
-				}				
+				}
 				if ($i==0){
 					if ($this->TotalRecord==0)
 						{
 							$_dblist.='<tr><td colspan=100>Không tìm thấy thông tin</td></tr>';	
 						}	
-				}else{	}
-								
+				}else{	}								
 			}
 			catch (PDOException $ex)
-			{}			
-					
+			{}
 			$list[0] = $_dblist;
 			return $list;							
 		}
