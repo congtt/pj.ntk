@@ -1249,6 +1249,22 @@ class TSDefault
 		return $arr_result;
 	}
 	
+	function getListNewsCategories(){
+		$sSQL = " select t1.*
+			,t2.menu_name_vi as parent_menu_name_vi 
+			,t2.menu_name_en as parent_menu_name_en
+			from ntk_menus  t1 
+			left join ntk_menus t2 on t1.parent_id = t2.menu_id			
+			where t1.parent_id > 0
+		";
+		$result = $this->db->query($sSQL, true, "Query failed");
+		$arr_result = array();
+		while($aR = $this->db->fetchByAssoc($result)){
+			$arr_result[$aR['menu_id']] = $aR['parent_menu_name_vi'].'->'.$aR['menu_name_vi'].'('.$aR['parent_menu_name_en'].'->'.$aR['menu_name_en'].')';
+		}
+		return $arr_result;
+			
+	}
 	
 }
 
