@@ -20,7 +20,7 @@ if(ENV=='PRODUCTION'){
 	  ,'filenews_dir' => 'http://thankinh.ssdesk.com/images/newfiles'//
 	  ,'site_url_download_file'=>'http://thankinh.ssdesk.com/download_file.php?fn='
 	  ,'photo_url' => 'http://thankinh.ssdesk.com/photo'
-	  ,'upload_dir' => 'E://xampp//htdocs//pj.ntk//images//newfiles'//
+	  ,'upload_dir' => 'E:/xampp/htdocs/pj.ntk/images/newfiles/212/'//
 	  
 	  ,'max_news_page' => 10
 	  
@@ -53,7 +53,7 @@ if(ENV=='PRODUCTION'){
 	  ,'filenews_dir' => 'http://127.0.0.1/pj.ntk/images/newfiles'//
 	  ,'site_url_download_file'=>'http://127.0.0.1/pj.ntk/download_file.php?fn='
 	  ,'photo_url' => 'http://127.0.0.1/pj.ntk/photo'
-	  ,'upload_dir' => 'E://xampp//htdocs//pj.ntk//images//newfiles'//
+	  ,'upload_dir' => 'E:/xampp/htdocs/pj.ntk/images/newfiles/'//
 	  
 	  ,'max_news_page' => 10
 		

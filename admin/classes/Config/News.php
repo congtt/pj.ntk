@@ -8,6 +8,7 @@ class Config_Ext  extends Config
 	public $arrSortHeader=array();	
 	
 	function execute(){
+		global $ts_config;
 		$_Title = 'Quản lý Bài viết';
 		$_msg = null;
 		$captcha = new SimpleCaptcha();
@@ -20,7 +21,7 @@ class Config_Ext  extends Config
 		$flagCaptchaForm =  $captcha->CaptchaValidate($captchaForm);
 		$id = __post('Id');
 		/*===================================*/
-		if ($formmode!=''){
+		if ($formmode!=''){			
 			$menu_id=__post("menu_id");
 			$title_vi=__post("title_vi");
 			$title_en=__post("title_en");
@@ -32,14 +33,25 @@ class Config_Ext  extends Config
 			$keyword_en = __post("keyword_en");			
 			$status=(int)__post("status");
 			
-			$_msg  = $this->form_add($id,$menu_id,$title_vi,$title_en,$short_vi,$short_en,$content_vi,$content_en,$keyword_vi,$keyword_en,$status);
-			
-			if (!isset($_msg ))
+			$result_id  = $this->form_add($id,$menu_id,$title_vi,$title_en,$short_vi,$short_en,$content_vi,$content_en,$keyword_vi,$keyword_en,$status);
+			if((int)$id<=0){
+				$id = $result_id;
+			}
+			$result = UpLoadMultiFile($ts_config['upload_dir'],'filenew',$gen_name = false,$title='',$max_size=9048576);
+			$file_type_id = 7;
+			foreach($result as $k=>$va){
+				$sSQL = "insert into ntk_new_files(new_id,file_name,file_path,file_type_id,require_login)
+						values(".$id.",'".$va['name']."','".$va['file_name']."',".$file_type_id.",1)
+				";
+				$re = $this->db->query($sSQL, true, "Query failed");
+			}
+			if ($result_id>0)
 			{
+				$_msg['result'] = 1;
+			}else{
 				$_msg['result'] = -20;
-			}			
-		}		
-
+			}	
+		}
 		$list_form = new XTemplate('Config/News.html');	
 		$left_menu= $this->rmenu();
 		$list_form->assign('slide_bar',$this->slide_bar($left_menu));
@@ -64,7 +76,7 @@ class Config_Ext  extends Config
 			}
 		}
 		/****** Delete (8) - Export (16) ***********************************/
-
+		
 		if ($this->acl_per(16)){		
 			$arr_attr_btnexport = array('style'=>'','onclick'=>'sbm_form(16,\''.$CaptchaText.'\')');
 			$inp_btnexport = addInput2('button','btnexport',$btnexport,$arr_attr_btnexport,$list_form,'Xuất Excel');
@@ -251,7 +263,7 @@ class Config_Ext  extends Config
 						$tokenDelete = $this->md5sum($this->prefix['delete'].$id);
 						$inp_del.= '	<input  type=checkbox value="'.$id.'|'.$tokenDelete.'" name="chk[]" id="chk_'.$STT.'">';
 						$tokenEdit = $this->md5sum($this->prefix['edit'].$id);
-						$inp_del.= '	<img src="../images/edit2.png" width=16 height=16 style="cursor:pointer;margin-right:5px" onclick="dg_add(\'Config\',\'NewsAdd\','.$id.',\''.$tokenEdit.'\',\'Cập nhật thông tin\',600,500)">';
+						$inp_del.= '	<img src="../images/edit2.png" width=16 height=16 style="cursor:pointer;margin-right:5px" onclick="dg_add(\'Config\',\'NewsAdd\','.$id.',\''.$tokenEdit.'\',\'Cập nhật thông tin\',800,600)">';
 						$inp_del.= '<img src="../images/delete.png" width=16 height=16  style="cursor:pointer;" onclick="dg_del('.$id.',\''.$tokenDelete.'\','.$STT.',\''.$CaptchaText.'\')">';
 						$inp_del.= '</div>';
 						$_dblist.='<td  nowrap style="text-align:left;width:60px">'.$inp_del.'</td>';	
@@ -314,12 +326,22 @@ class Config_Ext  extends Config
 			,keyword_en = N'".$keyword_en."'
 			, `status` = ".(int)$status."
 			where id = ".$id;
+			$result = $this->db->query($sSQL, true, "Query failed");
+			return 1;
 		}else{
-			$sSQL = "insert into ntk_news (cid,title_vi,title_en,short_vi,short_en,content_vi,content_en,`status`) 
-			values(".(int)$menu_id.",N'".$title_vi."',N'".$title_en."',N'".$short_vi."',N'".$short_en."',N'".$content_vi."',N'".$content_en."',N'".$keyword_vi."',N'".$keyword_en."',".$status.") ";
+			$sSQL = "insert into ntk_news (cid,title_vi,title_en,short_vi,short_en,content_vi,content_en,keyword_vi,keyword_en,`status`) 
+			values(".(int)$menu_id.",N'".$title_vi."',N'".$title_en."',N'".$short_vi."',N'".$short_en."',N'".$content_vi."',N'".$content_en."',N'".$keyword_vi."',N'".$keyword_en."',".$status.")
+			";
+			$sSQLID = "select id from ntk_news where cid = ".(int)$menu_id." and title_vi = N'".$title_vi."' order by id desc limit 0,1
+			";
+			
+			$result = $this->db->query($sSQL, true, "Query failed");
+			$resultID = $this->db->query($sSQLID, true, "Query failed");
+			
+			$aR = $this->db->fetchByAssoc($resultID);	
+			return (int)$aR['id'];
 		}
-		$result = $this->db->query($sSQL, true, "Query failed");	
-		return 1;
+		return -1;
 	}
 }	
 

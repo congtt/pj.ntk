@@ -917,7 +917,7 @@ class TSDefault
 
 	//_Menu2(-1,0,'');
 	function _Menu2($parent_id=-1,$step=0,$name){		
-		
+		/*
 		$RoleData = $_SESSION[_PLATFORM_]["CLA"]['RoleData'];
 		if (!isset($_SESSION[_PLATFORM_]["CLA"]['TopLeftLinkType']) || (int)$_SESSION[_PLATFORM_]["CLA"]['TopLeftLinkType']==0){
 			$_SESSION[_PLATFORM_]["CLA"]['TopLeftLinkType'] = 1;
@@ -964,7 +964,7 @@ class TSDefault
 			$menu1=str_repeat(' ',$step*10).'</ul>'.chr(13);
 			if ($menu!='')
 					$menu.=$menu1;
-		}
+		}*/
 		return $menu;
 	}	
 	

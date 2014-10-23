@@ -297,7 +297,7 @@ class MssqlManager extends DBManager
         //$GLOBALS['log']->info('Query:' . $sql);
         $this->checkConnection();
         $this->query_time = microtime(true);
-        $sql = anti_sql($sql);
+        ///$sql = anti_sql($sql);
         // Bug 34892 - Clear out previous error message by checking the @@ERROR global variable
         $errorNumberHandle = mssql_query("SELECT @@ERROR",$this->database);
 		$errorNumber = array_shift(mssql_fetch_row($errorNumberHandle));

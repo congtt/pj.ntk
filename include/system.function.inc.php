@@ -1009,4 +1009,108 @@ function to_html($string, $encode=true){
 		return $_msg;
 	}
 	
+	function UpLoadMultiFile($upload_dir,$name,$gen_name = false,$title='',$max_size=1048576){// max size: 1mb		
+		$i = 0;
+		foreach($_FILES[$name]['name'] as $k=>$va){			
+			$file_name = $_FILES[$name]["name"][$i];	
+			$file_style = $_FILES[$name]["type"][$i];			
+			$result[$i]['name'] = $file_name;
+			if($file_name != "")
+			{
+				if(strlen($info) > 256)
+				{
+					$result[$i]['msg'] = "File ".$file_name." không hợp lệ.";				
+				}
+				else
+				{				
+					$allowedExts = array("pdf","jpg","png","rar","doc","docx","xls","xlsx","csv","ppt","pptx");
+					$extension = end(explode(".", $_FILES[$name]["name"][$i]));
+					$extension = strtolower($extension);				
+					if (/*(			
+						($_FILES[$name]["type"][$i] == "application/pdf")
+					)
+					&& */($_FILES[$name]["size"][$i] < $max_size)// KB
+					&& in_array($extension, $allowedExts))
+					{	
+						if($gen_name){
+							$str_time = time();
+							$file_name_re = "file_".$i."_".$title."_".$str_time.".".$extension;				
+						}else{
+							if($title==''){
+								$title = "non_name_".$i."_".time();
+							}
+							$file_name_re =$title.".".$extension;				
+						}
+						$source = $_FILES[$name]["tmp_name"][$i];
+						$des = $upload_dir.$file_name_re;				
+						//echo $source." , ".$des."<br>";
+						if(!move_uploaded_file($source,$des)){
+							$result[$i]['msg'] = 'File '.$file_name.' không hợp lệ';
+							$result[$i]['result']	= -1;						
+						}else{
+							$result[$i]['result'] = 1;
+							$result[$i]['msg'] ='Tải file thành công.';
+							$result[$i]['file_name'] =$file_name_re;
+						}
+					}else{
+						$max_size_str = round($max_size/(1024*1024),2);
+						$result[$i]['msg'] = "File ".$file_name." không hợp lệ. Dung luợng file tối da ".$max_size_str." Mb.";
+					}
+				}				
+			}
+			$i++;
+		}
+		return $result;
+	}
+	
+	function UpLoadFile($upload_dir,$name,$gen_name = false,$title='',$max_size=1048576){// max size: 1mb		
+		$file_name = $_FILES[$name]["name"];	
+		$file_style = $_FILES[$name]["type"];
+		$result['result'] = -1;
+		$result['msg'] = 'Không tồn tại file upload.';		
+		if($file_name != "")
+		{
+			if(strlen($info) > 256)
+			{
+				$result['msg'] = "File ".$file_name." không hợp lệ.";				
+			}
+			else
+			{				
+				$allowedExts = array("pdf");
+				$extension = end(explode(".", $_FILES[$name]["name"]));
+				$extension = strtolower($extension);				
+				if ((				
+					($_FILES[$name]["type"] == "application/pdf")
+				)
+				&& ($_FILES[$name]["size"] < $max_size)// KB
+				&& in_array($extension, $allowedExts))
+				{	
+					if($gen_name){
+						$str_time = time();
+						$file_name_re = "file_".$title."_".$str_time.".".$extension;				
+					}else{
+						if($title==''){
+							$title = "non_name_".time();
+						}
+						$file_name_re =$title.".".$extension;				
+					}
+					$source = $_FILES[$name]["tmp_name"];
+					$des = $upload_dir.$file_name_re;				
+					if(!move_uploaded_file($source,$des)){
+						$result['msg'] = 'File '.$file_name.' không hợp lệ';
+						return $result;
+					}
+					$result['result'] = 1;
+					$result['msg'] ='Tải file thành công.';
+					$result['file_name'] =$file_name_re;
+				}else{
+					$max_size_str = round($max_size/(1024*1024),2);
+					$result['msg'] = "File ".$file_name." không hợp lệ. Dung luợng file tối da ".$max_size_str." Mb.";
+				}
+			}				
+		}
+		return $result;
+	}
+	
+	
 ?>

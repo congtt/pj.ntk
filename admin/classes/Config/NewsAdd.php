@@ -8,6 +8,7 @@ class Config_Ext  extends Config
 
 
 		$Id= __post("Id");
+		$list_form = new XTemplate('Config/NewsAdd.html');
 		if ((int)$Id>0)
 		{
 			$token= __post("token");
@@ -15,8 +16,16 @@ class Config_Ext  extends Config
 			foreach($data as $key=>$value){
 				$$key=$value;
 			}
+			
+			$sSQL = "select * from ntk_new_files where new_id = ".(int)$Id;
+			$result = $this->db->query($sSQL, true, "Query failed");	
+			while ($aR = $this->db->fetchByAssoc($result)){
+				$list_form->assign('file',$aR);
+				$list_form->parse('main.file');
+			}
+			
 		}
-		$list_form = new XTemplate('Config/NewsAdd.html');		
+				
 		
 		$arr_info_menu_id = $this->getListNewsCategories();
 		$Attr_menu_id = array('rel'=>'{Require:\'R\',Alert:\'Vui lòng chọn danh mục \'}','style'=>'width:400px;');
