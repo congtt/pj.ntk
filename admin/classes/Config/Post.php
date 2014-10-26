@@ -8,7 +8,8 @@ class Config_Ext  extends Config
 	public $arrSortHeader=array();	
 	
 	function execute(){
-		$_Title = 'Quản lý Bệnh viện';
+		global $ts_config;
+		$_Title = 'Forum - Quản lý Bài đăng';
 		$_msg = null;
 		$captcha = new SimpleCaptcha();
 		$formmode=$_POST["formmode"];
@@ -20,21 +21,40 @@ class Config_Ext  extends Config
 		$flagCaptchaForm =  $captcha->CaptchaValidate($captchaForm);
 		$id = __post('Id');
 		/*===================================*/
-		if ($formmode!=''){
-			$name=__post("name");
-			$province_id=__post("province_id");
+		if ($formmode!=''){			
+			$menu_id=__post("menu_id");
+			$title_vi=__post("title_vi");
+			$title_en=__post("title_en");
+			$short_vi=__post("short_vi");
+			$short_en=__post("short_en");
+			$content_vi=__post("content_vi");
+			$content_en=__post("content_en");
+			$keyword_vi = __post("keyword_vi");
+			$keyword_en = __post("keyword_en");			
 			$status=(int)__post("status");
-			$order=(int)__post("order");
+			$show_index=(int)__post("show_index");
 			
-			$_msg  = $this->form_add($id,$province_id,$name,$status,$order);
-			
-			if (!isset($_msg ))
+			$result_id  = $this->form_add($id,$menu_id,$title_vi,$title_en,$short_vi,$short_en,$content_vi,$content_en,$keyword_vi,$keyword_en,$status,$show_index);
+			if((int)$id<=0){
+				$id = $result_id;
+			}
+			/*
+			$result = UpLoadMultiFile($ts_config['upload_dir'],'filenew',$gen_name = false,$title='',$max_size=9048576);
+			$file_type_id = 7;
+			foreach($result as $k=>$va){
+				$sSQL = "insert into ntk_new_files(new_id,file_name,file_path,file_type_id,require_login)
+						values(".$id.",'".$va['name']."','".$va['file_name']."',".$file_type_id.",1)
+				";
+				$re = $this->db->query($sSQL, true, "Query failed");
+			}*/
+			if ($result_id>0)
 			{
+				$_msg['result'] = 1;
+			}else{
 				$_msg['result'] = -20;
-			}			
-		}		
-
-		$list_form = new XTemplate('Config/Hospital.html');	
+			}	
+		}
+		$list_form = new XTemplate('Config/Post.html');	
 		$left_menu= $this->rmenu();
 		$list_form->assign('slide_bar',$this->slide_bar($left_menu));
 		$list_form->assign('tabs'	,  	$this->set_tabs());
@@ -58,7 +78,7 @@ class Config_Ext  extends Config
 			}
 		}
 		/****** Delete (8) - Export (16) ***********************************/
-
+		
 		if ($this->acl_per(16)){		
 			$arr_attr_btnexport = array('style'=>'','onclick'=>'sbm_form(16,\''.$CaptchaText.'\')');
 			$inp_btnexport = addInput2('button','btnexport',$btnexport,$arr_attr_btnexport,$list_form,'Xuất Excel');
@@ -71,7 +91,8 @@ class Config_Ext  extends Config
 		$Attr_keyword = array('rel1'=>'{Require:\'R\',Alert:\'Vui lòng nhập Keyword  \'}','style'=>'');
 		$txt_keyword = addInput('text','keyword',$keyword,$Attr_keyword,$list_form);
 		
-		$infosk[0]=array('t1.name'=>'Tên bệnh viện');
+		$infosk[0]=array('t1.title_vi'=>'Tên bài đăng(vi)');
+		$infosk[1]=array('t1.title_en'=>'Tên bài đăng(en)');
 		$vlkey = array_keys($infosk[$selectkeyword]);
 		
 		//list($vlkey, $vlval) = each();
@@ -79,17 +100,20 @@ class Config_Ext  extends Config
 		$txt_selectkeyword = addSelectList5('selectkeyword',$infosk,NULL,$Attr_selectkeyword,$list_form,$selectkeyword);
 		
 		if ($keyword!='' && $vlkey[0]!='')
-			$filter = ' and '.$vlkey[0]." like N'%$keyword%'";		
-		$s_province_id = (int)__post('s_province_id');
-		$s_status = __post('s_status');
-		
-		if($s_province_id>0){
-			$filter = ' and t1.province_id = '.$s_province_id;		
-		}
-	
-		if($s_status!=""){
-			$filter = ' and t1.status = '.(int)$s_status;
+			$filter .= ' and '.$vlkey[0]." like N'%$keyword%'";		
+		$category_id = (int)__post('category_id');
+		$status = __post('status');
+		$show_index = __post('show_index');	
+		//echo $filter;
+		if($category_id>0){
+			$filter .= ' and t1.cid = '.$category_id;		
 		}	
+		if($status!=""){
+			$filter .= ' and t1.status = '.(int)$status;
+		}
+		if($show_index!=""){
+			$filter .= ' and t1.show_index = '.(int)$show_index;
+		}		
 		//-----------------------------------------//
 		$gridview='';
 		$gridview.= $this->PageHeader();
@@ -100,15 +124,20 @@ class Config_Ext  extends Config
 		$gridview.= $exportGrid;		
 		$gridview.=$this->setFooter();
 		$gridview.=$this->setPaging();	
+					
+		$arr_info_show_index = array(1=>'Hiển thị trang chủ',0=>'Không hiển thị trang chủ');
+		$Attr_show_index = array('rel1'=>'{Require:\'R\',Alert:\'Vui lòng chọn trạng thái \'}','style'=>'');
+		$txt_show_index = addSelectList2('show_index',$arr_info_show_index,'-- Trang chủ --',$Attr_show_index,$list_form,$show_index);
 		
-		$arr_info_province_id = $this->getListProvince();
-		$Attr_province_id = array('style'=>'');
-		$txt_province_id = addSelectList2('s_province_id',$arr_info_province_id,"-- Tất cả --",$Attr_province_id,$list_form,$s_province_id);
+		$arr_info_category_id = $this->getListPostCategories();
+		$Attr_category_id = array('rel1'=>'{Require:\'R\',Alert:\'Vui lòng chọn danh mục \'}','style'=>'width:400px;');
+		$txt_category_id = addSelectList2('category_id',$arr_info_category_id,'-- Danh mục --',$Attr_category_id,$list_form,$category_id);
 		
 		$arr_info_status = array(1=>'Active',0=>'InActive');
-		$Attr_status = array('style'=>'');
-		$txt_status = addSelectList2('s_status',$arr_info_status,"-- Tất cả --",$Attr_status,$list_form,$s_status);
+		$Attr_status = array('rel1'=>'{Require:\'R\',Alert:\'Vui lòng chọn trạng thái \'}','style'=>'');
+		$txt_status = addSelectList2('status',$arr_info_status,'-- Trạng thái --',$Attr_status,$list_form,$status);
 			
+		
 		if($mode_inpvl ==='EXPORT'  && $this->acl_per(16))
 			{			
 				$this->ExportToExcel(fnStrConvert($_Title),strip_tags($exportGrid,'<table><tr><td><th>'));		
@@ -135,8 +164,8 @@ class Config_Ext  extends Config
 
 	function rmenu(){
 		//1: view - 2:add - 4:edit - 8:delete - 16:export				
-		$rmenu = '<li><a href="?module=Config&action=Hospital">Danh sách </a></li>' ;
-		$rmenu_add= '<li><a href="javascript:dg_add(\'Config\',\'HospitalAdd\',0,\'\',\'Thêm mới\',400,300)">Tạo mới</a></li>' ;
+		$rmenu = '<li><a href="?module=Config&action=Post">Danh sách </a></li>' ;
+		$rmenu_add= '<li><a href="javascript:dg_add(\'Config\',\'PostAdd\',0,\'\',\'Thêm mới\',800,600)">Tạo mới</a></li>' ;
 		if ($this->acl_per(2))
 			$rmenu.=$rmenu_add;	
 		$rmenu.= $this->set_leftmenu();
@@ -151,9 +180,9 @@ class Config_Ext  extends Config
 
 	function setHeader(){		
 		if ($this->pagemode=='EXPORT' || !$this->acl_per(16)){
-			$this->arrHeader = array('STT'=>'STT','id'=>'ID','province_name'=>'Tỉnh thành','name'=>'Tên bệnh viện','status'=>'Trạng thái','order'=>'Thứ tự');
+			$this->arrHeader = array('STT'=>'STT','id'=>'ID','cname'=>'Danh mục(vi)','cname_en'=>'Danh mục(en)','title_vi'=>'Tiêu đề(vi)','title_en'=>'Tiêu đề(en)','short_vi'=>'Mô tả ngắn(vi)','short_en'=>'Mô tả ngắn(en)','content_vi'=>'Nội dung(vi)','content_en'=>'Nội dung(en)','status'=>'Trạng thái','show_index'=>'Trang chủ');
 		}else{
-			$this->arrHeader = array('STT'=>'<input type=checkbox id=check_all name=check_all>','id'=>'ID','province_name'=>'Tỉnh thành','name'=>'Tên bệnh viện','status'=>'Trạng thái','order'=>'Thứ tự');
+			$this->arrHeader = array('STT'=>'<input type=checkbox id=check_all name=check_all>','id'=>'ID','cname'=>'Danh mục(vi)','cname_en'=>'Danh mục(en)','title_vi'=>'Tiêu đề(vi)','title_en'=>'Tiêu đề(en)','short_vi'=>'Mô tả ngắn(vi)','short_en'=>'Mô tả ngắn(en)','content_vi'=>'Nội dung(vi)','content_en'=>'Nội dung(en)','status'=>'Trạng thái','show_index'=>'Trang chủ');
 		}
 		$this->arrSortHeader = array('0');
 		$SortImage[$_POST['_SortOrderBy']]='&nbsp;<img src="images/order_'.$_POST['_OrderDirection'].'.gif" alt="'.$_POST['_OrderDirection'].'" align="absmiddle" height=7 width=7>';
@@ -176,6 +205,7 @@ class Config_Ext  extends Config
 			return $_Header;
 		}
 		function setList($CaptchaText,$filter,$conpany_list){
+		global $ts_config;		
 			$result = NULL;	
 			$PageSize=10;		
 			$this->PageIndex = isset($_POST["page"]) ? $_POST["page"] : 1;		
@@ -194,8 +224,8 @@ class Config_Ext  extends Config
 			
 			if (trim($_SortOrderBy)=='' || $_FlgExport)
 			{
-				$_OrderBy = 'name';
-				$_OrderDirection = 'asc';	
+				$_OrderBy = 'id';
+				$_OrderDirection = 'desc';	
 			}
 			else
 			{
@@ -203,26 +233,28 @@ class Config_Ext  extends Config
 			}		
 			// ===== order =============/				
 			
-			$_Where=" and 1=1  and status <> -13 ".$filter;
+			$_Where=" and 1=1  and t1.status <> -13 ".$filter;
 			
 			try
 			{	
 				$_dblist='';			
 				$i=0;
 				$start = ($this->PageIndex-1)*$PageSize;
-				if ($mode_inpvl=='EXPORT')	
-					$sSQL = "select t1.*,t2.name as province_name from ntk_hospital  t1 
-					left join ntk_province t2  on t1.province_id = t2.id
+				if ($mode_inpvl=='EXPORT')
+					$sSQL = "select t1.*,t2.category_name_vi as cname, t2.category_name_en as cname_en
+					from ntk_forum_posts  t1 
+					left join ntk_forum_categories t2  on t1.cid = t2.category_id
 					where 1=1 ".$_Where." order by ".$_OrderBy." ".$_OrderDirection;					
 				else{
-					$sSQLTotal = "select count(t1.id) as TotalRecord from ntk_hospital t1
-					left join ntk_province t2 on t1.province_id = t2.id
+					$sSQLTotal = "select count(t1.id) as TotalRecord 
+					from ntk_forum_posts t1
+					left join ntk_forum_categories t2 on  t1.cid = t2.category_id
 					where 1=1 ".$_Where;
-					$sSQL = "select t1.*,t2.name as province_name 
-					from ntk_hospital t1 
-					left join ntk_province t2  on t1.province_id = t2.id
+					$sSQL = "select t1.*,t2.category_name_vi as cname, t2.category_name_en as cname_en
+					from ntk_forum_posts  t1 
+					left join ntk_forum_categories t2  on t1.cid = t2.category_id
 					where 1=1 ".$_Where." order by ".$_OrderBy." ".$_OrderDirection. " limit ".$start.",".$PageSize;					
-				
+					//echo $sSQL;
 					$resultTotal = $this->db->query($sSQLTotal, true, "Query failed");	
 					$aRTotal = $this->db->fetchByAssoc($resultTotal);
 					$this->TotalRecord = $aRTotal['TotalRecord'];
@@ -231,6 +263,7 @@ class Config_Ext  extends Config
 				}
 				$result = $this->db->query($sSQL, true, "Query failed");										
 				$tooltip = '';
+				$arr_wrap = array('content_vi','content_en','short_vi','short_en','title_vi','title_en');
 				while ($aR = $this->db->fetchByAssoc($result))
 				{
 					$_RowNum = $aR['RowNum'];
@@ -238,36 +271,44 @@ class Config_Ext  extends Config
 					$STT = ($i+($this->PageIndex-1)*$PageSize)+1;	
 					$id = $aR['id'];
 					$_dblist.='<tr>';										
-					if ($mode_inpvl=='EXPORT'){						
+					if ($mode_inpvl=='EXPORT'){					
 						$_dblist.='<td  style="text-align:center" width=50>'.$STT.'</td>';	
 					}else{
-						$inp_del = '<div title="" class="status_box '.$status_class_name.'">';					
+						$inp_del = '<div  title="" class="status_box '.$status_class_name.'">';					
 						$tokenDelete = $this->md5sum($this->prefix['delete'].$id);
 						$inp_del.= '	<input  type=checkbox value="'.$id.'|'.$tokenDelete.'" name="chk[]" id="chk_'.$STT.'">';
-						
 						$tokenEdit = $this->md5sum($this->prefix['edit'].$id);
-						$inp_del.= '	<img src="../images/edit2.png" width=16 height=16 style="cursor:pointer;margin-right:5px" onclick="dg_add(\'Config\',\'HospitalAdd\','.$id.',\''.$tokenEdit.'\',\'Cập nhật thông tin\',400,300)">';
-					
+						$inp_del.= '	<img src="../images/edit2.png" width=16 height=16 style="cursor:pointer;margin-right:5px" onclick="dg_add(\'Config\',\'PostAdd\','.$id.',\''.$tokenEdit.'\',\'Cập nhật thông tin\',800,600)">';
 						$inp_del.= '<img src="../images/delete.png" width=16 height=16  style="cursor:pointer;" onclick="dg_del('.$id.',\''.$tokenDelete.'\','.$STT.',\''.$CaptchaText.'\')">';
-						
+						$inp_del.= '<a href="'.$ts_config['site_url_admin'].'?module=Config&action=PostComment&post_id='.$id.'"><img src="../images/comment.png" width=16 height=16  style="cursor:pointer;"></a>';
 						$inp_del.= '</div>';
-						$_dblist.='<td  style="text-align:left;width:60px">'.$inp_del.'</td>';	
-				   }					
+						$_dblist.='<td  nowrap style="text-align:left;width:60px">'.$inp_del.'</td>';	
+				   }				
 					if($mode_inpvl!='EXPORT'){
 						$arr_status = array(1=>'<div class="icon_status_success"></div>',0=>'<div class="icon_status_fail"></div>');
 					}else{
 						$arr_status = array(1=>'Active',0=>'InActive');
 					}					
 					foreach ($this->arrHeader as $field=>$name){					
-						if($field=='status'){
+						if($field=='status' || $field=='show_index'){
 							$aR[$field] = $arr_status[(int)$aR[$field]];
 						}
 						if ($field!='STT'){
-							$_dblist.='<td  style="text-align:left">'.$aR[$field].'</td>';
+							if(in_array($field,$arr_wrap)){								
+								$len = strlen($aR[$field]);
+								if( $len > 50 ){
+									$data = substr($aR[$field],0,50).' ....';
+								}else{
+									$data = $aR[$field];
+								}
+								$_dblist.='<td title = "'.$aR[$field].'" style="text-align:left"><pre>'.$data.'</pre></td>';
+							}else{
+								$_dblist.='<td  style="text-align:left">'.$aR[$field].'</td>';
+							}
 						}
 					}
 				  $_dblist.='</tr>';
-				  $i++;				
+				  $i++;
 				}
 				if ($i==0){
 					if ($this->TotalRecord==0)
@@ -282,19 +323,44 @@ class Config_Ext  extends Config
 			return $list;							
 		}
 	function form_delete($id){
-		$sSQL="update ntk_hospital set status = -13 where id in(".anti_post($id).") ";	
+		$sSQL="update ntk_forum_posts set status = -13 where id in(".anti_post($id).") ";	
 		$result = $this->db->query($sSQL, true, "Query failed");	
 		$aR = $this->db->fetchByAssoc($result);
 		return 1;
 	}
-	function form_add($id,$province_id,$name,$status,$order){
+	function form_add($id,$menu_id,$title_vi,$title_en,$short_vi,$short_en,$content_vi,$content_en,$keyword_vi,$keyword_en,$status,$show_index){
 		if($id>0){
-			$sSQL=" update ntk_hospital set name='".$name."', `status` = ".$status.", `order` = ".$order.", province_id = ".$province_id." where id = ".$id;
+			$sSQL=" update ntk_forum_posts 
+			set cid=".$menu_id."			
+			,title_vi = N'".$title_vi."'
+			,title_en = N'".$title_en."'
+			,short_vi = N'".$short_vi."'
+			,short_en = N'".$short_en."'
+			,content_vi = N'".$content_vi."'
+			,content_en = N'".$content_en."'
+			,keyword_vi = N'".$keyword_vi."'
+			,keyword_en = N'".$keyword_en."'
+			, `status` = ".(int)$status."
+			, `show_index` = ".(int)$show_index."
+			,modify_by = 'admin'
+			,modify_date = NOW()
+			where id = ".$id;
+			//echo "<hr>".$sSQL."<hr>";
+			$result = $this->db->query($sSQL, true, "Query failed");
+			return 1;
 		}else{
-			$sSQL = "insert into ntk_hospital (province_id,name,`status`,`order`) values(".$province_id.",'".$name."',".$status.",".$order.") ";
-		}		
-		$result = $this->db->query($sSQL, true, "Query failed");	
-		return 1;
+			$sSQL = "insert into ntk_forum_posts (cid,title_vi,title_en,short_vi,short_en,content_vi,content_en,keyword_vi,keyword_en,`status`,`show_index`,create_date,create_date) 
+			values(".(int)$menu_id.",N'".$title_vi."',N'".$title_en."',N'".$short_vi."',N'".$short_en."',N'".$content_vi."',N'".$content_en."',N'".$keyword_vi."',N'".$keyword_en."',".$status.",".$show_index.",'admin',NOW())
+			";
+			$sSQLID = "select id from ntk_forum_posts where cid = ".(int)$menu_id." and title_vi = N'".$title_vi."' order by id desc limit 0,1
+			";			
+			$result = $this->db->query($sSQL, true, "Query failed");
+			$resultID = $this->db->query($sSQLID, true, "Query failed");
+			
+			$aR = $this->db->fetchByAssoc($resultID);	
+			return (int)$aR['id'];
+		}
+		return -1;
 	}
 }	
 

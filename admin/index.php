@@ -13,26 +13,31 @@ $cla_action = $_GET['action'];
 
 require_once('include/init.admin.inc.php');
 
-if ($no_body!='true' && $cla->no_body()!=true){require_once(admin_dir.'header.php');}
-			if (is_admin()){				
-				if (is_file(admin_dir."classes/".$cla_module."/{$cla_action}.php")){				
-					require_once(admin_dir."classes/".$cla_module."/{$cla_action}.php");
-				}else{		
-					header("location:do?module=Error&action=ViewError&err=1&md=".$cla_module."&mdact=".$cla_action);
-					ts_die("Error: Action <a href=do?module=".$cla_module."&action=".$cla_action.">".$cla_action."</a> does not exist.");
+if ($no_body!='true' && $cla->no_body()!=true){require_once(admin_dir.'header.php');}			
+			if(is_login()){
+				if (is_admin()){
+					if (is_file(admin_dir."classes/".$cla_module."/{$cla_action}.php")){				
+						require_once(admin_dir."classes/".$cla_module."/{$cla_action}.php");
+					}else{		
+						header("location:do?module=Error&action=ViewError&err=1&md=".$cla_module."&mdact=".$cla_action);
+						ts_die("Error: Action <a href=do?module=".$cla_module."&action=".$cla_action.">".$cla_action."</a> does not exist.");
+					}
+				} else {			
+					$cla->error();
+					if ($cla_module=='Error'){					
+						require_once(admin_dir."classes/".$cla_module."/{$cla_action}.php");
+					}
+					else
+					{
+						require_once(admin_dir."classes/Login/Login.class.php");
+						require_once(admin_dir."classes/Login/signin.php");
+						
+					}
 				}
-			} else {				
-				$cla->error();
-				if ($cla_module=='Error'){					
-					require_once(admin_dir."classes/".$cla_module."/{$cla_action}.php");
-				}
-				else
-				{
-					require_once(admin_dir."classes/Login/Login.class.php");
-					require_once(admin_dir."classes/Login/signin.php");
-					
-				}
-			}				
+			}else{
+				require_once(admin_dir."classes/Login/Login.class.php");
+				require_once(admin_dir."classes/Login/signin.php");
+			}			
 		
 if ($no_body!='true'){require_once(admin_dir.'footer.php');}
 

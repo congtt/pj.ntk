@@ -4,8 +4,8 @@ class Login_Ext  extends Login
 {
 	function execute(){
 		global $ts_config;
-
-				echo "<h1>LOGIN</h1>";
+				
+						
 				$username=__post("username");
 				$password=__post("password");
 				if ($username!=''){

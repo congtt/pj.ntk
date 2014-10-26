@@ -16,7 +16,8 @@ if(ENV=='PRODUCTION'){
 				'db_name' => 'thankinh_ssdesk_com',
 				'db_type' => 'mysqli',
 			  )
-	  ,'site_url' => 'http://thankinh.ssdesk.com/'	 
+	  ,'site_url' => 'http://thankinh.ssdesk.com/'
+	  ,'site_url_admin' => 'http://thankinh.ssdesk.com/admin'	 	  
 	  ,'filenews_dir' => 'http://thankinh.ssdesk.com/images/newfiles'//
 	  ,'site_url_download_file'=>'http://thankinh.ssdesk.com/download_file.php?fn='
 	  ,'photo_url' => 'http://thankinh.ssdesk.com/photo'
@@ -50,6 +51,7 @@ if(ENV=='PRODUCTION'){
 				'db_type' => 'mysqli',
 			  )
 	  ,'site_url' => 'http://127.0.0.1/pj.ntk'	 
+	  ,'site_url_admin' => 'http://127.0.0.1/pj.ntk/admin'	 	  
 	  ,'filenews_dir' => 'http://127.0.0.1/pj.ntk/images/newfiles'//
 	  ,'site_url_download_file'=>'http://127.0.0.1/pj.ntk/download_file.php?fn='
 	  ,'photo_url' => 'http://127.0.0.1/pj.ntk/photo'

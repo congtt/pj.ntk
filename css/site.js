@@ -134,6 +134,20 @@
 				$('#no_body').val('false');			
 				btn_submit('#form1')
 			}
+		}else if (num==9){
+			if (confirm('Bạn có thật sự muốn Active thông tin này ?'))
+			{
+				$('#mode_inpvl').val('ACTIVE');
+				$('#no_body').val('false');			
+				btn_submit('#form1')
+			}
+		}else if (num==10){
+			if (confirm('Bạn có thật sự muốn InActive thông tin này ?'))
+			{
+				$('#mode_inpvl').val('INACTIVE');
+				$('#no_body').val('false');			
+				btn_submit('#form1')
+			}
 		}
 		else if (num==05){	
 			btn_submit('#form2')

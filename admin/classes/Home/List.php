@@ -2,7 +2,8 @@
 class Home_Ext  extends Home
 {
 	function execute(){
-		
+		global $ts_config;
+		header('location:'.$ts_config['site_url_admin'].'?module=Config&action=News');die("end");
 		if ((int)__post2('type')>0){
 			$_SESSION[_PLATFORM_]["CLA"]['TopLeftLinkType'] = (int)__post2('type');
 		}

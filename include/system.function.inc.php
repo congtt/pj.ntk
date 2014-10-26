@@ -118,7 +118,7 @@
 	}
 	
 	
-	function is_login(){
+	function is_login(){		
 		if($_SESSION[_PLATFORM_]['is_login'] && is_array($_SESSION[_PLATFORM_]['USER_INFO'])){
 			return true;
 		}
@@ -134,7 +134,6 @@
 	}
 
 	function is_admin(){
-		return true;
 		if ($_SESSION[_PLATFORM_]["CLA"]["isAdmin"]==1 || $_SESSION[_PLATFORM_]["CLA"]["User_Name"]=='admin')
 			return 1;
 		else

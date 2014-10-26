@@ -6,47 +6,50 @@ class Login extends TSDefault
 	public $act;
 	
 	function signin($username,$password){
-		
+		global $ts_config;
 		//$sSQL="update ws_user_detail set full_name=N'Quản trị hệ thống'";
 		//$this->db->query($sSQL, true, "Query failed");	
-		$tourl = __post('tourl');
+		/*$tourl = __post('tourl');
 		if (isset($tourl) && $tourl!=''){
 			$_SESSION[_PLATFORM_]["AUTO"]['REDIRECT'] = base64_decode($tourl);
-		}
+		}*/
 		$ip = $_SERVER['REMOTE_ADDR'];
 		$session_id = session_id();
-		$sSQL="exec web_login '".$username."','".$password."','$session_id','$ip'";			
+		//$sSQL="exec web_login '".$username."','".$password."','$session_id','$ip'";	
+		$sSQL = "select * from ntk_users where email = '".$username."' and password='".$password."' ";
 		$result = $this->db->query($sSQL, true, "Query failed");		
-		$type='error';	
-
+		$type='error';		
 		if ($_REQUEST['scode']!=$this->encrypt_decrypt($_SESSION[_PLATFORM_]['KeyCode']) && $_SESSION[_PLATFORM_]['Login_Cnt']>=3 ){
 			$KeyCode=$this->encrypt_decrypt($this->generateCode(5));			
 			$_SESSION[_PLATFORM_]['KeyCode'] = $KeyCode;	
 			
-			header('location:do?module=Login&action=signin&mode=sc'.$type.'&tourl='.$tourl);		
+			header('location:/admin?module=Login&action=signin&mode=sc'.$type.'&tourl='.$tourl);		
 			die();
-		}
-		
+		}		
 		while ($aRow = $this->db->fetchByAssoc($result))
-		{
-		
+		{			
 			unset($_SESSION[_PLATFORM_]["CLA"]);
-			$username = $aRow['username'];
+			$username = $aRow['email'];
 			$pwd = $aRow['password'];
-			$_SESSION[_PLATFORM_]["CLA"]["User_ID"]		= $aRow['userId'];
+			$_SESSION[_PLATFORM_]["CLA"]["User_ID"]		= $aRow['id'];
 			$_SESSION[_PLATFORM_]["CLA"]["Dept_ID"]	= $aRow['deptId'];
-			$_SESSION[_PLATFORM_]["CLA"]["Full_Name"]		= $aRow['fullname'];
-			$_SESSION[_PLATFORM_]["CLA"]["Login_Time"]		= $aRow['login_time'];
+			$_SESSION[_PLATFORM_]["CLA"]["Full_Name"]		= $aRow['full_name'];
+			$_SESSION[_PLATFORM_]["CLA"]["Login_Time"]		= time();
 
 			$_SESSION[_PLATFORM_]["CLA"]["User_Name"]	= $username;
+			$_SESSION[_PLATFORM_]["CLA"]["email"]	= $aRow['email'];
 			$_SESSION[_PLATFORM_]["CLA"]["Role_ID"]	= $aRow['groupId'];
+			$_SESSION[_PLATFORM_]['is_login'] = true;
+			$info = $aRow;
+			unset($info['password']);
+			$_SESSION[_PLATFORM_]['USER_INFO'] = $info;
 			// begin get user info
-			$user_info = $this->fnc_get_user_info(1,$aRow['userId'],false,0);
+			/*$user_info = $this->fnc_get_user_info(1,$aRow['id'],false,0);
 			if($user_info['result']==1){
 				$_SESSION[_PLATFORM_]["CLA"]['user_info'] = $user_info['data'];
-			}
+			}*/
 			// end get user info
-			if (!isset($_SESSION[_PLATFORM_]["CLA"]["RoleData"]))//if datarole
+			/*if (!isset($_SESSION[_PLATFORM_]["CLA"]["RoleData"]))//if datarole
 			{
 				$rolers = $this->get_roleuserlist($aRow['userId']);
 				$rolelist = array();
@@ -85,13 +88,13 @@ class Login extends TSDefault
 				$_SESSION[_PLATFORM_]["CLA"]["RoleData"] =  $rolelist;
 
 			}//end if datarole
-
+			*/
 			$_SESSION[_PLATFORM_]["CLA"]["isAdmin"] = -1;
 			$_SESSION[_PLATFORM_]["CLA"]["SecurityCode"] =$_SESSION[_PLATFORM_]["CLA"]["User_ID"].'|'.$_SESSION[_PLATFORM_]["CLA"]["Shop_ID"].'|'.$_SESSION[_PLATFORM_]["CLA"]["Role_ID"];
 			if ($username=='admin' || $aRow['isAdmin']==1){
 				$_SESSION[_PLATFORM_]["CLA"]["isAdmin"]=1;
-			}
-			$this->s_role($_SESSION[_PLATFORM_]["CLA"]["RoleData"]);
+			}			
+			//$this->s_role($_SESSION[_PLATFORM_]["CLA"]["RoleData"]);
 		}	
 
 		if ($pwd!='' && $pwd==$password){
@@ -108,13 +111,13 @@ class Login extends TSDefault
 			else{			
 				$_SESSION[_PLATFORM_]['KeyCode']="";
 				$_SESSION[_PLATFORM_]['Login_Cnt'] = 0;			
-				header('location:do?module=Home&action=List&no_body=true');				
+				header('location:'.$ts_config['site_url_admin'].'?module=Config&action=News');				
 			}
 			
 			die();
 		}
 		$_SESSION[_PLATFORM_]['Login_Cnt'] = $_SESSION[_PLATFORM_]['Login_Cnt']+1;
-		header('location:do?module=Login&action=signin&cnt='.$_SESSION[_PLATFORM_]['Login_Cnt'].'&mode='.$type.'&tourl='.$tourl);
+		header('location:'.$ts_config['site_url_admin'].'?module=Login&action=signin&cnt='.$_SESSION[_PLATFORM_]['Login_Cnt'].'&mode='.$type.'&tourl='.$tourl);
 	}
 	
 	function define(){
@@ -123,17 +126,18 @@ class Login extends TSDefault
 	}	
 	
 	function signout(){
+		global $ts_config;
 		$username = get_username();
 		$ip = $_SERVER['REMOTE_ADDR'];
 		$session_id = session_id();
-		$sSQL="exec web_logout '".$username."','$session_id','$ip','".$_SESSION[_PLATFORM_]["CLA"]["Login_Time"]."'";		
-		$result = $this->db->query($sSQL, true, "Query failed");
+		//$sSQL="exec web_logout '".$username."','$session_id','$ip','".$_SESSION[_PLATFORM_]["CLA"]["Login_Time"]."'";		
+		//$result = $this->db->query($sSQL, true, "Query failed");
 		session_destroy();		
 		unset($_SESSION[_PLATFORM_]["CLA"]);
 		unset($_SESSION[_PLATFORM_]['KeyCode']);
 		unset($_SESSION[_PLATFORM_]['LOGIN_CNT']);	
 		session_regenerate_id(true);
-		header('location:do?module=Login&action=bye');
+		header('location:'.$ts_config['site_url_admin']);die();
 	}
 	
 	

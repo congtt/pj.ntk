@@ -36,9 +36,10 @@ $datetime = date('d/m/Y H:i:s');
 				$(document).ready(function() { 
 				
 					var rMenu = $.cookie('rMenu');
-					if(rMenu==null || rMenu=='Show'){						
+					if(rMenu==null || rMenu=='Show'){	
+						
 							$('#sidebar').attr('style','margin-left:0px');
-							$('#main-content').attr('style','margin-left:235px');	
+							$('#main-content').attr('style','margin-left:235px');
 							fmenu=true;
 					}else{
 							$('#sidebar').attr('style','margin-left:-215px');
@@ -62,7 +63,7 @@ $datetime = date('d/m/Y H:i:s');
 						}						
 					});
 
-				<?if (!is_login()){?>		
+				<?if (!is_login()){?>	
 					//$('#FLogin').fadeIn();
 					$('#sidebar').attr('style','display:none');
 					$('#main-content').attr('style','margin-left:0px');
