@@ -1,11 +1,11 @@
 <?session_start();
 
-
+/*
 if (is_admin() && $cla_module=='' && $cla_action==''){
 	$cla_module='Config';
 	$cla_action='Hospital';
 }
-
+*/
 if ($cla_module==''){
 	$cla_module = 'TSDefault';
 }
@@ -19,7 +19,6 @@ define('_MODULE_',$cla_module);
 define('_ACTION_',$cla_action);
 require_once('XTemplate/xtpl.php');
 require_once(admin_dir."classes/TSDefault/TSDefault.class.php");
-
 try {
 	if (is_file(admin_dir."classes/".$cla_module."/".$cla_module.".class.php")){				
 		require_once(admin_dir."classes/".$cla_module."/".$cla_module.".class.php");
