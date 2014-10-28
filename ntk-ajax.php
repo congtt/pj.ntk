@@ -58,14 +58,14 @@ if(!defined('TSEntry') || !TSEntry) die('Not A Valid Entry Point');
 			$sql="SELECT * FROM ntk_hospital WHERE  status =1 and province_id = ".$province_id." order by `order` asc ";
 			$result = $db->query($sql, true, "Query failed");
 			$arr = array();
-			$i = 0;
-			while ($aR = $db->fetchByAssoc($result)) {
+			$i = 0;			
+			while ($aR = $db->fetchByAssoc($result)) {	
 				$id = $aR['id'];
-				$name = $aR['name'.$lang];
+				$name = $aR['name'];//.$lang];
 				$arr[$i]['id'] = $id;
 				$arr[$i]['name'] = $name;
 				$i++;
-			}
+			}			
 			return $arr;
 		}
 	}

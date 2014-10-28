@@ -185,11 +185,11 @@ class Config_Ext  extends Config
 	}
 
 	function rmenu(){
-		//1: view - 2:add - 4:edit - 8:delete - 16:export				
-		$rmenu = '<li><a href="?module=Config&action=AbsentList">Danh sách </a></li>' ;
+		//1: view - 2:add - 4:edit - 8:delete - 16:export		
+		$rmenu = '<li><a href="?module=Config&action=PostComment">Danh sách </a></li>' ;
 		$rmenu_add= '<li><a href="javascript:dg_add(\'Config\',\'PostCommentAdd\',0,\'\',\'Thêm mới\',400,300)">Tạo mới</a></li>' ;
 		if ($this->acl_per(2))
-			$rmenu.=$rmenu_add;	
+			//$rmenu.=$rmenu_add;	
 		$rmenu.= $this->set_leftmenu();
 		$rmenu.='';			
 		return $rmenu;

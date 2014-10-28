@@ -15,7 +15,7 @@
 						 {  
 							for (i=0;i<js_obj.length;i++){
 								var val = js_obj[i].id;
-								var text = js_obj[i].name;
+								var text = js_obj[i].name;								
 								var tmp=' ';
 								hospital.append($('<option  '+tmp+'></option>').val(val).html(text))
 							}
@@ -25,9 +25,8 @@
 		}
 	}
 </script>
-
-<h1><?php echo get_lang('register_title');?></h1>
-
+<div class="lft-title" style="background-color:#71baf1;"><?php echo get_lang('register_title');?></div>
+<div class="group_content" style="margin-left:50px;margin-top:20px;">
 <?php  if($register_success==true){ ?>
 	<div style="text-align:center;color:#0000FF;font-size:15px;"><?php echo get_lang('register_success');?></div>
 <?	
@@ -37,25 +36,25 @@
 	<div style="text-align:center;color:#FF0000;"><? echo $msg ;?></div>
 	<table class="table_info">
 		<tr>
-			<th><?php echo get_lang('register_email');?></td>
-			<td><input type="text" name="email" value=""/></td>
+			<th width="200px" ><?php echo get_lang('register_email');?></td>
+			<td><input style="width:250px;" type="text" name="email" value=""/></td>
 		</tr>
 		<tr>
 			<th><?php echo get_lang('register_password');?></td>
-			<td><input type="password" name="password" value=""/></td>
+			<td><input style="width:250px;"type="password" name="password" value=""/></td>
 		</tr>
 		<tr>
 			<th><?php echo get_lang('register_password_re');?></td>
-			<td><input type="password" name="re_password" value=""/></td>
+			<td><input style="width:250px;"type="password" name="re_password" value=""/></td>
 		</tr>
 		<tr>
 			<th><?php echo get_lang('register_fullname');?></td>
-			<td><input type="full_name" name="full_name" value=""/></td>
+			<td><input style="width:250px;"type="full_name" name="full_name" value=""/></td>
 		</tr>
 		<tr>
 			<th><?php echo get_lang('register_province');?></td>
 			<td>
-				<select onchange="getHospital();" style="width:250px;" name="province_id" id="province_id">
+				<select onchange="getHospital();" style="width:270px;" name="province_id" id="province_id">
 					<option value="">-- <?php echo get_lang('register_province_select');?> --</option>
 					<?php
 						foreach($province_list as $k=>$va){
@@ -70,7 +69,7 @@
 		<tr>
 			<th><?php echo get_lang('register_hospital');?></td>
 			<td>
-				<select name="hospital_id" style="width:250px;" id="hospital_id">
+				<select name="hospital_id" style="width:270px;" id="hospital_id">
 					<option value="">-- <?php echo get_lang('register_hospital_select');?> --</option>
 					<?php
 						foreach($hospital_list as $k=>$va){
@@ -79,13 +78,19 @@
 							<?
 						}
 					?>
-				</select>
+				</select>				
+			</td>
+		</tr>
+		<tr>
+			<th><?php echo get_lang('register_hospital_orther');?></td>
+			<td>
+				<input style="width:250px;"type="text" name="hospital_name" value=""/>
 			</td>
 		</tr>
 		<tr>
 			<th><?php echo get_lang('register_department');?></td>
 			<td>
-				<select name="department_id" style="width:250px;" id="department_id">
+				<select name="department_id" style="width:270px;" id="department_id">
 					<option value="">-- <?php echo get_lang('register_department_select');?> --</option>
 					<?php
 						foreach($department_list as $k=>$va){
@@ -98,8 +103,9 @@
 			</td>
 		</tr>
 		
-		<tr> 
-			<td align="center" colspan="2">
+		<tr>
+			<td align="center" ></td>
+			<td align="center" style="padding-left:50px;" >
 			<br />
 				<input style="text-align:center;" type="submit" name="btnregister" value="<?php echo get_lang('register_btnregister');?>"/>
 			</td>
@@ -107,7 +113,9 @@
 										
 	</table>
 </form>
+
 <?
 }
 
 ?>
+</div>

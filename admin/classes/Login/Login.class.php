@@ -16,7 +16,7 @@ class Login extends TSDefault
 		$ip = $_SERVER['REMOTE_ADDR'];
 		$session_id = session_id();
 		//$sSQL="exec web_login '".$username."','".$password."','$session_id','$ip'";	
-		$sSQL = "select * from ntk_users where email = '".$username."' and password='".$password."' ";
+		$sSQL = "select * from ntk_users where email = '".$username."' and password='".$password."' and isAdmin=1 ";
 		$result = $this->db->query($sSQL, true, "Query failed");		
 		$type='error';		
 		if ($_REQUEST['scode']!=$this->encrypt_decrypt($_SESSION[_PLATFORM_]['KeyCode']) && $_SESSION[_PLATFORM_]['Login_Cnt']>=3 ){

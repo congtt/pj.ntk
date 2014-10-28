@@ -135,12 +135,24 @@ if($cla_nid>0){
 		$full_name = __post('full_name');
 		$province_id = __post('province_id');
 		$hospital_id = __post('hospital_id');
+		$hospital_name = __post('hospital_name');
 		$department_id = __post('department_id');
 		if($password==$re_password && $email!='' && $full_name!=''){
-			$user_info = get_user_info($email);			
+			$user_info = get_user_info($email);	
 			if(is_array($user_info)){
 				$msg = "Email đã tồn tại. Vui lòng kiểm tra lại thông tin.";
 			}else{
+				
+				if($hospital_id == 0  && $hospital_name!=''){					
+					$sSQLHospital = "insert into ntk_hospital (province_id,name,`status`,`order`) 
+					values(".$province_id.",N'".$hospital_name."',1,1000) ";				
+					$result = $db->query($sSQLHospital, true, "Query failed");
+					$sSQLHospitalId = "select * from ntk_hospital where name = N'".$hospital_name."' order by id desc limit 0,1 ";
+					$result = $db->query($sSQLHospitalId, true, "Query failed");
+					if($aRHospital = $db->fetchByAssoc($result)) {
+						$hospital_id = (int)$aRHospital['id'];
+					}
+				}				
 				$password = md5($password);
 				$sql = " insert into ntk_users(email,password,full_name,province_id,department_id,hospital_id)
 					values('".$email."','".$password."',N'".$full_name."',".(int)$province_id.",".(int)$department_id.",".(int)$hospital_id.")
@@ -208,7 +220,7 @@ if($cla_nid>0){
 	function get_user_info($email,$reset=0){
 		global $db;
 		if($reset==0 && is_array($_SESSION[_PLATFORM_]['USER_INFO'])){
-			return $_SESSION[_PLATFORM_]['USER_INFO'];
+			//return $_SESSION[_PLATFORM_]['USER_INFO'];
 		}
 		$sql = "select * from ntk_users where email='".$email."' limit 0,1 ";
 		$result = $db->query($sql, true, "Query failed");		

@@ -156,7 +156,7 @@ $datetime = date('d/m/Y H:i:s');
 		?>
 		</div>					
 				<span>Tài khoản : <a href="do?module=Login&action=signout&no_body=true" title="Đăng nhập với tài khoản <?=$ts_info['User_Name']?>"><?=$ts_info['Full_Name']?></a> | 
-				<a href="javascript:dg_add_2('HHFeedback','FeedbackAdd',0,'','Góp ý ban quản trị',500,400,'<?=$urlref?>')" title="Góp ý cho ban quản trị">Góp ý</a> | 
+				<!--<a href="javascript:dg_add_2('HHFeedback','FeedbackAdd',0,'','Góp ý ban quản trị',500,400,'<?=$urlref?>')" title="Góp ý cho ban quản trị">Góp ý</a> |-->
 				<a href="do?module=Login&action=signout&no_body=true" title="Thoát">Thoát</a></span>
 			<?}else{?>
 				<a href="do?module=Login&action=signin"   title="Đăng nhập vào hệ thống">Đăng nhập</a>

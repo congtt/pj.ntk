@@ -39,6 +39,8 @@
 		,'register_province'=>'Province'
 		,'register_province_select'=>'Select Province'
 		,'register_hospital'=>'Hospital'
+		,'register_hospital_orther'=>'or other Hospital Name'
+		
 		,'register_hospital_select'=>'Select Hospital'
 		,'register_department'=>'Department'
 		,'register_department_select'=>'Select Department'

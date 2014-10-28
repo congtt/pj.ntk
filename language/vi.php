@@ -40,6 +40,7 @@
 		,'register_province_select'=>'Chọn tỉnh thành'
 		,'register_hospital'=>'Bệnh viện đang công tác'
 		,'register_hospital_select'=>'Chọn bệnh viên'
+		,'register_hospital_orther'=>'hoặc tên bệnh viện khác'
 		,'register_department'=>'Chuyên khoa'
 		,'register_department_select'=>'Chọn chuyên khoa'
 		,'register_btnregister'=>'ĐĂNG KÝ THÀNH VIÊN'
