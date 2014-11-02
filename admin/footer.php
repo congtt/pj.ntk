@@ -16,6 +16,7 @@
 	<link href="../css/pnotify/jquery.pnotify.default.css" media="all" rel="stylesheet" type="text/css" />
 	<link href="../css/superfish/css/superfish.css" media="all" rel="stylesheet" type="text/css" />
 	
+	<script src="../css/ckeditor/ckeditor.js"></script>
 	<!--<msdropdown>-->
 	<link rel="stylesheet" type="text/css" href="../css/masterdropdown/css/msdropdown/dd.css" />
 	<!--<script src="../css/masterdropdown/js/msdropdown/jquery.dd.min.js"></script>-->

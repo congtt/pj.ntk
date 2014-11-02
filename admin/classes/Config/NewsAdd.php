@@ -40,7 +40,7 @@ class Config_Ext  extends Config
 		
 		$Attr_psttitle_en = array('rel'=>'{Require:\'R\',Alert:\'Vui lòng nhập tên bệnh viện \'}','style'=>'width:400px;');
 		$txt_psttitle_en = addInput('text','title_en',$title_en,$Attr_psttitle_en,$list_form);	
-		
+		$class_input = 'ckeditor';
 		$Attr_short_vi = array('class'=>$class_input,'rel1'=>'{Require:\'R\',Alert:\'Vui lòng nhập role_name  \'}','style'=>'width:400px;');
 		$txt_short_vi = addTextarea('short_vi',3,30,$short_vi,$Attr_short_vi,$list_form);
 		$Attr_short_en = array('class'=>$class_input,'rel1'=>'{Require:\'R\',Alert:\'Vui lòng nhập role_name  \'}','style'=>'width:400px;');

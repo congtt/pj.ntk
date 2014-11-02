@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 17, 2014 at 06:29 AM
+-- Generation Time: Oct 31, 2014 at 05:09 PM
 -- Server version: 5.5.36
 -- PHP Version: 5.4.27
 
@@ -215,7 +215,7 @@ CREATE TABLE IF NOT EXISTS `ntk_hospital` (
   `status` int(11) DEFAULT NULL,
   `order` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=20 ;
 
 --
 -- Dumping data for table `ntk_hospital`
@@ -226,7 +226,21 @@ INSERT INTO `ntk_hospital` (`id`, `name`, `province_id`, `status`, `order`) VALU
 (2, 'BV Đại Học Y Dược TP HCM', 1, 1, 2),
 (3, 'Bệnh viện Bạch Mai Hà Nội', 2, 1, 4),
 (4, 'BV 115', 1, -13, 1),
-(5, 'BV 115', 1, -13, 1);
+(5, 'BV 115', 1, -13, 1),
+(6, 'Bệnh Viện Đa Khoa Trung Ương', 58, 1, 1),
+(7, 'Bệnh Viện Đa Khoa TP Cần Thơ', 58, 1, 2),
+(8, 'Bệnh Viện Đa Khoa Cà Mau', 59, 1, 1),
+(9, 'Bệnh Viện Đa Khoa Thống Nhất', 55, 1, 1),
+(10, 'Bệnh Viện Đa Khoa', 61, 1, 1),
+(11, 'Bệnh Viện Đa Khoa', 55, 1, 2),
+(12, 'Bệnh Viện Đa Khoa', 64, 1, 2),
+(13, 'Bệnh Viện Đa Khoa', 50, 1, 2),
+(14, 'Bệnh Viện Đa Khoa Tỉnh Trà Vinh', 42, 1, 2),
+(15, 'Bệnh Viện Đa Khoa Tỉnh Vĩnh Long', 41, 1, 2),
+(16, 'Bệnh Viện Đa Khoa Tỉnh Bến Tre', 60, 1, 1),
+(17, 'Bệnh Viện Đa Khoa', 45, 1, 1),
+(18, 'Bệnh Viện Đa Khoa Đà Lạt', 48, 1, 1),
+(19, 'Bệnh Viện Đa Khoa', 51, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -254,7 +268,7 @@ CREATE TABLE IF NOT EXISTS `ntk_menus` (
 INSERT INTO `ntk_menus` (`menu_id`, `menu_name_vi`, `menu_name_en`, `parent_id`, `menu_order`, `status`, `language`, `group`, `link`) VALUES
 (1, 'TRANG CHỦ', 'HOME', -1, 1, 1, 'vi', 'ngoai-than-kinh', 'trang-chu.html'),
 (2, 'Giới thiệu hiệp hội', 'Introduce', -1, 2, 1, 'vi', 'ngoai-than-kinh', 'http://www.aaa.com'),
-(3, 'Tin tức/Hội nghị', 'News/Events', -1, 3, 1, 'vi', 'ngoai-than-kinh', NULL),
+(3, 'Tin tức', 'News', -1, 3, 1, 'vi', 'ngoai-than-kinh', NULL),
 (4, 'Đào tạo', 'Training', -1, 5, 1, 'vi', 'ngoai-than-kinh', NULL),
 (5, 'Tạp chí', 'Magazine', -1, 4, 1, 'vi', 'ngoai-than-kinh', NULL),
 (6, 'Liên hệ', 'Contact', -1, NULL, 1, 'vi', 'ngoai-than-kinh', 'lien-he.html'),
@@ -688,6 +702,7 @@ CREATE TABLE IF NOT EXISTS `ntk_users` (
   `province_id` int(11) NOT NULL,
   `department_id` int(11) NOT NULL,
   `hospital_id` int(11) NOT NULL,
+  `isAdmin` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
@@ -696,11 +711,11 @@ CREATE TABLE IF NOT EXISTS `ntk_users` (
 -- Dumping data for table `ntk_users`
 --
 
-INSERT INTO `ntk_users` (`id`, `email`, `password`, `full_name`, `province_id`, `department_id`, `hospital_id`) VALUES
-(1, 'congtran90@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'Trần Tấn Công 122', 1, 1, 1),
-(2, 'email@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'Email', 1, 1, 1),
-(3, 'emaildangky@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'Trần Văn A', 1, 1, 2),
-(4, 'email', 'e10adc3949ba59abbe56e057f20f883e', 'Trần Tấn Công1', 2, 2, 3);
+INSERT INTO `ntk_users` (`id`, `email`, `password`, `full_name`, `province_id`, `department_id`, `hospital_id`, `isAdmin`) VALUES
+(1, 'admin', 'e10adc3949ba59abbe56e057f20f883e', 'Administrator', 1, 1, 1, 1),
+(2, 'email@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'Email', 1, 1, 1, 0),
+(3, 'emaildangky@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 'Trần Văn A', 1, 1, 2, 0),
+(4, 'email', 'e10adc3949ba59abbe56e057f20f883e', 'Trần Tấn Công1', 2, 2, 3, 0);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
