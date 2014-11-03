@@ -28,6 +28,7 @@ class Config_Ext  extends Config
 							
 		$Attr_pstname = array('rel'=>'{Require:\'R\',Alert:\'Vui lòng nhập tên bệnh viện \'}','style'=>'width:200px;');
 		$txt_pstname = addInput('text','name',$name,$Attr_pstname,$list_form);	
+
 		$Attr_pstorder = array('style'=>'');
 		$txt_pstorder = addInput('text','order',$order,$Attr_pstorder,$list_form);	
 		

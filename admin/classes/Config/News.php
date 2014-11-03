@@ -235,14 +235,14 @@ class Config_Ext  extends Config
 				if ($mode_inpvl=='EXPORT')
 					$sSQL = "select t1.*,t2.menu_name_vi as province_name from ntk_news  t1 
 					left join ntk_menus t2  on t1.cid = t2.menu_id
-					where 1=1 ".$_Where." order by ".$_OrderBy." ".$_OrderDirection;					
+					where 1=1   ".$_Where." order by ".$_OrderBy." ".$_OrderDirection;					
 				else{
 					$sSQLTotal = "select count(t1.id) as TotalRecord from ntk_news t1
 					left join ntk_menus t2 on  t1.cid = t2.menu_id
-					where 1=1 ".$_Where;
+					where 1=1  ".$_Where;
 					$sSQL = "select t1.*,t2.menu_name_vi as cname from ntk_news  t1 
 					left join ntk_menus t2  on t1.cid = t2.menu_id
-					where 1=1 ".$_Where." order by ".$_OrderBy." ".$_OrderDirection. " limit ".$start.",".$PageSize;					
+					where 1=1   ".$_Where." order by ".$_OrderBy." ".$_OrderDirection. " limit ".$start.",".$PageSize;					
 					//echo $sSQL;
 					$resultTotal = $this->db->query($sSQLTotal, true, "Query failed");	
 					$aRTotal = $this->db->fetchByAssoc($resultTotal);

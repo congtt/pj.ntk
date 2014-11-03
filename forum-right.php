@@ -75,11 +75,18 @@ while ($aR = $db->fetchByAssoc($result)) {
 							<div align="center">							
 								<? 
 								foreach($adv_list as $k=>$adv){
-								?>
-									<div style="margin:5px 0px 5px 0px; border-bottom:#ccc solid 1px;">
-										<a target="_blank" href="<?echo $adv['adv_link'];?>"><img width="187px" height="187px" src="<?=$fullsite?>/images/adv/<? echo $adv['adv_image'];?>" alt="<? echo $adv['adv_name'];?>" /></a>
-									</div>
-								<?
+									if($adv['adv_type']==0){
+									?>
+										<div style="margin:5px 0px 5px 0px; border-bottom:#ccc solid 1px;">
+											<a target="_blank" href="<?echo $adv['adv_link'];?>"><img width="187px" height="187px" src="<?=$fullsite?>/images/adv/<? echo $adv['adv_image'];?>" alt="<? echo $adv['adv_name'];?>" /></a>
+										</div>
+									<?
+									}else if($adv['adv_type']==1){
+									?>
+										<div style="margin:5px 0px 5px 0px; border-bottom:#ccc solid 1px;">
+											<object width="400" height="400" data="<?echo $fullsite;?>/images/adv/<? echo $adv['adv_image'];?>"></object>											
+										</div>
+									<?}
 								}
 								?>
 							</div>					

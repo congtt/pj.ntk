@@ -42,14 +42,16 @@ class Config_Ext  extends Config
 			$result_id  = $this->form_add($Id,$menu_id,$title_vi,$title_en,$short_vi,$short_en,$content_vi,$content_en,$keyword_vi,$keyword_en,$status);
 			if((int)$Id<=0){
 				$Id = $result_id;
-			}
-			$result = UpLoadMultiFile($ts_config['upload_dir'],'filenew',$gen_name = false,$title='',$max_size=9048576);
+			}			
+			$result = UpLoadMultiFile($ts_config['upload_dir'],'filenew', false,'',$max_size=9048576);
 			$file_type_id = 7;
 			foreach($result as $k=>$va){
-				$sSQL = "insert into ntk_new_files(new_id,file_name,file_path,file_type_id,require_login)
+				if($va['result']==1){
+					$sSQL = "insert into ntk_new_files(new_id,file_name,file_path,file_type_id,require_login)
 						values(".$Id.",'".$va['name']."','".$va['file_name']."',".$file_type_id.",1)
-				";
-				$re = $this->db->query($sSQL, true, "Query failed");
+					";
+					$re = $this->db->query($sSQL, true, "Query failed");
+				}
 			}
 			if ($result_id>0)
 			{
@@ -59,9 +61,8 @@ class Config_Ext  extends Config
 			}	
 		}		
 		if ((int)$Id>0)
-		{
-			$token= __post("token");
-			$data = $this->getDetail($Id);
+		{			
+			$data = $this->getDetail($Id);			
 			foreach($data as $key=>$value){
 				$$key=$value;
 			}
@@ -81,8 +82,8 @@ class Config_Ext  extends Config
 		
 		$arr_info_menu_id = $this->getListNewsCategories();
 		$Attr_menu_id = array('rel'=>'{Require:\'R\',Alert:\'Vui lòng chọn danh mục \'}','style'=>'width:400px;');
-		$txt_menu_id = addSelectList2('menu_id',$arr_info_menu_id,NULL,$Attr_menu_id,$list_form,$menu_id);
-		
+		$txt_menu_id = addSelectList2('menu_id',$arr_info_menu_id,NULL,$Attr_menu_id,$list_form,$cid);
+			
 		$arr_info_status = array(1=>'Active',0=>'InActive');
 		$Attr_status = array('rel'=>'{Require:\'R\',Alert:\'Vui lòng chọn trạng thái \'}','style'=>'');
 		$txt_status = addSelectList2('status',$arr_info_status,NULL,$Attr_status,$list_form,$status);

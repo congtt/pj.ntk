@@ -63,7 +63,7 @@ if($cla_nid>0){
 	
 	function home(){
 		global $db,$fullsite,$cla_cid,$cla_nid,$cla_site,$ts_config;		
-		$sql="SELECT * FROM ntk_news WHERE show_index = 1 ";		
+		$sql="SELECT * FROM ntk_news WHERE show_index = 1 and status = 1 ";		
 		$sql.="ORDER BY news_order ASC,id ASC 	LIMIT 0,10 ";
 		$result = $db->query($sql, true, "Query failed");
 		while ($aR = $db->fetchByAssoc($result)) {	
@@ -311,7 +311,7 @@ if($cla_nid>0){
 						}
 						echo '</div></div><br>';					
 						echo '<div class="news_short"><div style="width:25px; float:left;">&nbsp;</div><b>'.html_entity_decode($short).'</b></div><br>';
-						echo '<div class="news_short"><div style="width:25px; float:left;">&nbsp;</div><pre>'.html_entity_decode($content).'</pre></div>';
+						echo '<div class="news_short"><div style="width:25px; float:left;">&nbsp;</div>'.html_entity_decode($content).'</div>';
 						//echo '<hr size=2 style="color:#cccccc">';						
 						if($new_id==$cla_nid){ // detail
 							//echo '<div class="related_title">'.get_lang('text_related').'</div>';
