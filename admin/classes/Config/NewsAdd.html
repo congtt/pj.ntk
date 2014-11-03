@@ -31,20 +31,51 @@
 		}
 		
 	}
+	
+	function add(){		
+		var ocontent_vi = CKEDITOR.instances.content_vi;
+		var content_vi = ocontent_vi.getData();
+		$('#content_vi').val(content_vi);
+		
+		var ocontent_en = CKEDITOR.instances.content_en;
+		var content_en = ocontent_en.getData();
+		$('#content_en').val(content_en);
+		
+		var oshort_vi = CKEDITOR.instances.short_vi;
+		var short_vi = oshort_vi.getData();
+		$('#short_vi').val(short_vi);
+		
+		var oshort_en = CKEDITOR.instances.short_en;
+		var short_en = oshort_en.getData();
+		$('#short_en').val(short_en);
+		$('#mode_inpvl').val('ADD');
+		$('#no_body').val('false');			
+		btn_submit('#form1');
+	}
 </script>
 <script src="../css/ckeditor/ckeditor.js"></script>
 
-	<form name="form2" id="form2" method="post" enctype="multipart/form-data">
-			<input type="hidden" name="captcha" id="captcha"  value="{captchaTxt}" />	
-			<input type="hidden" name="no_body" id="no_body"  value="false" />	
-			<input type="hidden" name="page"  id="page"    value="1" />
-			<input type="hidden" name="formmode" id="formmode"         value="add" />
-			<input type="hidden" name="module"         value="Config" />
-			<input type="hidden" name="action"         value="News" />
-			<input type="hidden" name="formaction" id="formaction"         value="add" />
-			<input type="hidden" name="Id" id="Id"         value="{Id}" />
-			<input type="hidden" name="token" id="token"         value="{token}" />
-			<input type="hidden" name="frm_input" id="frm_input"         value="{frm_input}" />
+<div id="page-wrapper">		
+				<div id="main-wrapper">
+					{slide_bar}
+					<div id="main-content">
+					<!--Main-->
+					<div id="tabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
+							{tabs}		
+								
+								<form name="form1" id="form1" method="post">
+
+								<div id="main_tabs" class="ui-tabs-panel ui-widget-content ui-corner-bottom ">
+								<input type="hidden" name="Id" id="Id"         value="{Id}" />
+								<input type="hidden" name="token" id="token"         value="{token}" />
+								<input type="hidden" name="captcha" id="captcha"  value="" />	
+								<input type="hidden" name="no_body" id="no_body"  value="false" />	
+								<input type="hidden" name="page"  id="page"    value="1" />
+								<input type="hidden" name="mode_inpvl" id="mode_inpvl"         value="SEARCH" />
+								<input type="hidden" name="module"         value="Config" />
+								<input type="hidden" name="action" id="action"         value="NewsAdd" />
+
+			<div>{_btnadd}</div>
 			<table id="tb_info_add" width="100%" border="0" cellspacing="2" cellpadding="2"  id="tblform">		  
 				<tr>
 					<td><span class="require"></span>Danh mục</td>
@@ -124,7 +155,32 @@
 					</td>
 			    </tr>
 			</table>
+			
 
+			<div>
+				{_btnadd}
+			</div>
+									
+		</form>
+
+								</div>			
+							</div>
+
+
+
+							<div id="dialog-form" title="{dialog_title}">
+								<p class="validateTips"></p>
+								<div id="preview_info2" name="preview_info2" >		
+								
+								</div>	
+							</div>
+						
+
+					<!--End Main-->
+					</div>
+					<div class="clearfix"></div>
+				</div>	
+			</div>
 </form>
 
 <!-- END:main -->

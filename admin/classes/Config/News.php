@@ -266,8 +266,8 @@ class Config_Ext  extends Config
 						$inp_del = '<div  title="" class="status_box '.$status_class_name.'">';					
 						$tokenDelete = $this->md5sum($this->prefix['delete'].$id);
 						$inp_del.= '	<input  type=checkbox value="'.$id.'|'.$tokenDelete.'" name="chk[]" id="chk_'.$STT.'">';
-						$tokenEdit = $this->md5sum($this->prefix['edit'].$id);
-						$inp_del.= '	<img src="../images/edit2.png" width=16 height=16 style="cursor:pointer;margin-right:5px" onclick="dg_add(\'Config\',\'NewsAdd\','.$id.',\''.$tokenEdit.'\',\'Cập nhật thông tin\',800,600)">';
+						$tokenEdit = $this->md5sum('edit'.$id);
+						$inp_del.= '	<a href="?module=Config&action=NewsAdd&Id='.$id.'&token='.$tokenEdit.'"><img src="../images/edit2.png" width=16 height=16 style="cursor:pointer;margin-right:5px"></a>';
 						$inp_del.= '<img src="../images/delete.png" width=16 height=16  style="cursor:pointer;" onclick="dg_del('.$id.',\''.$tokenDelete.'\','.$STT.',\''.$CaptchaText.'\')">';
 						$inp_del.= '</div>';
 						$_dblist.='<td  nowrap style="text-align:left;width:60px">'.$inp_del.'</td>';	

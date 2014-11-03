@@ -8,14 +8,14 @@ define(admin_dir,'admin/');
 
 $cla_module = $_GET['module'];
 $cla_action = $_GET['action'];
-//echo "m: ".$module." - ac: ".$action."<br>";
+//echo "m: ".$cla_module." - ac: ".$cla_action."<br>";
 //include($admin_dir.'ntk-header.php');
-
 require_once('include/init.admin.inc.php');
 
 if ($no_body!='true' && $cla->no_body()!=true){require_once(admin_dir.'header.php');}			
 			if(is_login()){
 				if (is_admin()){
+					//echo $cla_module ." - ".$cla_action;
 					if (is_file(admin_dir."classes/".$cla_module."/{$cla_action}.php")){				
 						require_once(admin_dir."classes/".$cla_module."/{$cla_action}.php");
 					}else{		
@@ -40,5 +40,4 @@ if ($no_body!='true' && $cla->no_body()!=true){require_once(admin_dir.'header.ph
 			}			
 		
 if ($no_body!='true'){require_once(admin_dir.'footer.php');}
-
 

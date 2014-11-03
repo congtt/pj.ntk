@@ -310,8 +310,8 @@ if($cla_nid>0){
 							$i++;
 						}
 						echo '</div></div><br>';					
-						echo '<div class="news_short"><div style="width:25px; float:left;">&nbsp;</div><b>'.$short.'</b></div><br>';
-						echo '<div class="news_short"><div style="width:25px; float:left;">&nbsp;</div><pre>'.$content.'</pre></div>';
+						echo '<div class="news_short"><div style="width:25px; float:left;">&nbsp;</div><b>'.html_entity_decode($short).'</b></div><br>';
+						echo '<div class="news_short"><div style="width:25px; float:left;">&nbsp;</div><pre>'.html_entity_decode($content).'</pre></div>';
 						//echo '<hr size=2 style="color:#cccccc">';						
 						if($new_id==$cla_nid){ // detail
 							//echo '<div class="related_title">'.get_lang('text_related').'</div>';
@@ -424,15 +424,15 @@ if($cla_nid>0){
 							}else{
 								$href =$ts_config['site_url_download_file'].$aR_file['file_path'];
 							}
-							if($i>0){echo ' | ';}		
+							if($i>0){echo ' | ';}
 							//$urlre = $sugar_config['site_url_download_file']."/download_file_case.php?fn=".$filePath;
 							//header('location:'.$urlre.'');
 							//die();					
 							echo '<a href="'.$href.'"><img src="'.$fullsite.'/images/'.$aR_file['file_type_icon'].'"></a>';
 							$i++;
-						}		
+						}
 						echo '</div></div><br>'; 				
-						echo '<div class="news_short"><div style="width:25px; float:left;">&nbsp;</div>'.$aR['short'.$lang].'&nbsp;<a href="'.$fullsite.'/'.(int)$aR['cid'].'/'.(int)$aR['id'].'/'.$title_url.'.html">'.get_lang('text_detail').'</a></div>';
+						echo '<div class="news_short"><div style="width:25px; float:left;">&nbsp;</div>'.html_entity_decode($aR['short'.$lang]).'&nbsp;<a href="'.$fullsite.'/'.(int)$aR['cid'].'/'.(int)$aR['id'].'/'.$title_url.'.html">'.get_lang('text_detail').'</a></div>';
 						echo '<hr size=2 style="color:#cccccc">';
 						$stt++;
 					}					
