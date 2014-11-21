@@ -208,7 +208,7 @@ if($pageUrl=='dang-bai.html'){
 					$html_comment .= '<span class="forum_comment_date">'.date2vndate($aR['create_date'],true).'</span><br>';
 				$html_comment .= '</div>';
 				$html_comment .= '<div class="forum_comment_content">';
-					$html_comment .= '&nbsp;&nbsp;&nbsp;&nbsp;<pre>'.$aR['content'].'</pre>';
+					$html_comment .= '&nbsp;&nbsp;&nbsp;&nbsp;'.html_entity_decode($aR['content']).'';
 				$html_comment .= '</div>';			
 				
 			$html_comment .= '</div>';
@@ -280,7 +280,7 @@ if($pageUrl=='dang-bai.html'){
 						}*/
 						echo '</div></div><br>';					
 						//echo '<div class="news_short"><div style="width:25px; float:left;">&nbsp;</div><b>'.$short.'</b></div><br>';
-						echo '<div class="news_short"><div style="width:25px; float:left;">&nbsp;</div>'.$content.'</div>';
+						echo '<div class="news_short"><div style="width:25px; float:left;">&nbsp;</div>'.html_entity_decode($content).'</div>';
 						
 						//echo '<hr size=2 style="color:#cccccc">';						
 						if($new_id==$cla_nid){ // detail
@@ -397,10 +397,11 @@ if($pageUrl=='dang-bai.html'){
 							//die();					
 							echo '<a href="'.$href.'"><img src="'.$fullsite.'/images/'.$aR_file['file_type_icon'].'"></a>';
 							$i++;
-						}*/		
-						echo '</div></div><br>'; 				
+						}*/
+						echo '</div></div><br>';
 						$short_description = substr($aR['content'.$lang],0,50);
-						echo '<div class="news_short"><div style="width:25px; float:left;">&nbsp;</div>'.$short_description.'&nbsp;<a href="'.forum_path.'/'.(int)$aR['cid'].'/'.(int)$aR['id'].'/'.$title_url.'.html">'.get_lang('text_detail').'</a></div>';
+						$short_description = html_entity_decode($short_description);
+						echo '<div class="news_short"><div style="width:25px; float:left;">&nbsp;</div>'.$short_description.' &nbsp;<a href="'.forum_path.'/'.(int)$aR['cid'].'/'.(int)$aR['id'].'/'.$title_url.'.html">'.get_lang('text_detail').'</a></div>';
 						echo '<hr size=2 style="color:#cccccc">';
 						$i++;
 					}

@@ -36,7 +36,11 @@
 			alert('<? echo get_lang('forum_post_req_topic');?>');
 			$('#category_id').focus();
 			return;
-		}else if($('#content').val()==''){
+		}
+		var ocontent = CKEDITOR.instances.content;
+		var content = ocontent.getData();
+		$('#content').val(content);
+		if($('#content').val()==''){
 			alert('<? echo get_lang('forum_post_req_content');?>');
 			$('#content').focus();
 			return;
@@ -47,7 +51,7 @@
 <style>
 	.table_info_1 th{font-weight:bold;}
 </style>
-
+<script src="<? echo $fullsite?>/css/ckeditor/ckeditor.js"></script>
 <div class="group_area">
 	<div style="background-color:#71baf1;" class="lft-title"><?php echo get_lang('forum_post_title');?>
 				</div>
@@ -93,7 +97,7 @@
 		</tr>
 		<tr>
 			<th>&nbsp;</td>
-			<td><textarea  id="content" style="width:500px;height:400px;" cols="30" rows="5" name="content"></textarea></td>
+			<td><textarea class="ckeditor" id="content" style="width:500px;height:600px;" cols="30" rows="200" name="content"></textarea></td>
 		</tr>
 		<tr> 
 			<td align="center" colspan="2">

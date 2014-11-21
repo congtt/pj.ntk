@@ -76,7 +76,10 @@ if($cla_nid>0){
 			";		
 			$result_file = $db->query($sql, true, "Query failed");
 			$i=0;				
-			while ($aR_file = $db->fetchByAssoc($result_file)) {					
+			while ($aR_file = $db->fetchByAssoc($result_file)) {	
+				if($i==0){
+					echo '<span class="download_file_title">Tải file tại đây</span> ';
+				}
 				if($aR_file['require_login']==1 && !is_login()){
 					$href ='javascript:notLogin();';
 				}else{
@@ -299,7 +302,10 @@ if($cla_nid>0){
 						";		
 						$result_file = $db->query($sql, true, "Query failed");
 						$i=0;
-						while ($aR_file = $db->fetchByAssoc($result_file)) {					
+						while ($aR_file = $db->fetchByAssoc($result_file)) {	
+							if($i==0){
+								echo '<span class="download_file_title">Tải file tại đây</span> ';
+							}
 							if($aR_file['require_login']==1 && !is_login()){
 								$href ='javascript:notLogin();';
 							}else{
@@ -418,7 +424,10 @@ if($cla_nid>0){
 						";		
 						$result_file = $db->query($sql, true, "Query failed");
 						$i=0;				
-						while ($aR_file = $db->fetchByAssoc($result_file)) {					
+						while ($aR_file = $db->fetchByAssoc($result_file)) {
+							if($i==0){
+								echo '<span class="download_file_title">Tải file tại đây</span> ';
+							}
 							if($aR_file['require_login']==1 && !is_login()){
 								$href ='javascript:notLogin();';
 							}else{

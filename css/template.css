@@ -1106,7 +1106,7 @@ color: #FFFF25;
 
 /********************/
 .news_title{
-	font-weight:bold;	
+	font-weight:bold;
 }
 .news_title :hover{
 	color:#0073ea;
@@ -1242,4 +1242,10 @@ white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
 white-space: -pre-wrap;      /* Opera 4-6 */
 white-space: -o-pre-wrap;    /* Opera 7 */
 word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+
+.download_file_title{
+	font-size:14px;
+	color:blue;
 }
